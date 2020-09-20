@@ -1,0 +1,142 @@
+<script>
+  import { onMount } from 'svelte';
+  import * as d3 from 'd3';
+  const csvStaticFilePath = '/data/iris-data.csv';
+
+  // ref
+  let d3Container;
+
+  // state
+  let data, margin, width, height;
+
+  // onMount (lifecycle)
+  onMount(async () => {
+
+    // ------------
+    // get data
+    // ------------
+    
+    const getData = async () => {
+      const csvFile = await fetch(csvStaticFilePath); // csv with 2 columns
+      const csvText = await csvFile.text(); // csv as string
+      const csvData = d3.csvParse(
+        csvText, // csv string to parse
+        d3.autoType
+      );
+      return csvData;
+    }
+
+    // set state
+    data = await getData();
+
+    // ------------
+    // dimensions
+    // ------------
+
+    // set state (sometimes dependent on data)
+    margin = { top: 10, right: 30, bottom: 30, left: 40 };
+    width = 600 - margin.left - margin.right;
+    height = 400 - margin.top - margin.bottom;
+  });
+
+  // reactive statement
+  $: if (data && data.length && d3Container) {
+
+    // ------------
+    // calculate axes
+    // ------------
+
+    // helper functions
+
+    // scale
+    const y = d3.scaleLinear()
+      .domain([3.5, 8])          // Note that here the Y scale is set manually
+      .range([height, 0])
+    
+    const x = d3.scaleBand()
+      .range([0, width])
+      .domain(["setosa", "versicolor", "virginica"])
+      .padding(0.05)     // This is important: it is the space between 2 groups. 0 means no padding. 1 is the maximum.
+
+    // axis
+    // ...
+
+    // geometry
+
+    const histogram = d3.histogram()
+      .domain(y.domain())
+      .thresholds(y.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+      .value(d => d)
+
+    // Compute the binning for each group of the dataset
+    const sumstat = d3.nest()  // nest function allows to group the calculation per level of a factor
+      .key((d) => d.Species)
+      .rollup((d) => {   // For each key..
+        const input = d.map((g) => g.Sepal_Length)    // Keep the variable called Sepal_Length
+        const bins = histogram(input)   // And compute the binning on it.
+        return (bins)
+      })
+      .entries(data)
+
+    // What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
+    let maxNum = 0;
+    for (const i in sumstat) {
+      const allBins = sumstat[i].value
+      const lengths = allBins.map(function (a) { return a.length; })
+      const longest = d3.max(lengths)
+      if (longest > maxNum) { maxNum = longest }
+    }
+
+    // The maximum width of a violin must be x.bandwidth = the width dedicated to a group
+    const xNum = d3.scaleLinear()
+      .range([0, x.bandwidth()])
+      .domain([-maxNum, maxNum])
+
+    // ------------
+    // create d3 container
+    // ------------
+
+    const svg = d3.select(d3Container)
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")")
+
+    svg.append("g")
+      .call(d3.axisLeft(y))
+
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+
+    svg
+      .selectAll("myViolin")
+      .data(sumstat)
+      .enter()        // So now we are working group per group
+      .append("g")
+      .attr("transform", function (d) { return ("translate(" + x(d.key) + " ,0)") }) // Translation on the right to be at the group position
+      .append("path")
+      .datum(function (d) { return (d.value) })     // So now we are working bin per bin
+      .style("stroke", "none")
+      .style("fill", "#69b3a2")
+      .attr("d", d3.area()
+        .x0(function (d) { return (xNum(-d.length)) })
+        .x1(function (d) { return (xNum(d.length)) })
+        .y(function (d) { return (y(d.x0)) })
+        .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+      )
+  }
+
+</script>
+
+<svelte:head>
+  <title>Svelte Violin Chart</title>
+</svelte:head>
+
+<div class="container h-screen w-full flex flex-row justify-center content-center">
+	<div class="p-4 text-center text-lg border rounded m-auto">
+    <svg class="d3-component" bind:this={d3Container} width={width} height={height} />
+  </div>
+</div>
