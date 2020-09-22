@@ -1,9 +1,9 @@
 // package imports
-import React, { useState, useRef, useEffect } from "react";
-import HistKDEChart from "../../components/charts/hist-kde-chart";
+import React, { useState, useRef, useEffect } from 'react';
+import HistKDEChart from '../../components/charts/hist-kde-chart';
 
 // data
-const jsonStaticFilePath = "/data/old-faithful.json";
+const jsonStaticFilePath = '/data/old-faithful.json';
 
 // main component
 const HistKDEChartPage = () => {

@@ -1,8 +1,8 @@
 // package imports
-import React, { useRef, useEffect } from "react";
-import * as d3 from "d3";
-import FlexContainer from "../flex-container";
-import PaddedPaper from "../padded-paper";
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 
 // data and example from:
 // https://observablehq.com/@d3/line-chart
@@ -33,9 +33,7 @@ const HistKDEChart = ({ data }) => {
         .nice()
         .range([margin.left, width - margin.right]);
       const thresholds = x.ticks(40);
-      const bins = d3.histogram().domain(x.domain()).thresholds(thresholds)(
-        data
-      );
+      const bins = d3.histogram().domain(x.domain()).thresholds(thresholds)(data);
       const y = d3
         .scaleLinear()
         .domain([0, d3.max(bins, (d) => d.length) / data.length])
@@ -44,33 +42,30 @@ const HistKDEChart = ({ data }) => {
       // axis
       const xAxis = (g) =>
         g
-          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(d3.axisBottom(x))
           .call((g) =>
             g
-              .append("text")
-              .attr("x", width - margin.right)
-              .attr("y", -6)
-              .attr("fill", "#000")
-              .attr("text-anchor", "end")
-              .attr("font-weight", "bold")
-              .text(data.title)
+              .append('text')
+              .attr('x', width - margin.right)
+              .attr('y', -6)
+              .attr('fill', '#000')
+              .attr('text-anchor', 'end')
+              .attr('font-weight', 'bold')
+              .text(data.title),
           );
       const yAxis = (g) =>
         g
-          .attr("transform", `translate(${margin.left},0)`)
-          .call(d3.axisLeft(y).ticks(null, "%"))
-          .call((g) => g.select(".domain").remove());
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y).ticks(null, '%'))
+          .call((g) => g.select('.domain').remove());
 
       // geometry
       const kde = (kernel, thresholds, data) => {
         return thresholds.map((t) => [t, d3.mean(data, (d) => kernel(t - d))]);
       };
       const epanechnikov = (bandwidth) => {
-        return (x) =>
-          Math.abs((x /= bandwidth)) <= 1
-            ? (0.75 * (1 - x * x)) / bandwidth
-            : 0;
+        return (x) => (Math.abs((x /= bandwidth)) <= 1 ? (0.75 * (1 - x * x)) / bandwidth : 0);
       };
       const bandwidth = 6.0; // manually set
       const density = kde(epanechnikov(bandwidth), thresholds, data);
@@ -84,45 +79,38 @@ const HistKDEChart = ({ data }) => {
       // create d3 container
       // ------------
 
-      const svg = d3
-        .select(d3Container.current)
-        .attr("viewBox", [0, 0, width, height]);
+      const svg = d3.select(d3Container.current).attr('viewBox', [0, 0, width, height]);
 
       svg
-        .append("g")
-        .attr("fill", "#bbb")
-        .selectAll("rect")
+        .append('g')
+        .attr('fill', '#bbb')
+        .selectAll('rect')
         .data(bins)
-        .join("rect")
-        .attr("x", (d) => x(d.x0) + 1)
-        .attr("y", (d) => y(d.length / data.length))
-        .attr("width", (d) => x(d.x1) - x(d.x0) - 1)
-        .attr("height", (d) => y(0) - y(d.length / data.length));
+        .join('rect')
+        .attr('x', (d) => x(d.x0) + 1)
+        .attr('y', (d) => y(d.length / data.length))
+        .attr('width', (d) => x(d.x1) - x(d.x0) - 1)
+        .attr('height', (d) => y(0) - y(d.length / data.length));
 
       svg
-        .append("path")
+        .append('path')
         .datum(density)
-        .attr("fill", "none")
-        .attr("stroke", "#000")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-linejoin", "round")
-        .attr("d", line);
+        .attr('fill', 'none')
+        .attr('stroke', '#000')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('d', line);
 
-      svg.append("g").call(xAxis);
+      svg.append('g').call(xAxis);
 
-      svg.append("g").call(yAxis);
+      svg.append('g').call(yAxis);
     }
   }, [data]);
   // jsx
   return (
     <FlexContainer>
       <PaddedPaper elevation={3}>
-        <svg
-          className="d3-component"
-          ref={d3Container}
-          width={width}
-          height={height}
-        />
+        <svg className="d3-component" ref={d3Container} width={width} height={height} />
       </PaddedPaper>
     </FlexContainer>
   );

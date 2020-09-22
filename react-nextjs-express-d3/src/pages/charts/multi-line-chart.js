@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import MultiLineChart from "../../components/charts/multi-line-chart";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import MultiLineChart from '../../components/charts/multi-line-chart';
 
 // data fp
-const tsvStaticFilePath = "/data/unemployment.tsv";
+const tsvStaticFilePath = '/data/unemployment.tsv';
 
 // component
 const MultiLineChartPage = () => {
@@ -18,12 +18,12 @@ const MultiLineChartPage = () => {
       const tsvData = d3.tsvParse(tsvText);
       const columns = tsvData.columns.slice(1);
       const formattedTsvData = {
-        y: "% Unemployment",
+        y: '% Unemployment',
         series: tsvData.map((d) => ({
-          name: d.name.replace(/, ([\w-]+).*/, " $1"),
+          name: d.name.replace(/, ([\w-]+).*/, ' $1'),
           values: columns.map((k) => +d[k]),
         })),
-        dates: columns.map(d3.utcParse("%Y-%m")),
+        dates: columns.map(d3.utcParse('%Y-%m')),
       };
       setData(formattedTsvData);
     };

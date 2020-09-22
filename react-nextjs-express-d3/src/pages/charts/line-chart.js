@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import LineChart from "../../components/charts/line-chart";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import LineChart from '../../components/charts/line-chart';
 
 // data
-const csvStaticFilePath = "/data/aapl.csv";
+const csvStaticFilePath = '/data/aapl.csv';
 
 // component
 const LineChartPage = () => {
@@ -17,7 +17,7 @@ const LineChartPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        d3.autoType // callback
+        d3.autoType, // callback
       );
       const mappedCsvData = csvData.map(({ date, close }) => ({
         date,

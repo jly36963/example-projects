@@ -1,8 +1,8 @@
 // package imports
-import React, { useRef, useEffect } from "react";
-import * as d3 from "d3";
-import FlexContainer from "../flex-container";
-import PaddedPaper from "../padded-paper";
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 
 // redefine d3.least since it was removed in version 5.x (for whatever reason)
 const ascending = (a, b) => (a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN);
@@ -13,9 +13,7 @@ const d3Least = (values, compare = ascending) => {
     let minValue;
     for (const element of values) {
       const value = compare(element);
-      if (
-        defined ? ascending(value, minValue) < 0 : ascending(value, value) === 0
-      ) {
+      if (defined ? ascending(value, minValue) < 0 : ascending(value, value) === 0) {
         min = element;
         minValue = value;
         defined = true;
@@ -60,25 +58,25 @@ const MultiLineChart = ({ data }) => {
         .range([height - margin.bottom, margin.top]);
       // axis
       const xAxis = (g) =>
-        g.attr("transform", `translate(0,${height - margin.bottom})`).call(
+        g.attr('transform', `translate(0,${height - margin.bottom})`).call(
           d3
             .axisBottom(x)
             .ticks(width / 80)
-            .tickSizeOuter(0)
+            .tickSizeOuter(0),
         );
       const yAxis = (g) =>
         g
-          .attr("transform", `translate(${margin.left},0)`)
+          .attr('transform', `translate(${margin.left},0)`)
           .call(d3.axisLeft(y))
-          .call((g) => g.select(".domain").remove())
+          .call((g) => g.select('.domain').remove())
           .call((g) =>
             g
-              .select(".tick:last-of-type text")
+              .select('.tick:last-of-type text')
               .clone()
-              .attr("x", 3)
-              .attr("text-anchor", "start")
-              .attr("font-weight", "bold")
-              .text("$ Close")
+              .attr('x', 3)
+              .attr('text-anchor', 'start')
+              .attr('font-weight', 'bold')
+              .text('$ Close'),
           );
 
       // geometry
@@ -103,47 +101,40 @@ const MultiLineChart = ({ data }) => {
           const i = xm - data.dates[i0] > data.dates[i1] - xm ? i1 : i0;
           const s = d3Least(data.series, (d) => Math.abs(d.values[i] - ym));
           path
-            .attr("stroke", (d) => (d === s ? null : "#ddd"))
+            .attr('stroke', (d) => (d === s ? null : '#ddd'))
             .filter((d) => d === s)
             .raise();
-          dot.attr(
-            "transform",
-            `translate(${x(data.dates[i])},${y(s.values[i])})`
-          );
-          dot.select("text").text(s.name);
+          dot.attr('transform', `translate(${x(data.dates[i])},${y(s.values[i])})`);
+          dot.select('text').text(s.name);
         };
         const entered = () => {
-          path.style("mix-blend-mode", null).attr("stroke", "#ddd");
-          dot.attr("display", null);
+          path.style('mix-blend-mode', null).attr('stroke', '#ddd');
+          dot.attr('display', null);
         };
         const left = () => {
-          path.style("mix-blend-mode", "multiply").attr("stroke", null);
-          dot.attr("display", "none");
+          path.style('mix-blend-mode', 'multiply').attr('stroke', null);
+          dot.attr('display', 'none');
         };
 
         // execute handlers
-        if ("ontouchstart" in document)
+        if ('ontouchstart' in document)
           svg
-            .style("-webkit-tap-highlight-color", "transparent")
-            .on("touchmove", moved)
-            .on("touchstart", entered)
-            .on("touchend", left);
-        else
-          svg
-            .on("mousemove", moved)
-            .on("mouseenter", entered)
-            .on("mouseleave", left);
+            .style('-webkit-tap-highlight-color', 'transparent')
+            .on('touchmove', moved)
+            .on('touchstart', entered)
+            .on('touchend', left);
+        else svg.on('mousemove', moved).on('mouseenter', entered).on('mouseleave', left);
 
-        const dot = svg.append("g").attr("display", "none");
+        const dot = svg.append('g').attr('display', 'none');
 
-        dot.append("circle").attr("r", 2.5);
+        dot.append('circle').attr('r', 2.5);
 
         dot
-          .append("text")
-          .attr("font-family", "sans-serif")
-          .attr("font-size", 10)
-          .attr("text-anchor", "middle")
-          .attr("y", -8);
+          .append('text')
+          .attr('font-family', 'sans-serif')
+          .attr('font-size', 10)
+          .attr('text-anchor', 'middle')
+          .attr('y', -8);
       };
 
       // ------------
@@ -152,25 +143,25 @@ const MultiLineChart = ({ data }) => {
 
       const svg = d3
         .select(d3Container.current)
-        .attr("viewBox", [0, 0, width, height])
-        .style("overflow", "visible");
+        .attr('viewBox', [0, 0, width, height])
+        .style('overflow', 'visible');
 
-      svg.append("g").call(xAxis);
+      svg.append('g').call(xAxis);
 
-      svg.append("g").call(yAxis);
+      svg.append('g').call(yAxis);
 
       const path = svg
-        .append("g")
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .selectAll("path")
+        .append('g')
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
+        .selectAll('path')
         .data(data.series)
-        .join("path")
-        .style("mix-blend-mode", "multiply")
-        .attr("d", (d) => line(d.values));
+        .join('path')
+        .style('mix-blend-mode', 'multiply')
+        .attr('d', (d) => line(d.values));
 
       svg.call(hover, path);
 
@@ -181,12 +172,7 @@ const MultiLineChart = ({ data }) => {
   return (
     <FlexContainer>
       <PaddedPaper elevation={3}>
-        <svg
-          className="d3-component"
-          ref={d3Container}
-          width={width}
-          height={height}
-        />
+        <svg className="d3-component" ref={d3Container} width={width} height={height} />
       </PaddedPaper>
     </FlexContainer>
   );

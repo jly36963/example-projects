@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import ScatterPlot from "../../components/charts/scatter-plot";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import ScatterPlot from '../../components/charts/scatter-plot';
 
 // data fp
-const csvStaticFilePath = "/data/iris.csv";
+const csvStaticFilePath = '/data/iris.csv';
 
 // component
 const ScatterPlotPage = () => {
@@ -17,7 +17,7 @@ const ScatterPlotPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        d3.autoType // callback
+        d3.autoType, // callback
       );
       setData(csvData);
     };

@@ -1,9 +1,9 @@
 // package imports
-import React, { useRef, useEffect } from "react";
-import * as d3 from "d3";
-import * as d3Hexbin from "d3-hexbin";
-import FlexContainer from "../flex-container";
-import PaddedPaper from "../padded-paper";
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import * as d3Hexbin from 'd3-hexbin';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 
 // d3 component
 const JointHexPlot = ({ data }) => {
@@ -35,7 +35,7 @@ const JointHexPlot = ({ data }) => {
       const color = d3
         .scaleLinear()
         .domain([0, 600]) // Number of points in the bin?
-        .range(["transparent", "#69b3a2"]);
+        .range(['transparent', '#69b3a2']);
 
       const hexbin = d3Hexbin
         .hexbin()
@@ -51,50 +51,45 @@ const JointHexPlot = ({ data }) => {
 
       const svg = d3
         .select(d3Container.current)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
       svg
-        .append("g")
-        .attr("transform", "translate(0," + height + ")")
+        .append('g')
+        .attr('transform', 'translate(0,' + height + ')')
         .call(d3.axisBottom(x));
 
-      svg.append("g").call(d3.axisLeft(y));
+      svg.append('g').call(d3.axisLeft(y));
 
       svg
-        .append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("width", width)
-        .attr("height", height);
+        .append('clipPath')
+        .attr('id', 'clip')
+        .append('rect')
+        .attr('width', width)
+        .attr('height', height);
 
       svg
-        .append("g")
-        .attr("clip-path", "url(#clip)")
-        .selectAll("path")
+        .append('g')
+        .attr('clip-path', 'url(#clip)')
+        .selectAll('path')
         .data(hexbin(inputForHexbinFun))
         .enter()
-        .append("path")
-        .attr("d", hexbin.hexagon())
-        .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
-        .attr("fill", (d) => color(d.length))
-        .attr("stroke", "black")
-        .attr("stroke-width", "0.1");
+        .append('path')
+        .attr('d', hexbin.hexagon())
+        .attr('transform', (d) => 'translate(' + d.x + ',' + d.y + ')')
+        .attr('fill', (d) => color(d.length))
+        .attr('stroke', 'black')
+        .attr('stroke-width', '0.1');
     }
   }, [data]);
   // jsx
   return (
     <FlexContainer>
       <PaddedPaper elevation={3}>
-        <svg
-          className="d3-component"
-          ref={d3Container}
-          width={width}
-          height={height}
-        />
+        <svg className="d3-component" ref={d3Container} width={width} height={height} />
       </PaddedPaper>
     </FlexContainer>
   );

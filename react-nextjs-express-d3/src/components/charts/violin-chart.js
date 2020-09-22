@@ -1,8 +1,8 @@
 // package imports
-import React, { useRef, useEffect } from "react";
-import * as d3 from "d3";
-import FlexContainer from "../flex-container";
-import PaddedPaper from "../padded-paper";
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 
 // data and example from:
 // https://www.d3-graph-gallery.com/graph/violin_basicHist.html
@@ -13,8 +13,8 @@ const ViolinChart = ({ data }) => {
   const d3Container = useRef(null);
   // dimensions
   const margin = { top: 10, right: 30, bottom: 30, left: 40 };
-  const width = 600 - margin.left - margin.right;
   const height = 400 - margin.top - margin.bottom;
+  const width = 600 - margin.left - margin.right;
 
   // manipulate the DOM the react way (after component is mounted)
   useEffect(() => {
@@ -34,7 +34,7 @@ const ViolinChart = ({ data }) => {
       const x = d3
         .scaleBand()
         .range([0, width])
-        .domain(["setosa", "versicolor", "virginica"])
+        .domain(['setosa', 'versicolor', 'virginica'])
         .padding(0.05); // This is important: it is the space between 2 groups. 0 means no padding. 1 is the maximum.
 
       // axis
@@ -43,7 +43,7 @@ const ViolinChart = ({ data }) => {
       // geometry
 
       const histogram = d3
-        .histogram()
+        .bin()
         .domain(y.domain())
         .thresholds(y.ticks(20)) // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
         .value((d) => d);
@@ -74,10 +74,7 @@ const ViolinChart = ({ data }) => {
       }
 
       // The maximum width of a violin must be x.bandwidth = the width dedicated to a group
-      const xNum = d3
-        .scaleLinear()
-        .range([0, x.bandwidth()])
-        .domain([-maxNum, maxNum]);
+      const xNum = d3.scaleLinear().range([0, x.bandwidth()]).domain([-maxNum, maxNum]);
 
       // ------------
       // create d3 container
@@ -85,35 +82,35 @@ const ViolinChart = ({ data }) => {
 
       const svg = d3
         .select(d3Container.current)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      svg.append("g").call(d3.axisLeft(y));
+      svg.append('g').call(d3.axisLeft(y));
 
       svg
-        .append("g")
-        .attr("transform", "translate(0," + height + ")")
+        .append('g')
+        .attr('transform', 'translate(0,' + height + ')')
         .call(d3.axisBottom(x));
 
       svg
-        .selectAll("myViolin")
+        .selectAll('myViolin')
         .data(sumstat)
         .enter() // So now we are working group per group
-        .append("g")
-        .attr("transform", function (d) {
-          return "translate(" + x(d.key) + " ,0)";
+        .append('g')
+        .attr('transform', function (d) {
+          return 'translate(' + x(d.key) + ' ,0)';
         }) // Translation on the right to be at the group position
-        .append("path")
+        .append('path')
         .datum(function (d) {
           return d.value;
         }) // So now we are working bin per bin
-        .style("stroke", "none")
-        .style("fill", "#69b3a2")
+        .style('stroke', 'none')
+        .style('fill', '#69b3a2')
         .attr(
-          "d",
+          'd',
           d3
             .area()
             .x0(function (d) {
@@ -125,22 +122,15 @@ const ViolinChart = ({ data }) => {
             .y(function (d) {
               return y(d.x0);
             })
-            .curve(d3.curveCatmullRom) // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+            .curve(d3.curveCatmullRom), // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
         );
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx
   return (
     <FlexContainer>
       <PaddedPaper elevation={3}>
-        <svg
-          className="d3-component"
-          ref={d3Container}
-          width={width}
-          height={height}
-        />
+        <svg className="d3-component" ref={d3Container} width={width} height={height} />
       </PaddedPaper>
     </FlexContainer>
   );

@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import StackedAreaChart from "../../components/charts/stacked-area-chart";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import StackedAreaChart from '../../components/charts/stacked-area-chart';
 
 // data fp
-const csvStaticFilePath = "/data/unemployment-2.csv";
+const csvStaticFilePath = '/data/unemployment-2.csv';
 
 // component
 const StackedAreaChartPage = () => {
@@ -17,9 +17,7 @@ const StackedAreaChartPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        (d, i, columns) => (
-          d3.autoType(d), (d.total = d3.sum(columns, (c) => d[c])), d
-        )
+        (d, i, columns) => (d3.autoType(d), (d.total = d3.sum(columns, (c) => d[c])), d),
       );
       const sortedCsvData = csvData.sort((a, b) => b.total - a.total);
       setData(sortedCsvData);

@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import JointHexPlot from "../../components/charts/joint-hex-plot";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import JointHexPlot from '../../components/charts/joint-hex-plot';
 
 // data fp
-const csvStaticFilePath = "/data/density.csv";
+const csvStaticFilePath = '/data/density.csv';
 
 // component
 const JointHexPlotPage = () => {
@@ -17,7 +17,7 @@ const JointHexPlotPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        d3.autoType
+        d3.autoType,
       );
       setData(csvData);
     };

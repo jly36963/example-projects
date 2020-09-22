@@ -1,8 +1,8 @@
 // package imports
-import React, { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
-import FlexContainer from "../flex-container";
-import PaddedPaper from "../padded-paper";
+import React, { useState, useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 
 // data and example from:
 // https://observablehq.com/@d3/stacked-bar-chart
@@ -16,7 +16,7 @@ const StackedBarChart = ({ data }) => {
   const height = 500;
   const width = 1.8 * height;
   // format
-  const formatValue = (x) => (isNaN(x) ? "N/A" : x.toLocaleString("en"));
+  const formatValue = (x) => (isNaN(x) ? 'N/A' : x.toLocaleString('en'));
 
   // manipulate the DOM the react way (after component is mounted)
   useEffect(() => {
@@ -31,7 +31,7 @@ const StackedBarChart = ({ data }) => {
         .scaleOrdinal()
         .domain(series.map((d) => d.key))
         .range(d3.schemeSpectral[series.length])
-        .unknown("#ccc");
+        .unknown('#ccc');
 
       // ------------
       // calculate axes
@@ -50,14 +50,14 @@ const StackedBarChart = ({ data }) => {
       // axis
       const xAxis = (g) =>
         g
-          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .attr('transform', `translate(0,${height - margin.bottom})`)
           .call(d3.axisBottom(x).tickSizeOuter(0))
-          .call((g) => g.selectAll(".domain").remove());
+          .call((g) => g.selectAll('.domain').remove());
       const yAxis = (g) =>
         g
-          .attr("transform", `translate(${margin.left},0)`)
-          .call(d3.axisLeft(y).ticks(null, "s"))
-          .call((g) => g.selectAll(".domain").remove());
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y).ticks(null, 's'))
+          .call((g) => g.selectAll('.domain').remove());
 
       // geometry
       // ...
@@ -66,29 +66,27 @@ const StackedBarChart = ({ data }) => {
       // create d3 container
       // ------------
 
-      const svg = d3
-        .select(d3Container.current)
-        .attr("viewBox", [0, 0, width, height]);
+      const svg = d3.select(d3Container.current).attr('viewBox', [0, 0, width, height]);
 
       svg
-        .append("g")
-        .selectAll("g")
+        .append('g')
+        .selectAll('g')
         .data(series)
-        .join("g")
-        .attr("fill", (d) => color(d.key))
-        .selectAll("rect")
+        .join('g')
+        .attr('fill', (d) => color(d.key))
+        .selectAll('rect')
         .data((d) => d)
-        .join("rect")
-        .attr("x", (d, i) => x(d.data.name))
-        .attr("y", (d) => y(d[1]))
-        .attr("height", (d) => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth())
-        .append("title")
+        .join('rect')
+        .attr('x', (d, i) => x(d.data.name))
+        .attr('y', (d) => y(d[1]))
+        .attr('height', (d) => y(d[0]) - y(d[1]))
+        .attr('width', x.bandwidth())
+        .append('title')
         .text((d) => `${d.data.name} ${d.key} ${formatValue(d.data[d.key])}`);
 
-      svg.append("g").call(xAxis);
+      svg.append('g').call(xAxis);
 
-      svg.append("g").call(yAxis);
+      svg.append('g').call(yAxis);
 
       // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
@@ -97,12 +95,7 @@ const StackedBarChart = ({ data }) => {
   return (
     <FlexContainer>
       <PaddedPaper elevation={3}>
-        <svg
-          className="d3-component"
-          ref={d3Container}
-          width={width}
-          height={height}
-        />
+        <svg className="d3-component" ref={d3Container} width={width} height={height} />
       </PaddedPaper>
     </FlexContainer>
   );

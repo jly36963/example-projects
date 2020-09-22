@@ -1,6 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Paper } from "@material-ui/core";
+import React from 'react';
+import { makeStyles } from '@material-ui/styles';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles(
   (theme) => ({
@@ -8,7 +8,7 @@ const useStyles = makeStyles(
       padding: theme.spacing(2),
     },
   }),
-  { withTheme: true }
+  { withTheme: true },
 );
 
 const PaddedPaper = (props) => {

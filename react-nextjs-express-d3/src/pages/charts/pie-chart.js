@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import PieChart from "../../components/charts/pie-chart";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import PieChart from '../../components/charts/pie-chart';
 
 // data fp
-const csvStaticFilePath = "/data/population-by-age.csv";
+const csvStaticFilePath = '/data/population-by-age.csv';
 
 // component
 const PieChartPage = () => {
@@ -17,7 +17,7 @@ const PieChartPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        d3.autoType
+        d3.autoType,
       );
       setData(csvData);
     };

@@ -1,31 +1,31 @@
 // react imports
-import React from "react";
+import React from 'react';
 // mui imports
-import { Box, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import SpinnerSVG from "../images/spinner1.svg";
+import { Box, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import SpinnerSVG from '../images/spinner1.svg';
 
 const useStyles = makeStyles(
   (theme) => ({
     root: {
-      position: "fixed",
-      background: "#222",
-      width: "100%",
-      overflow: "auto",
+      position: 'fixed',
+      background: '#222',
+      width: '100%',
+      overflow: 'auto',
       zIndex: 10000,
     },
     spinner: {
-      color: "white",
+      color: 'white',
       fontSize: 3 * theme.typography.fontSize,
       marginTop: theme.mixins.toolbar.minHeight,
       marginBottom: theme.mixins.toolbar.minHeight,
       padding: theme.spacing(4),
       zIndex: 1000,
-      maxWidth: "300px",
-      overflow: "auto",
+      maxWidth: '300px',
+      overflow: 'auto',
     },
   }),
-  { withTheme: true }
+  { withTheme: true },
 );
 
 const LoadingScreen = () => {
@@ -39,13 +39,12 @@ const LoadingScreen = () => {
         direction="column"
         alignItems="center"
         justify="center"
-        style={{ minHeight: "100vh" }}
+        style={{ minHeight: '100vh' }}
       >
         <div className={classes.spinner}>
-          <SpinnerSVG style={{ maxWidth: "10vw" }} />
+          <SpinnerSVG style={{ maxWidth: '10vw' }} />
         </div>
       </Grid>
-      />
     </Box>
   );
 };

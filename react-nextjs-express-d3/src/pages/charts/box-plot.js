@@ -1,10 +1,10 @@
 // package imports
-import React, { useState, useEffect } from "react";
-import * as d3 from "d3";
-import BoxPlot from "../../components/charts/box-plot";
+import React, { useState, useEffect } from 'react';
+import * as d3 from 'd3';
+import BoxPlot from '../../components/charts/box-plot';
 
 // data
-const csvStaticFilePath = "/data/diamonds.csv";
+const csvStaticFilePath = '/data/diamonds.csv';
 
 // component
 const BoxPlotPage = () => {
@@ -17,7 +17,7 @@ const BoxPlotPage = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        ({ carat, price }) => ({ x: +carat, y: +price }) // callback
+        ({ carat, price }) => ({ x: +carat, y: +price }), // callback
       );
       setData(csvData);
     };
