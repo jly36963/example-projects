@@ -1,8 +1,8 @@
 <script>
 // imports
-import * as d3 from 'd3'
-import FlexContainer from '../flex-container'
-import PaddedPaper from '../padded-paper'
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 // component
 export default {
   name: 'BarChartH',
@@ -12,7 +12,7 @@ export default {
       // dimensions
       barHeight: 25,
       margin: { top: 30, right: 0, bottom: 30, left: 40 },
-    }
+    };
   },
   computed: {
     height: function () {
@@ -20,10 +20,10 @@ export default {
         ? Math.ceil((this.data.length + 0.1) * this.barHeight) +
             this.margin.top +
             this.margin.bottom
-        : 500
+        : 500;
     },
     width: function () {
-      return this.height
+      return this.height;
     },
   },
   watch: {
@@ -33,43 +33,41 @@ export default {
         // calculate axes
         // ------------
 
-        const { data, margin, height, width, color } = this
+        const { data, margin, height, width, color } = this;
 
         // scale
         const x = d3
           .scaleLinear()
           .domain([0, d3.max(data, (d) => d.value)])
-          .range([margin.left, width - margin.right])
+          .range([margin.left, width - margin.right]);
         const y = d3
           .scaleBand()
           .domain(d3.range(data.length))
           .rangeRound([margin.top, height - margin.bottom])
-          .padding(0.1)
+          .padding(0.1);
         // axis
         const xAxis = (g) =>
           g
             .attr('transform', `translate(0,${margin.top})`)
             .call(d3.axisTop(x).ticks(width / 80, '%'))
-            .call((g) => g.select('.domain').remove())
+            .call((g) => g.select('.domain').remove());
         const yAxis = (g) =>
           g.attr('transform', `translate(${margin.left},0)`).call(
             d3
               .axisLeft(y)
               .tickFormat((i) => data[i].name)
-              .tickSizeOuter(0)
-          )
+              .tickSizeOuter(0),
+          );
 
         // geometry
-        const format = x.tickFormat(20, '%')
+        const format = x.tickFormat(20, '%');
         // ...
 
         // ------------
         // create d3 container
         // ------------
 
-        const svg = d3
-          .select(this.$refs.d3Container)
-          .attr('viewBox', [0, 0, width, height])
+        const svg = d3.select(this.$refs.d3Container).attr('viewBox', [0, 0, width, height]);
 
         svg
           .append('g')
@@ -80,7 +78,7 @@ export default {
           .attr('x', x(0))
           .attr('y', (d, i) => y(i))
           .attr('width', (d) => x(d.value) - x(0))
-          .attr('height', y.bandwidth())
+          .attr('height', y.bandwidth());
 
         svg
           .append('g')
@@ -94,11 +92,11 @@ export default {
           .attr('x', (d) => x(d.value) - 4)
           .attr('y', (d, i) => y(i) + y.bandwidth() / 2)
           .attr('dy', '0.35em')
-          .text((d) => format(d.value))
+          .text((d) => format(d.value));
 
-        svg.append('g').call(xAxis)
+        svg.append('g').call(xAxis);
 
-        svg.append('g').call(yAxis)
+        svg.append('g').call(yAxis);
       }
     },
   },
@@ -109,9 +107,9 @@ export default {
           <svg ref="d3Container" width={this.width} height={this.height} />
         </PaddedPaper>
       </FlexContainer>
-    )
+    );
   },
-}
+};
 </script>
 
 <style></style>

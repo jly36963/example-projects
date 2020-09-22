@@ -1,8 +1,8 @@
 <script>
 // imports
-import * as d3 from 'd3'
-import FlexContainer from '../flex-container'
-import PaddedPaper from '../padded-paper'
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 // component
 export default {
   name: 'BarChart',
@@ -15,12 +15,12 @@ export default {
       width: 700,
       // color
       color: 'steelblue',
-    }
+    };
   },
   watch: {
     data: function (newData, oldData) {
       if (this.data.length) {
-        const { data, margin, height, width, color } = this
+        const { data, margin, height, width, color } = this;
         // ------------
         // calculate axes
         // ------------
@@ -30,20 +30,20 @@ export default {
           .scaleBand()
           .domain(d3.range(data.length))
           .range([margin.left, width - margin.right])
-          .padding(0.1)
+          .padding(0.1);
         const y = d3
           .scaleLinear()
           .domain([0, d3.max(data, (d) => d.value)])
           .nice()
-          .range([height - margin.bottom, margin.top])
+          .range([height - margin.bottom, margin.top]);
         // axis
         const xAxis = (g) =>
           g.attr('transform', `translate(0,${height - margin.bottom})`).call(
             d3
               .axisBottom(x)
               .tickFormat((i) => data[i].name)
-              .tickSizeOuter(0)
-          )
+              .tickSizeOuter(0),
+          );
         const yAxis = (g) =>
           g
             .attr('transform', `translate(${margin.left},0)`)
@@ -56,8 +56,8 @@ export default {
                 .attr('y', 10)
                 .attr('fill', 'currentColor')
                 .attr('text-anchor', 'start')
-                .text('↑ Frequency')
-            )
+                .text('↑ Frequency'),
+            );
 
         // geometry
         // ...
@@ -66,9 +66,7 @@ export default {
         // create d3 container
         // ------------
 
-        const svg = d3
-          .select(this.$refs.d3Container)
-          .attr('viewBox', [0, 0, width, height])
+        const svg = d3.select(this.$refs.d3Container).attr('viewBox', [0, 0, width, height]);
 
         svg
           .append('g')
@@ -79,11 +77,11 @@ export default {
           .attr('x', (d, i) => x(i))
           .attr('y', (d) => y(d.value))
           .attr('height', (d) => y(0) - y(d.value))
-          .attr('width', x.bandwidth())
+          .attr('width', x.bandwidth());
 
-        svg.append('g').call(xAxis)
+        svg.append('g').call(xAxis);
 
-        svg.append('g').call(yAxis)
+        svg.append('g').call(yAxis);
       }
     },
   },
@@ -94,9 +92,9 @@ export default {
           <svg ref="d3Container" width={this.width} height={this.height} />
         </PaddedPaper>
       </FlexContainer>
-    )
+    );
   },
-}
+};
 </script>
 
 <style></style>

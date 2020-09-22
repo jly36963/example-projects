@@ -1,8 +1,8 @@
 <script>
 // imports
-import * as d3 from 'd3'
-import FlexContainer from '../flex-container'
-import PaddedPaper from '../padded-paper'
+import * as d3 from 'd3';
+import FlexContainer from '../flex-container';
+import PaddedPaper from '../padded-paper';
 // component
 export default {
   name: 'BarChart',
@@ -10,34 +10,26 @@ export default {
   data() {
     return {
       margin: { top: 10, right: 10, bottom: 20, left: 40 },
-    }
+    };
   },
   computed: {
     height() {
-      return 500
+      return 500;
     },
     width() {
-      return 1.4 * this.height
+      return 1.4 * this.height;
     },
   },
   watch: {
     data: function (newData, oldData) {
       if (this.data.length) {
-        const { data, margin, height, width } = this
+        const { data, margin, height, width } = this;
         // keys
-        const keys = data.columns.slice(1)
-        const groupKey = data.columns[0]
+        const keys = data.columns.slice(1);
+        const groupKey = data.columns[0];
         const color = d3
           .scaleOrdinal()
-          .range([
-            '#98abc5',
-            '#8a89a6',
-            '#7b6888',
-            '#6b486b',
-            '#a05d56',
-            '#d0743c',
-            '#ff8c00',
-          ])
+          .range(['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00']);
 
         // ------------
         // calculate axes
@@ -48,23 +40,19 @@ export default {
           .scaleBand()
           .domain(data.map((d) => d[groupKey]))
           .rangeRound([margin.left, width - margin.right])
-          .paddingInner(0.1)
-        const x1 = d3
-          .scaleBand()
-          .domain(keys)
-          .rangeRound([0, x0.bandwidth()])
-          .padding(0.05)
+          .paddingInner(0.1);
+        const x1 = d3.scaleBand().domain(keys).rangeRound([0, x0.bandwidth()]).padding(0.05);
         const y = d3
           .scaleLinear()
           .domain([0, d3.max(data, (d) => d3.max(keys, (key) => d[key]))])
           .nice()
-          .rangeRound([height - margin.bottom, margin.top])
+          .rangeRound([height - margin.bottom, margin.top]);
         // axis
         const xAxis = (g) =>
           g
             .attr('transform', `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x0).tickSizeOuter(0))
-            .call((g) => g.select('.domain').remove())
+            .call((g) => g.select('.domain').remove());
         const yAxis = (g) =>
           g
             .attr('transform', `translate(${margin.left},0)`)
@@ -77,8 +65,8 @@ export default {
                 .attr('x', 3)
                 .attr('text-anchor', 'start')
                 .attr('font-weight', 'bold')
-                .text('Population')
-            )
+                .text('Population'),
+            );
 
         // legend
         const legend = (svg) => {
@@ -90,20 +78,16 @@ export default {
             .selectAll('g')
             .data(color.domain().slice().reverse())
             .join('g')
-            .attr('transform', (d, i) => `translate(0,${i * 20})`)
+            .attr('transform', (d, i) => `translate(0,${i * 20})`);
 
-          g.append('rect')
-            .attr('x', -19)
-            .attr('width', 19)
-            .attr('height', 19)
-            .attr('fill', color)
+          g.append('rect').attr('x', -19).attr('width', 19).attr('height', 19).attr('fill', color);
 
           g.append('text')
             .attr('x', -24)
             .attr('y', 9.5)
             .attr('dy', '0.35em')
-            .text((d) => d)
-        }
+            .text((d) => d);
+        };
 
         // geometry
         // ...
@@ -112,7 +96,7 @@ export default {
         // create d3 container
         // ------------
 
-        const svg = d3.select(this.$refs.d3Container)
+        const svg = d3.select(this.$refs.d3Container);
 
         svg
           .append('g')
@@ -127,13 +111,13 @@ export default {
           .attr('y', (d) => y(d.value))
           .attr('width', x1.bandwidth())
           .attr('height', (d) => y(0) - y(d.value))
-          .attr('fill', (d) => color(d.key))
+          .attr('fill', (d) => color(d.key));
 
-        svg.append('g').call(xAxis)
+        svg.append('g').call(xAxis);
 
-        svg.append('g').call(yAxis)
+        svg.append('g').call(yAxis);
 
-        svg.append('g').call(legend)
+        svg.append('g').call(legend);
       }
     },
   },
@@ -144,9 +128,9 @@ export default {
           <svg ref="d3Container" width={this.width} height={this.height} />
         </PaddedPaper>
       </FlexContainer>
-    )
+    );
   },
-}
+};
 </script>
 
 <style></style>
