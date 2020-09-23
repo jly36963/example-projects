@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { StackedBarChart },
+  head() {
+    return {
+      title: 'D3 -- Stacked Bar Chart',
+    };
+  },
   data() {
     return {
       data: null,

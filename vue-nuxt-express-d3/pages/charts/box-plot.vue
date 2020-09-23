@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { BoxPlot },
+  head() {
+    return {
+      title: 'D3 -- Box PLot',
+    };
+  },
   data() {
     return {
       data: null,

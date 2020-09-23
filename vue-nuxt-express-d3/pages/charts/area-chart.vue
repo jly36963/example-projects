@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { AreaChart },
+  head() {
+    return {
+      title: 'D3 -- Area Chart',
+    };
+  },
   data() {
     return {
       data: null,

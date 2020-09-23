@@ -1,12 +1,17 @@
 <script>
 // imports
-import PaddedPaper from '../components/padded-paper'
-import FlexContainer from '../components/flex-container'
-import { VBtn } from 'vuetify/lib'
+import PaddedPaper from '../components/padded-paper';
+import FlexContainer from '../components/flex-container';
+import { VBtn } from 'vuetify/lib';
 
 // component
 export default {
   components: { PaddedPaper, FlexContainer, VBtn },
+  head() {
+    return {
+      title: 'D3 -- Index',
+    };
+  },
   data: function () {
     return {
       routes: [
@@ -29,7 +34,7 @@ export default {
         { url: '/charts/violin-chart', text: 'violin chart' },
         { url: '/charts/scatter-plot', text: 'scatter plot' },
       ],
-    }
+    };
   },
   render: function (h) {
     return (
@@ -46,9 +51,9 @@ export default {
           ))}
         </PaddedPaper>
       </FlexContainer>
-    )
+    );
   },
-}
+};
 </script>
 
 <style>

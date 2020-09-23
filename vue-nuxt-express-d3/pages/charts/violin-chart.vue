@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { ViolinChart },
+  head() {
+    return {
+      title: 'D3 -- Violin Chart',
+    };
+  },
   data() {
     return {
       data: null,

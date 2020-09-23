@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { HistKDEChart },
+  head() {
+    return {
+      title: 'D3 -- Hist KDE Chart',
+    };
+  },
   data() {
     return {
       data: null,

@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { PieChart },
+  head() {
+    return {
+      title: 'D3 -- Pie Chart',
+    };
+  },
   data() {
     return {
       data: null,

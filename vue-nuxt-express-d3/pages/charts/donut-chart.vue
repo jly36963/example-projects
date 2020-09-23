@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { DonutChart },
+  head() {
+    return {
+      title: 'D3 -- Donut Chart',
+    };
+  },
   data() {
     return {
       data: null,

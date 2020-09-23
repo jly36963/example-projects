@@ -6,7 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { LineChart },
-  // state
+  head() {
+    return {
+      title: 'D3 -- Line Chart',
+    };
+  },
   data() {
     return {
       data: null,

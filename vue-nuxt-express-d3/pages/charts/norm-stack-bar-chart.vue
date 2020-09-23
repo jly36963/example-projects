@@ -6,6 +6,11 @@ import * as d3 from 'd3';
 // component
 export default {
   components: { NormStackBarChart },
+  head() {
+    return {
+      title: 'D3 -- Norm Stack Bar Chart',
+    };
+  },
   data() {
     return {
       data: null,
