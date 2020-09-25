@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "tsc": "tsc",
-    "ts-dev": "nodemon --watch '*.ts' --exec 'ts-node' server.ts",
+    "ts-dev": "nodemon --watch '*.ts' --exec 'tsc && ts-node' server.ts",
+    "ts-dev2": "nodemon --watch '*.ts' --exec 'ts-node' server.ts",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "nodemon": "^2.0.4",
     "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0-pre.63",
     "typescript": "^4.0.3"
   }
 }

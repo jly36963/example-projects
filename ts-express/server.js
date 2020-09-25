@@ -18,7 +18,7 @@ app.use("/api/store/search", require("./routes/api/store/search"));
 app.use("/api/file/save-file", require("./routes/api/file/save-file"));
 app.use("/api/file/save-files", require("./routes/api/file/save-files"));
 app.use(express.static("public"));
-if (true || process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
     app.get("*", (req, res) => {
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
