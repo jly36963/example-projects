@@ -7,10 +7,10 @@
     "dev": "next dev",
     "tsc": "tsc",
     "ts-dev": "nodemon --exec 'ts-node' server.ts",
-    "ts-dev2": "nodemon --exec 'tsc && ts-node' server.ts",
     "custom-dev": "nodemon server.ts",
-    "build": "tsc && next build",
-    "start": "tsc && NODE_ENV=production node server.js"
+    "build": "next build",
+    "build:server": "tsc --project tsconfig.server.json",
+    "start": "NODE_ENV=production node dist/server.js"
   },
   "author": "Landon Yarrington",
   "license": "MIT",

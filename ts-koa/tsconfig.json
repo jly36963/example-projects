@@ -8,6 +8,10 @@
     "esModuleInterop": true,
     "noEmit": false,
     "outDir": "dist"
+
+    // "esModuleInterop": true,
+    // "noImplicitAny": true,
+    // "lib": ["es6"],
   },
   "exclude": ["node_modules"]
 }
