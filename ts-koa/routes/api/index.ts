@@ -16,7 +16,7 @@ const upload = multer();
 // routes
 // ---------
 
-// @route -- GET /api/
+// @route -- GET /api
 // @desc -- return 200 OK
 // @access -- public
 
@@ -40,7 +40,6 @@ router.get("/hello", auth, (ctx) => {
 
 router.post("/greet", auth, (ctx) => {
   try {
-    console.log(ctx.request.body);
     const { name } = ctx.request.body;
     const greeting = `Hello there, ${name}!`; // create greeting
     ctx.status = 200;
