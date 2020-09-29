@@ -4,8 +4,8 @@
   "description": "express example",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
     "dev": "nodemon server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -19,5 +19,8 @@
     "multer": "^1.4.2",
     "pino": "^6.2.1",
     "pino-pretty": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

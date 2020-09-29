@@ -1,24 +1,17 @@
-# my-app
+# Vue / Vuex
 
-## Project setup
-```
-npm install
-```
+A simple Vue example with Vuex.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Setup
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- `npm i`
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Startup (dev)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- `npm run serve`
+
+## Startup (prod)
+
+- `npm run build`
+  - This will produce a built html document with associated assets.
+  - Use a production application to serve the build.

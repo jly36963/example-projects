@@ -93,8 +93,6 @@ const D3Component = ({ data }) => {
       svg.append('g').call(xAxis);
 
       svg.append('g').call(yAxis);
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

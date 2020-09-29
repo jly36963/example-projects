@@ -1,11 +1,6 @@
 import React from 'react';
 
 const routes = [
-  // { route: '/intro-html', text: 'intro (html)' },
-  // { route: '/intro-svg', text: 'intro (svg)' },
-  // { route: '/bar-chart-html', text: 'bar chart (html)' },
-  // { route: '/bar-chart-svg', text: 'bar chart (svg)' },
-
   { route: '/bar-chart', text: 'bar chart' },
   { route: '/bar-chart-h', text: 'bar chart (h)' },
   { route: '/stacked-bar-chart', text: 'stacked bar chart' },

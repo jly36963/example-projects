@@ -130,8 +130,6 @@ const D3Component = ({ data }) => {
             })
             .curve(d3.curveCatmullRom), // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
         );
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

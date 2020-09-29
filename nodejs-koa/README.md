@@ -1,39 +1,18 @@
 # koa example
 
-### installation
+A simple koa app with several middlewares and example of basic usage.
 
-Packages I use most
+## Setup
 
-```sh
-npm i --save \
-    koa \
-    koa-static \
-    koa-router \
-    @koa/router \
-    @koa/multer \
-    koa-bodyparser \
-    koa-pino-logger \
-    pino-pretty \
-    koa-sslify \
-    koa-send \
-    koa-joi-router \
-```
+- `npm i`
 
-Other useful packages
+## Startup (dev)
 
-```sh
-npm i --save \
-    koa-hbs \
-    koa-ratelimit \
-    koa-except \
-    koa-jsonp \
-    koa-route \
-    koa-session \
-    koa-session-redis-store \
-    koa-versioned \
-    koa-websocket \
-    koa2-useragent
-```
+- `npm run dev`
+
+## Startup (prod)
+
+- `npm start`
 
 ### koa-static
 

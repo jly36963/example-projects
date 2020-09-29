@@ -85,8 +85,6 @@ const D3Component = ({ data }) => {
         .attr('fill', (d) => color(d.length))
         .attr('stroke', 'black')
         .attr('stroke-width', '0.1');
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

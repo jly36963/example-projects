@@ -27,9 +27,10 @@ def index():
     access -- public
     '''
     try:
-        return jsonify({'data': 'hello', 'error': None}), 200
+        return jsonify({"message": "Hello world!"}), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500
 
 
 @index_routes.route('/greet', methods=['POST'])
@@ -43,9 +44,10 @@ def greet():
         body = request.get_json(silent=True)
         name = body['name']
         greeting = hello(name)
-        return jsonify({'data': greeting, 'error': None}), 200
+        return jsonify({'greeting': greeting, }), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500
 
 
 @index_routes.route('/search', methods=['GET'])
@@ -57,9 +59,10 @@ def search():
     """
     try:
         query = request.args
-        return jsonify({'data': query, 'error': None}), 200
+        return jsonify({'query': query}), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500
 
 
 @index_routes.route('/users/<uid>', methods=['GET'])
@@ -71,9 +74,10 @@ def users(uid):
     """
     try:
         user = {'uid': uid, 'name': 'Kakashi'}  # pretend db response
-        return jsonify({'data': user, 'error': None}), 200
+        return jsonify({'user': user}), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500
 
 
 @index_routes.route('/save-file', methods=['POST'])
@@ -90,9 +94,10 @@ def save_file():
         for file_array in files_dictionary.values():
             for file_storage in file_array:
                 filenames.append(file_storage.filename)  # filename, stream
-        return jsonify({'data': filenames, 'error': None}), 200
+        return jsonify({'filenames': filenames}), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500
 
 
 @index_routes.route('/hello', methods=['GET'])
@@ -104,6 +109,7 @@ def private_hello():
     access -- private
     """
     try:
-        return jsonify({'data': 'Hello', 'error': None}), 200
+        return jsonify({'message': 'Hello'}), 200
     except Exception as e:
-        return jsonify({'data': None, 'error': str(e)}), 500
+        print(str(e))
+        return jsonify({}), 500

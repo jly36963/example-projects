@@ -138,8 +138,6 @@ const D3Component = ({ data }) => {
       svg.append('g').call(yAxis);
 
       svg.append('g').call(legend);
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

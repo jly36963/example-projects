@@ -18,7 +18,7 @@ app
   .use(serve(path.join(__dirname, 'client/build'))) // serve static files
   .use(json())
   .use(bodyParser())
-  // .use(logger({ prettyPrint: true })) // use koa-pino-logger
+  .use(logger({ prettyPrint: true })) // use koa-pino-logger
   .use(router.routes())
   .use(router.allowedMethods()) // use routes from router in this file
   .use(rootRouter.routes())

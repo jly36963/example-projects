@@ -134,8 +134,6 @@ const D3Component = ({ data }) => {
         .attr('y', padding)
         .attr('dy', '.71em')
         .text((d) => d);
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

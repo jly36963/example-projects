@@ -16,7 +16,7 @@ const init = async () => {
   await server.register([
     // inert (static file server)
     { plugin: require('@hapi/inert'), options: {} },
-    // routes
+    // api routes
     { plugin: require('./api/routes'), options: {} },
     // static file server route
     { plugin: require('./api/static'), options: {} },

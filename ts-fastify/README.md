@@ -1,6 +1,6 @@
-# Express
+# Fastify
 
-A simple express app with examples of basic usage, written in TS.
+A simple fastify app with examples of basic usage, written in TS.
 
 ## Setup
 

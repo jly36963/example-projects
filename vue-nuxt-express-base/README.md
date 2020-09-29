@@ -1,20 +1,20 @@
-# my-app
+# Vue / Nuxt / Express
 
-## Build Setup
+A starting point for Vue/Nuxt with a custom api server (Express).
 
-```bash
-# install dependencies
-$ npm install
+## Setup
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+- `npm i`
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+## Startup (dev)
 
-# generate static project
-$ npm run generate
-```
+- `npm run dev`
+
+## Startup (prod)
+
+- `npm run build`
+- `npm start`
+
+## Nuxt
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

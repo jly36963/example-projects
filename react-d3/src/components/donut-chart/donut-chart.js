@@ -96,8 +96,6 @@ const D3Component = ({ data }) => {
             .attr('fill-opacity', 0.7)
             .text((d) => d.data.value.toLocaleString()),
         );
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

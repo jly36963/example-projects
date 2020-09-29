@@ -1,6 +1,6 @@
-# Express
+# Fastify
 
-A simple express app with several middlewares and example of basic usage.
+A simple fastify app with examples of basic usage.
 
 ## Setup
 

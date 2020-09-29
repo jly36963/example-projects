@@ -176,8 +176,6 @@ const D3Component = ({ data }) => {
         .attr('d', (d) => line(d.values));
 
       svg.call(hover, path);
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

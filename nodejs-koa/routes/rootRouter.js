@@ -1,7 +1,6 @@
 // imports
 const Router = require('@koa/router');
 // middleware
-const logger = require('koa-pino-logger');
 const send = require('koa-send');
 // instantiate router
 const router = new Router({ prefix: '/api' });
@@ -16,7 +15,7 @@ const router = new Router({ prefix: '/api' });
 
 // logger() -- returns function to be used as logger middleware
 
-router.get('/hello', logger({ prettyPrint: true }), (ctx) => {
+router.get('/hello', (ctx) => {
   ctx.body = { data: 'Hello world!', error: null };
 });
 

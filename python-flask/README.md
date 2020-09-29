@@ -1,27 +1,11 @@
-# Flask Example
+# Flask
 
-## To-Do
+A simple flask app with examples of basic usage.
 
-## Bugs
+## Setup
 
-## Deps
+- `pip3 install flask gevent python-dotenv python-multipart`
 
-### pip
+## Startup
 
-```sh
-# save deps
-pip freeze > requirements.txt
-# install deps
-pip install -r requirements.txt
-```
-
-### conda
-
-```sh
-# start environment
-conda activate <env>
-# export deps yml
-conda env export > environment.yml
-# create environment from deps yml
-conda env create
-```
+- `python app.py`

@@ -86,8 +86,6 @@ const D3Component = ({ data }) => {
         .attr('stroke-linejoin', 'round')
         .attr('stroke-linecap', 'round')
         .attr('d', line);
-
-      // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx

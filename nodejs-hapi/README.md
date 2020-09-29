@@ -1,18 +1,18 @@
-# hapi example
+# Hapi
 
-## installation
+A simple hapi app with several middlewares and example of basic usage.
 
-```sh
-npm i --save \
-    @hapi/hapi \
-    @hapi/joi \
-    @hapi/inert \
-    hapi-pino \
-    pino \
-    pino-pretty
-    @hapi/bell \
-    @hapi/boom \
-```
+## Setup
+
+- `npm i`
+
+## Startup (dev)
+
+- `npm run dev`
+
+## Startup (prod)
+
+- `npm start`
 
 ## middlewares
 
@@ -79,7 +79,7 @@ module.exports = (server) => {
 };
 ```
 
-## static file server (inert)
+## Static file server (inert)
 
 ```js
 // imports
@@ -110,7 +110,7 @@ const init = async () => {
 init();
 ```
 
-## dynamically load routes by filename
+## Dynamically load routes by filename
 
 ```js
 // library imports
@@ -162,7 +162,7 @@ process.on('unhandledRejection', (err) => {
 init();
 ```
 
-example of "addRouteToServer"
+### Example of "addRouteToServer"
 
 ```js
 module.exports = (server) => {
@@ -176,7 +176,7 @@ module.exports = (server) => {
 };
 ```
 
-## integrating routes using plugins
+## Integrating routes using plugins
 
 ```js
 // library imports

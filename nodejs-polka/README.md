@@ -1,6 +1,6 @@
 # Express
 
-A simple express app with several middlewares and example of basic usage.
+A simple polka app with examples of basic usage.
 
 ## Setup
 
