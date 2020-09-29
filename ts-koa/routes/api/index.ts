@@ -1,15 +1,15 @@
 // imports
-import Router from "@koa/router";
+import Router from '@koa/router';
 // middleware
-import auth from "../../middleware/auth";
+import auth from '../../middleware/auth';
 // instantiate router
-const router = new Router({ prefix: "/api" });
+const router = new Router({ prefix: '/api' });
 // file middleware
-import koaMulter from "@koa/multer";
+import koaMulter from '@koa/multer';
 const koaUpload = koaMulter();
 // file middleware (express)
-import c2k from "koa-connect";
-import multer from "multer";
+import c2k from 'koa-connect';
+import multer from 'multer';
 const upload = multer();
 
 // ---------
@@ -20,7 +20,7 @@ const upload = multer();
 // @desc -- return 200 OK
 // @access -- public
 
-router.get("/", (ctx) => {
+router.get('/', (ctx) => {
   ctx.status = 200;
   ctx.body = {};
 });
@@ -29,16 +29,16 @@ router.get("/", (ctx) => {
 // @desc -- return 'hello world'
 // @access -- protected
 
-router.get("/hello", auth, (ctx) => {
+router.get('/hello', auth, (ctx) => {
   ctx.status = 200;
-  ctx.body = { message: "Hello world!" };
+  ctx.body = { message: 'Hello world!' };
 });
 
 // @route -- POST /api/greet
 // @desc -- take name (body) and return greeting
 // @access -- protected
 
-router.post("/greet", auth, (ctx) => {
+router.post('/greet', auth, (ctx) => {
   try {
     const { name } = ctx.request.body;
     const greeting = `Hello there, ${name}!`; // create greeting
@@ -47,7 +47,7 @@ router.post("/greet", auth, (ctx) => {
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while processing request" };
+    ctx.body = { message: 'Error while processing request' };
   }
 });
 
@@ -55,17 +55,17 @@ router.post("/greet", auth, (ctx) => {
 // @desc -- get user from id (params)
 // @access -- public
 
-router.get("/user/:id", (ctx) => {
+router.get('/user/:id', (ctx) => {
   const { id } = ctx.params;
   try {
     // *** db fetch logic here ***
-    const user = { id, firstName: "Kakashi", lastName: "Hatake" }; // pretend db response
+    const user = { id, firstName: 'Kakashi', lastName: 'Hatake' }; // pretend db response
     ctx.status = 200;
     ctx.body = { user };
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while fetching user" };
+    ctx.body = { message: 'Error while fetching user' };
   }
 });
 
@@ -78,7 +78,7 @@ interface NewUser {
   lastName: string;
 }
 
-router.post("/user/create", (ctx) => {
+router.post('/user/create', (ctx) => {
   try {
     const { firstName, lastName }: NewUser = ctx.request.body;
     // *** db insert logic here ***
@@ -88,7 +88,7 @@ router.post("/user/create", (ctx) => {
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while processing request" };
+    ctx.body = { message: 'Error while processing request' };
   }
 });
 
@@ -96,7 +96,7 @@ router.post("/user/create", (ctx) => {
 // @desc -- use query and return it
 // @access -- public
 
-router.get("/store/search", (ctx) => {
+router.get('/store/search', (ctx) => {
   const { query } = ctx;
   try {
     ctx.status = 200;
@@ -104,7 +104,7 @@ router.get("/store/search", (ctx) => {
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while processing request" };
+    ctx.body = { message: 'Error while processing request' };
   }
 });
 
@@ -112,7 +112,7 @@ router.get("/store/search", (ctx) => {
 // @desc -- get file (koa-connect + multer) (express style middleware)
 // @access -- public
 
-router.post("/file/single-express", c2k(upload.single("file")), (ctx) => {
+router.post('/file/single-express', c2k(upload.single('file')), (ctx) => {
   try {
     const { file }: any = ctx.req;
     const filename: string = file.originalname;
@@ -121,7 +121,7 @@ router.post("/file/single-express", c2k(upload.single("file")), (ctx) => {
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while processing file." };
+    ctx.body = { message: 'Error while processing file.' };
   }
 });
 
@@ -129,7 +129,7 @@ router.post("/file/single-express", c2k(upload.single("file")), (ctx) => {
 // @desc -- get file (@koa/multer)
 // @access -- public
 
-router.post("/file/single", koaUpload.single("file"), (ctx) => {
+router.post('/file/single', koaUpload.single('file'), (ctx) => {
   try {
     const { file }: any = ctx;
     const filename: string = file.originalname;
@@ -138,7 +138,7 @@ router.post("/file/single", koaUpload.single("file"), (ctx) => {
   } catch (err) {
     console.log(err);
     ctx.status = 500;
-    ctx.body = { message: "Error while processing file." };
+    ctx.body = { message: 'Error while processing file.' };
   }
 });
 
@@ -147,15 +147,15 @@ router.post("/file/single", koaUpload.single("file"), (ctx) => {
 // @access -- public
 
 router.post(
-  "/file/fields",
-  koaUpload.fields([{ name: "files", maxCount: 5 }]),
+  '/file/fields',
+  koaUpload.fields([{ name: 'files', maxCount: 5 }]),
   (ctx) => {
     try {
       const { files }: any = ctx;
       const filenames: Array<string> = [];
       for (const field in files) {
         files[field].forEach((file: koaMulter.File) =>
-          filenames.push(file.originalname)
+          filenames.push(file.originalname),
         ); // fieldname, originalname, buffer
       }
       ctx.status = 200;
@@ -163,9 +163,9 @@ router.post(
     } catch (err) {
       console.log(err);
       ctx.status = 500;
-      ctx.body = { message: "Error while processing file." };
+      ctx.body = { message: 'Error while processing file.' };
     }
-  }
+  },
 );
 
 export default router;

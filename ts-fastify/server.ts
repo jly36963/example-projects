@@ -1,9 +1,9 @@
 // nodejs imports
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 // package imports
-import fastify from "fastify";
-import pino from "pino";
+import fastify from 'fastify';
+import pino from 'pino';
 
 // instantiate app
 const app = fastify({
@@ -13,10 +13,10 @@ const app = fastify({
 const start = async (app: any) => {
   // api routes
   const routers: Array<string> = [
-    "/api",
-    "/api/user",
-    "/api/file/fm",
-    "/api/file/multer",
+    '/api',
+    '/api/user',
+    '/api/file/fm',
+    '/api/file/multer',
   ];
   await (async () => {
     for (const route of routers) {
@@ -27,10 +27,10 @@ const start = async (app: any) => {
   })();
 
   // spa route
-  app.get("*", (request, response) => {
-    const fp: string = path.join(__dirname, "./client/build/index.html");
+  app.get('*', (request, response) => {
+    const fp: string = path.join(__dirname, './client/build/index.html');
     const stream: fs.ReadStream = fs.createReadStream(fp);
-    response.type("text/html").send(stream);
+    response.type('text/html').send(stream);
   });
 
   // listen

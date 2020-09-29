@@ -1,6 +1,6 @@
 // imports
-import express from "express";
-import auth from "../../../middleware/auth";
+import express from 'express';
+import auth from '../../../middleware/auth';
 const router = express.Router();
 
 // @route -- GET /api/post/:id
@@ -20,7 +20,7 @@ interface Post {
 }
 
 router.get(
-  "/:id",
+  '/:id',
   auth, // use auth middleware
   async (req: express.Request, res: express.Response) => {
     const { id } = req.params;
@@ -29,16 +29,16 @@ router.get(
       // *** db fetch logic here ***
       // pretend data from fetch (author, post)
       const author: Author = {
-        firstName: "Kakashi",
-        lastName: "Hatake",
+        firstName: 'Kakashi',
+        lastName: 'Hatake',
         id: 1,
       };
-      const post: Post = { message: "Hello there!", author, id };
+      const post: Post = { message: 'Hello there!', author, id };
       return res.status(200).json(post);
     } catch (err) {
-      return res.status(500).json({ message: "Error while fetching post" });
+      return res.status(500).json({ message: 'Error while fetching post' });
     }
-  }
+  },
 );
 
 export default router;

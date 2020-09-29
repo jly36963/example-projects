@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from 'react';
 // next
-import Head from "next/head";
+import Head from 'next/head';
 // components
-import MainNavbar from "../components/main-navbar";
-import LoadingScreen from "../components/loading-screen";
+import MainNavbar from '../components/main-navbar';
+import LoadingScreen from '../components/loading-screen';
 // material-ui
-import { ThemeProvider } from "@material-ui/styles";
-import { CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from '@material-ui/styles';
+import { CssBaseline } from '@material-ui/core';
 // theme
-import { lightTheme, darkTheme } from "../theme/theme";
+import { lightTheme, darkTheme } from '../theme/theme';
 // utils
-import storage from "../utils/storage";
+import storage from '../utils/storage';
 
 // component
 const App = ({ Component, pageProps }) => {
@@ -21,10 +21,10 @@ const App = ({ Component, pageProps }) => {
   }, [useDarkTheme]);
   // update theme
   useEffect(() => {
-    let useDarkThemeLS = storage.getItem("useDarkTheme");
-    if (typeof useDarkThemeLS !== "boolean") {
+    let useDarkThemeLS = storage.getItem('useDarkTheme');
+    if (typeof useDarkThemeLS !== 'boolean') {
       useDarkThemeLS = true;
-      storage.setItem("useDarkTheme", true);
+      storage.setItem('useDarkTheme', true);
     }
     if (!useDarkThemeLS) {
       setUseDarkTheme(useDarkThemeLS);
@@ -47,10 +47,7 @@ const App = ({ Component, pageProps }) => {
       {/* loading screen */}
       {useLoadingScreen && <LoadingScreen />}
       {/* navbar */}
-      <MainNavbar
-        useDarkTheme={useDarkTheme}
-        setUseDarkTheme={setUseDarkTheme}
-      />
+      <MainNavbar useDarkTheme={useDarkTheme} setUseDarkTheme={setUseDarkTheme} />
       {/* head */}
       <Head>
         <title>React Express Example</title>

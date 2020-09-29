@@ -1,9 +1,9 @@
 // imports
-import express from "express";
+import express from 'express';
 const router = express.Router();
-import auth from "../../../middleware/auth";
+import auth from '../../../middleware/auth';
 // multer
-import multer from "multer";
+import multer from 'multer';
 const upload = multer();
 
 // @route -- POST /api/file/single
@@ -15,18 +15,18 @@ interface RequestWithMulterSingle extends express.Request {
 }
 
 router.post(
-  "/single",
+  '/single',
   auth,
-  upload.single("file"),
+  upload.single('file'),
   (req: RequestWithMulterSingle, res: express.Response) => {
     try {
       const { file } = req;
       const filename: string = file.originalname;
       return res.status(200).json({ filename });
     } catch (err) {
-      return res.status(500).json({ message: "Error uploading file." });
+      return res.status(500).json({ message: 'Error uploading file.' });
     }
-  }
+  },
 );
 
 // @route -- POST /api/file/array
@@ -42,9 +42,9 @@ interface RequestWithMulterArray extends express.Request {
 }
 
 router.post(
-  "/array",
+  '/array',
   auth,
-  upload.array("files", 10),
+  upload.array('files', 10),
   (req: RequestWithMulterArray, res: express.Response) => {
     const files: Array<Express.Multer.File> = req.files;
     const filenames: Array<String> = [];
@@ -55,9 +55,9 @@ router.post(
     try {
       return res.status(200).json({ filenames });
     } catch (err) {
-      return res.status(500).json({ message: "Error while uploading files." });
+      return res.status(500).json({ message: 'Error while uploading files.' });
     }
-  }
+  },
 );
 
 export default router;

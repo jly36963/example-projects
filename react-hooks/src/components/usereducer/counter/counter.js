@@ -1,5 +1,5 @@
 // imports
-import React, { useState, useReducer } from 'react'
+import React, { useState, useReducer } from 'react';
 
 // initial state
 const initialState = { count: 0 };
@@ -17,7 +17,7 @@ const countReducer = (state, action) => {
       // return { count: state.count };
       throw new Error();
   }
-}
+};
 // component
 const Counter = () => {
   // reducer hook
@@ -31,10 +31,9 @@ const Counter = () => {
       <button onClick={() => dispatch({ type: 'reset' })}>reset</button>
     </>
   );
-}
+};
 
 export default Counter;
-
 
 /*
 

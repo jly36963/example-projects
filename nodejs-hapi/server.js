@@ -10,7 +10,7 @@ const init = async () => {
   // initialize server
   const server = Hapi.server({
     port: 5000,
-    host: 'localhost'
+    host: 'localhost',
   });
   // register plugins
   await server.register([
@@ -23,8 +23,8 @@ const init = async () => {
     // not found
     { plugin: require('./api/not-found'), options: {} },
     // pino logger
-    { plugin: require('hapi-pino'), options: { prettyPrint: true } }
-  ]);  
+    { plugin: require('hapi-pino'), options: { prettyPrint: true } },
+  ]);
 
   // start server
   await server.start();

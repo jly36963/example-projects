@@ -1,28 +1,32 @@
-import React from 'react'
+import React from 'react';
 
 const routes = [
-  { route: '/usestate/count', text: 'usestate-count'},
-  { route: '/usestate/todo', text: 'usestate-todo'},
-  { route: '/useeffect/dom', text: 'useeffect-dom'},
-  { route: '/useeffect/fetch', text: 'useffect-fetch'},
-  { route: '/useeffect/cleanup', text: 'useeffect-cleanup'},
-  { route: '/usereducer/counter', text: 'usereducer-counter'},
-  { route: '/usecontext/user', text: 'usecontext-user'},
-  { route: '/usecontext/todo', text: 'usecontext-todo'},
-  { route: '/useref/graph', text: 'useref-graph'},
-  { route: '/usememo/fib', text: 'usememo-fib'},
-  { route: '/usecallback/counters', text: 'usecallback-counters'},
-]
+  { route: '/usestate/count', text: 'usestate-count' },
+  { route: '/usestate/todo', text: 'usestate-todo' },
+  { route: '/useeffect/dom', text: 'useeffect-dom' },
+  { route: '/useeffect/fetch', text: 'useffect-fetch' },
+  { route: '/useeffect/cleanup', text: 'useeffect-cleanup' },
+  { route: '/usereducer/counter', text: 'usereducer-counter' },
+  { route: '/usecontext/user', text: 'usecontext-user' },
+  { route: '/usecontext/todo', text: 'usecontext-todo' },
+  { route: '/useref/graph', text: 'useref-graph' },
+  { route: '/usememo/fib', text: 'usememo-fib' },
+  { route: '/usecallback/counters', text: 'usecallback-counters' },
+];
 
 const Landing = ({ history }) => {
   return (
     <>
-      {routes.map(r => (
+      {routes.map((r) => (
         <div key={r.text}>
-          <button onClick={() => { history.push(r.route) }}>
+          <button
+            onClick={() => {
+              history.push(r.route);
+            }}
+          >
             {r.text}
           </button>
-          <br/>
+          <br />
         </div>
       ))}
     </>
@@ -31,8 +35,8 @@ const Landing = ({ history }) => {
 
 export default Landing;
 
-
-{/* 
+{
+  /* 
 <button onClick={() => {history.push('/usestate/count')}}>
   usestate-count
 </button>
@@ -57,4 +61,5 @@ export default Landing;
 <button onClick={() => {history.push('/usecontext/todo')}}>
   usecontext-todo
 </button>
-*/}
+*/
+}

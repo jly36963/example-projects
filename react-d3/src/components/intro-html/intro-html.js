@@ -8,15 +8,12 @@ const IntroHtml = () => {
   useEffect(() => {
     const svg = d3
       .select(d3Container.current)
-      .style("background-color", "steelblue")
-      .style("height", "100%")
-      .style("min-height", "100px")
-    }, []
-  )
+      .style('background-color', 'steelblue')
+      .style('height', '100%')
+      .style('min-height', '100px');
+  }, []);
   // jsx
-  return (
-    <div ref={d3Container}></div>
-  )
-}
+  return <div ref={d3Container}></div>;
+};
 
 export default IntroHtml;

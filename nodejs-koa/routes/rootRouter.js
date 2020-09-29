@@ -16,15 +16,15 @@ const router = new Router({ prefix: '/api' });
 
 // logger() -- returns function to be used as logger middleware
 
-router.get('/hello', logger({ prettyPrint: true }), ctx => { 
-  ctx.body = { data: 'Hello world!', error: null }
+router.get('/hello', logger({ prettyPrint: true }), (ctx) => {
+  ctx.body = { data: 'Hello world!', error: null };
 });
 
 // @route -- POST /api/greet
 // @desc -- take name and return greeting
 // @access -- public
 
-router.post('/greet', ctx => {
+router.post('/greet', (ctx) => {
   try {
     const { user } = ctx.request.body; // pull user object from request body
     const { name } = user; // get name from user
@@ -39,7 +39,7 @@ router.post('/greet', ctx => {
 // @desc -- take id and return associated user object (from pretend database)
 // @access -- public
 
-router.get('/user/:id', ctx => {
+router.get('/user/:id', (ctx) => {
   const { id } = ctx.params; // get id from params (query string)
   try {
     const user = { id, name: 'Kakashi' }; // pretend db response
@@ -53,8 +53,8 @@ router.get('/user/:id', ctx => {
 // @desc -- use query and return it
 // @access -- public
 
-router.get('/store/search', ctx => {
-  ctx.log.info('/api/store/search has recieved a request')
+router.get('/store/search', (ctx) => {
+  ctx.log.info('/api/store/search has recieved a request');
   const { query } = ctx.request; // parse query
   try {
     ctx.body = { data: query, error: null }; // response body
@@ -67,9 +67,9 @@ router.get('/store/search', ctx => {
 // @desc -- use query and return it
 // @access -- public
 
-router.get('/get-file', async ctx => {
-  const fp = './package.json'
+router.get('/get-file', async (ctx) => {
+  const fp = './package.json';
   await send(ctx, fp);
-})
+});
 
 module.exports = router;

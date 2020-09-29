@@ -14,11 +14,11 @@ router.post(
     const { authState } = req.body;
     try {
       const { id } = authState;
-      const user = { name: "Kakashi", id }; // pretend db Response
-      return res.json({ data: user, error: null })
+      const user = { name: 'Kakashi', id }; // pretend db Response
+      return res.json({ data: user, error: null });
     } catch (err) {
-      return res.status(500).json({ data: null, error: err.message })
+      return res.status(500).json({ data: null, error: err.message });
     }
-  }
+  },
 );
 module.exports = router;

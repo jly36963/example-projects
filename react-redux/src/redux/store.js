@@ -1,11 +1,11 @@
 // imports
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import logger from 'redux-logger'
-import count from "./reducers/count";
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import logger from 'redux-logger';
+import count from './reducers/count';
 
 // combine reducers
 const combinedReducer = combineReducers({
-  count
+  count,
   // *** more reducers here ***
 });
 
@@ -15,7 +15,7 @@ const middleware = [logger];
 // store creation (from combined reducers)
 const store = createStore(
   combinedReducer, // reducer
-  applyMiddleware(...middleware) // middleware
+  applyMiddleware(...middleware), // middleware
 );
 
 export default store;

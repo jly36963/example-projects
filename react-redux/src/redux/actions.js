@@ -1,18 +1,17 @@
-
 // imports
-import store from "./store";
+import store from './store';
 
 // actions
 const incrementCount = (payload = 1) => ({
-  type: "INCREMENT",
-  payload
+  type: 'INCREMENT',
+  payload,
 });
 const decrementCount = (payload = 1) => ({
-  type: "DECREMENT",
-  payload
+  type: 'DECREMENT',
+  payload,
 });
 const resetCount = () => ({
-  type: "RESET"
+  type: 'RESET',
 });
 
 // action generators

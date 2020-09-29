@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PieChart, Pie, Tooltip, Cell, } from 'recharts';
+import { PieChart, Pie, Tooltip, Cell } from 'recharts';
 
 // example
 // http://recharts.org/en-US/examples/SimpleLineChart
@@ -48,16 +48,14 @@ const App = () => {
           paddingAngle={1}
           style={{ fontSize: 14 }}
         >
-          {
-            data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))
-          }
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
         </Pie>
         <Tooltip labelStyle={{ fontSize: 14 }} itemStyle={{ fontSize: 12 }} />
       </PieChart>
     </div>
-  )
-}
+  );
+};
 
 export default App;

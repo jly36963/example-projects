@@ -1,11 +1,10 @@
-
 // imports
-import React from "react";
-import { connect } from "react-redux";
-import { increment, decrement, reset } from "../../redux/actions";
+import React from 'react';
+import { connect } from 'react-redux';
+import { increment, decrement, reset } from '../../redux/actions';
 
 // component
-const Landing = props => {
+const Landing = (props) => {
   console.log(props.count);
   // jsx
   return (
@@ -20,9 +19,9 @@ const Landing = props => {
 };
 
 // map state to props
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    count: state.count
+    count: state.count,
   };
 };
 
@@ -30,8 +29,5 @@ const mapStateToProps = state => {
 const mapDispatchToProps = { increment, decrement, reset };
 
 // connect component to state
-  // connect is a HOC that returns a state-connected-component
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Landing);
+// connect is a HOC that returns a state-connected-component
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

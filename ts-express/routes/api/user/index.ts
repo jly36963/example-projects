@@ -1,6 +1,6 @@
 // imports
-import express from "express";
-import auth from "../../../middleware/auth";
+import express from 'express';
+import auth from '../../../middleware/auth';
 const router = express.Router();
 
 // @route -- GET /api/user/profile
@@ -8,17 +8,17 @@ const router = express.Router();
 // @access -- protected
 
 router.get(
-  "/profile",
+  '/profile',
   auth, // use auth middleware
   async (req: express.Request, res: express.Response) => {
     try {
       // *** db fetch logic here ***
-      const user: object = { firstName: "Kakashi", lastName: "Hatake", id: 1 }; // pretend db fetch response
+      const user: object = { firstName: 'Kakashi', lastName: 'Hatake', id: 1 }; // pretend db fetch response
       return res.status(200).json(user);
     } catch (err) {
-      return res.status(500).json({ message: "Error while fetching user" });
+      return res.status(500).json({ message: 'Error while fetching user' });
     }
-  }
+  },
 );
 
 // @route -- POST /api/user/create
@@ -30,7 +30,7 @@ interface NewUser {
   lastName: string;
 }
 
-router.post("/create", async (req: express.Request, res: express.Response) => {
+router.post('/create', async (req: express.Request, res: express.Response) => {
   const { firstName, lastName }: NewUser = req.body;
   try {
     // *** validation logic here ***
@@ -38,7 +38,7 @@ router.post("/create", async (req: express.Request, res: express.Response) => {
     const user: object = { firstName, lastName, id: 1 }; // pretend response from insert
     return res.status(200).json(user);
   } catch (err) {
-    return res.status(500).json({ message: "Error while creating user" });
+    return res.status(500).json({ message: 'Error while creating user' });
   }
 });
 

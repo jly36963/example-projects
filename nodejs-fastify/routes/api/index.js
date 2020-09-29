@@ -3,7 +3,6 @@ const sayHello = require('../../middleware/say-hello');
 
 // routes
 const routes = async (app, options) => {
-
   // @route -- GET /api
   // @desc -- return 'Hello World'
   // @access -- public
@@ -26,8 +25,8 @@ const routes = async (app, options) => {
   // @access -- public
 
   // route level hooks
-    // https://www.fastify.io/docs/latest/Hooks/#route-level-hooks
-    // https://github.com/fastify/fastify/issues/740#issuecomment-585822431
+  // https://www.fastify.io/docs/latest/Hooks/#route-level-hooks
+  // https://github.com/fastify/fastify/issues/740#issuecomment-585822431
 
   app.get('/hello', { preHandler: [sayHello] }, async (request, reply) => {
     return reply.status(200).send({ data: 'Hello world!', error: null });
@@ -38,7 +37,7 @@ const routes = async (app, options) => {
   // @access -- public
 
   // syntax
-    // full declaration vs shorthand declaration
+  // full declaration vs shorthand declaration
 
   app.route({
     method: 'GET',

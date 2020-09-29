@@ -1,4 +1,3 @@
-
 // ------------
 // bar chart (html)
 // ------------
@@ -6,10 +5,10 @@
 // useRef -- create reference for our D3 stuff
 // useEffect -- execute our D3 code the react way (after DOM is ready)
 
-import React, { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
+import React, { useState, useRef, useEffect } from 'react';
+import * as d3 from 'd3';
 
-const D3Component = props => {
+const D3Component = (props) => {
   // ref
   const d3Container = useRef(null);
   // manipulate the DOM the react way (after component is mounted)
@@ -20,24 +19,24 @@ const D3Component = props => {
       // update div
       const updatedDiv = div
         // style container
-        .style("font", "10px sans-serif")
-        .style("text-align", "right")
-        .style("color", "white");
+        .style('font', '10px sans-serif')
+        .style('text-align', 'right')
+        .style('color', 'white');
       // update div's children
       updatedDiv
-        .selectAll("div")
+        .selectAll('div')
         // bind data
         .data(props.data)
         // join selection and data
-        .join("div")
+        .join('div')
         // apply styles to the bars
-        .style("background", "steelblue")
-        .style("padding", "3px")
-        .style("margin", "1px")
+        .style('background', 'steelblue')
+        .style('padding', '3px')
+        .style('margin', '1px')
         // set width (based on data)
-        .style("width", d => `${d * 10}px`)
+        .style('width', (d) => `${d * 10}px`)
         // set text (based on data)
-        .text(d => d);
+        .text((d) => d);
       // remove unnecessary nodes
       updatedDiv.exit().remove();
     }
@@ -52,7 +51,7 @@ const App = () => {
   // data
   const [data, setData] = useState([]);
   // random integer
-  const randInt = max => Math.ceil(Math.random() * Math.floor(max));
+  const randInt = (max) => Math.ceil(Math.random() * Math.floor(max));
   // add random integer to 'data'
   const pushInt = () => {
     const newInt = randInt(10); // 1-10

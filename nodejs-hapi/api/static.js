@@ -1,7 +1,6 @@
 exports.plugin = {
   name: 'static-file-server',
   register: async (server, options) => {
-
     // @route -- GET /
     // @desc -- static file server
     // @access -- public
@@ -14,10 +13,8 @@ exports.plugin = {
           path: '.',
           redirectToSlash: true,
           index: true,
-        }
-      }
+        },
+      },
     });
-
-
-  }
-}
+  },
+};

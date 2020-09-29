@@ -1,16 +1,16 @@
 // imports
-import auth from "../../../middleware/auth";
+import auth from '../../../middleware/auth';
 
 const routes = async (app, options) => {
   // @route -- GET /api/user/:id
   // @desc -- get user using id (params)
   // @access -- protected
 
-  app.get("/:id", { preHandler: [auth] }, async (request, reply) => {
+  app.get('/:id', { preHandler: [auth] }, async (request, reply) => {
     try {
       const { id } = request.params;
       // *** db fetch logic here ***
-      const user = { id, firstName: "Kakashi", lastName: "Hatake" }; // pretend db response
+      const user = { id, firstName: 'Kakashi', lastName: 'Hatake' }; // pretend db response
       return reply.status(200).send({ user });
     } catch (err) {
       console.log(err);
@@ -27,7 +27,7 @@ const routes = async (app, options) => {
     lastName: string;
   }
 
-  app.post("/create", async (request, reply) => {
+  app.post('/create', async (request, reply) => {
     try {
       const { firstName, lastName }: NewUser = request.body;
       // *** db insert logic here ***

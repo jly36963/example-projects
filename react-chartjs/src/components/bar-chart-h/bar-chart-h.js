@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Chart from "chart.js";
+import Chart from 'chart.js';
 
 const ChartComponent = ({ data }) => {
   // ref
@@ -7,45 +7,50 @@ const ChartComponent = ({ data }) => {
   // manipulate the DOM the react way
   useEffect(() => {
     if (data && chartRef.current) {
-      const chartContainer = chartRef.current.getContext("2d");
+      const chartContainer = chartRef.current.getContext('2d');
       new Chart(chartContainer, {
-        type: "horizontalBar",
+        type: 'horizontalBar',
         data,
         options: {
           // custom config
           legend: { display: false },
           title: {
             display: true,
-            text: 'Predicted world population (millions) in 2050'
-          }
-        }
-      })
+            text: 'Predicted world population (millions) in 2050',
+          },
+        },
+      });
     }
   }, [data]);
   return (
     <div>
       <canvas id="bar-chart" ref={chartRef} width="800" height="450" />
     </div>
-  )
-}
-
+  );
+};
 
 const App = () => {
   const [data, setData] = useState({
-    labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+    labels: ['Africa', 'Asia', 'Europe', 'Latin America', 'North America'],
     datasets: [
       {
-        label: "Population (millions)",
-        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-        data: [2478, 5267, 734, 784, 433]
-      }
-    ]
-  })
+        label: 'Population (millions)',
+        backgroundColor: [
+          '#3e95cd',
+          '#8e5ea2',
+          '#3cba9f',
+          '#e8c3b9',
+          '#c45850',
+        ],
+        data: [2478, 5267, 734, 784, 433],
+      },
+    ],
+  });
   return (
     <div>
       <ChartComponent data={data} />
     </div>
-  )
-}
+  );
+};
 
 export default App;

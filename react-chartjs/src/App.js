@@ -1,8 +1,8 @@
 // package imports
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // components
-import landing from "./components/landing/landing";
+import landing from './components/landing/landing';
 import notfound from './components/not-found/not-found';
 import introLineChart from './components/intro-line-chart/intro-line-chart';
 import barChart from './components/bar-chart/bar-chart';
@@ -22,7 +22,7 @@ const containerStyle = {
   alignItems: 'center',
   height: '100vh',
   fontSize: '32px',
-}
+};
 
 const childStyle = {
   textAlign: 'center',
@@ -32,8 +32,8 @@ const childStyle = {
   border: '1px solid #ddd',
   borderRadius: '3px',
   padding: '20px',
-  margin: 'auto'
-}
+  margin: 'auto',
+};
 
 // component
 const App = () => {
@@ -47,7 +47,11 @@ const App = () => {
             <Route exact path="/intro-line-chart" component={introLineChart} />
             <Route exact path="/bar-chart" component={barChart} />
             <Route exact path="/bar-chart-h" component={barChartHorizontal} />
-            <Route exact path="/bar-chart-grouped" component={barChartGrouped} />
+            <Route
+              exact
+              path="/bar-chart-grouped"
+              component={barChartGrouped}
+            />
             <Route exact path="/line-chart" component={lineChart} />
             <Route exact path="/pie-chart" component={pieChart} />
             <Route exact path="/radar-chart" component={radarChart} />
@@ -59,7 +63,6 @@ const App = () => {
         </BrowserRouter>
       </div>
     </div>
-
   );
 };
 export default App;

@@ -1,9 +1,9 @@
 // imports
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import Landing from "./components/landing/Landing";
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import Landing from './components/landing/Landing';
 
 // component
 const App = () => {

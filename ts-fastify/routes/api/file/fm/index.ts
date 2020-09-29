@@ -1,7 +1,7 @@
 // imports
-import auth from "../../../../middleware/auth";
+import auth from '../../../../middleware/auth';
 // fastify-multipart
-import fm from "fastify-multipart";
+import fm from 'fastify-multipart';
 
 const routes = async (app, options) => {
   // register plugins
@@ -11,7 +11,7 @@ const routes = async (app, options) => {
   // @desc -- get file (fm)
   // @access -- protected
 
-  app.post("/single", { preHandler: [auth] }, async (request, reply) => {
+  app.post('/single', { preHandler: [auth] }, async (request, reply) => {
     try {
       const { filename } = await request.file(); // file (stream), fieldname, filename, fields (non-file fields)
       return reply.status(200).send({ filename });

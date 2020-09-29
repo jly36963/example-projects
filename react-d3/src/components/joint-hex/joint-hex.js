@@ -1,7 +1,7 @@
 // package imports
-import React, { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
-import * as d3Hexbin from "d3-hexbin";
+import React, { useState, useRef, useEffect } from 'react';
+import * as d3 from 'd3';
+import * as d3Hexbin from 'd3-hexbin';
 
 // data
 import csvStaticFilePath from './density.csv';
@@ -18,78 +18,85 @@ const D3Component = ({ data }) => {
   // manipulate the DOM the react way (after component is mounted)
   useEffect(() => {
     if (data.length && d3Container.current) {
-
       // ------------
       // calculate axes
       // ------------
 
       // scale
-      const x = d3.scaleLinear()
-        .domain([5, 18])
-        .range([0, width]);
-      const y = d3.scaleLinear()
-        .domain([5, 20])
-        .range([height, 0]);
+      const x = d3.scaleLinear().domain([5, 18]).range([0, width]);
+      const y = d3.scaleLinear().domain([5, 20]).range([height, 0]);
 
       // axis
       // ...
 
       // geometry
-      const inputForHexbinFun = []
+      const inputForHexbinFun = [];
       data.forEach((d) => {
-        inputForHexbinFun.push([x(d.x), y(d.y)])  // Note that we had the transform value of X and Y !
-      })
-      const color = d3.scaleLinear()
+        inputForHexbinFun.push([x(d.x), y(d.y)]); // Note that we had the transform value of X and Y !
+      });
+      const color = d3
+        .scaleLinear()
         .domain([0, 600]) // Number of points in the bin?
-        .range(["transparent", "#69b3a2"])
+        .range(['transparent', '#69b3a2']);
 
-      const hexbin = d3Hexbin.hexbin()
+      const hexbin = d3Hexbin
+        .hexbin()
         .radius(9) // size of the bin in px
-        .extent([[0, 0], [width, height]])
+        .extent([
+          [0, 0],
+          [width, height],
+        ]);
 
       // ------------
       // create d3 container
       // ------------
 
-      const svg = d3.select(d3Container.current)
-        .append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
+      const svg = d3
+        .select(d3Container.current)
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
+      svg
+        .append('g')
+        .attr('transform', 'translate(0,' + height + ')')
         .call(d3.axisBottom(x));
 
-      svg.append("g")
-        .call(d3.axisLeft(y))
+      svg.append('g').call(d3.axisLeft(y));
 
-      svg.append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("width", width)
-        .attr("height", height)
+      svg
+        .append('clipPath')
+        .attr('id', 'clip')
+        .append('rect')
+        .attr('width', width)
+        .attr('height', height);
 
-      svg.append("g")
-        .attr("clip-path", "url(#clip)")
-        .selectAll("path")
+      svg
+        .append('g')
+        .attr('clip-path', 'url(#clip)')
+        .selectAll('path')
         .data(hexbin(inputForHexbinFun))
-        .enter().append("path")
-          .attr("d", hexbin.hexagon())
-          .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
-          .attr("fill", (d) => color(d.length))
-          .attr("stroke", "black")
-          .attr("stroke-width", "0.1")
-
+        .enter()
+        .append('path')
+        .attr('d', hexbin.hexagon())
+        .attr('transform', (d) => 'translate(' + d.x + ',' + d.y + ')')
+        .attr('fill', (d) => color(d.length))
+        .attr('stroke', 'black')
+        .attr('stroke-width', '0.1');
 
       // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx
   return (
-    <svg className="d3-component" ref={d3Container} width={width} height={height} />
+    <svg
+      className="d3-component"
+      ref={d3Container}
+      width={width}
+      height={height}
+    />
   );
 };
 
@@ -104,10 +111,10 @@ const App = () => {
       const csvText = await csvFile.text(); // csv as string
       const csvData = d3.csvParse(
         csvText, // csv string to parse
-        d3.autoType
+        d3.autoType,
       );
       setData(csvData);
-    }
+    };
     getData();
   }, []);
   // jsx

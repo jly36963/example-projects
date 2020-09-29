@@ -1,8 +1,8 @@
-import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
-import { ServerStyleSheets } from "@material-ui/core/styles";
+import React from 'react';
+import Document, { Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 // theme
-import { lightTheme as theme } from "../theme/theme";
+import { lightTheme as theme } from '../theme/theme';
 
 // next.js + MUI (example)
 // https://github.com/mui-org/material-ui/tree/master/examples/nextjs
@@ -20,11 +20,7 @@ class MyDocument extends Document {
           />
           {/* favicon */}
           <link rel="icon" type="image/x-icon" href="/favicon.ico?v1" />
-          <link
-            rel="shortcut icon"
-            type="image/x-icon"
-            href="/favicon.ico?v1"
-          />
+          <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v1" />
         </Head>
         <body>
           <Main />
@@ -73,10 +69,7 @@ MyDocument.getInitialProps = async (ctx) => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement(),
-    ],
+    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
   };
 };
 

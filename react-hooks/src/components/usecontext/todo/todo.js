@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // STORE
 
 const initialState = {
-  todos: []
+  todos: [],
 };
 const Store = createContext(initialState);
 
@@ -15,14 +15,14 @@ const addTodo = (state, todoText) => {
   const newTodo = {
     id: uuidv4(),
     text: todoText,
-    completed: false
+    completed: false,
   };
   return { ...state, todos: [...state.todos, newTodo] };
-}
+};
 const removeTodo = (state, todoId) => {
-  const remainingTodos = state.todos.filter(todo => todo.id !== todoId);
+  const remainingTodos = state.todos.filter((todo) => todo.id !== todoId);
   return { ...state, todos: remainingTodos };
-}
+};
 const changeStatus = (state, todoId, completed) => {
   const todo = state.todos.find((todo) => todo.id === todoId);
   const todoIndex = state.todos.indexOf(todo);
@@ -30,10 +30,10 @@ const changeStatus = (state, todoId, completed) => {
   const updatedTodos = [
     ...state.todos.slice(0, todoIndex),
     updatedTodo,
-    ...state.todos.slice(todoIndex + 1)
+    ...state.todos.slice(todoIndex + 1),
   ];
   return { ...state, todos: updatedTodos };
-}
+};
 
 // ----------
 // ACTIONS
@@ -42,22 +42,22 @@ const changeStatus = (state, todoId, completed) => {
 const actionAddTodo = (todoText, dispatch) => {
   dispatch({
     type: 'ADD_TODO',
-    todoText
+    todoText,
   });
-}
+};
 const actionRemoveTodo = (todoId, dispatch) => {
   dispatch({
     type: 'REMOVE_TODO',
-    todoId
+    todoId,
   });
-}
+};
 const actionChangeStatus = (todoId, completed, dispatch) => {
   dispatch({
     type: 'EDIT_TODO_STATUS',
     todoId,
-    completed
-  })
-}
+    completed,
+  });
+};
 
 // ----------
 // reducer
@@ -74,7 +74,7 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-}
+};
 
 // ----------
 // provider
@@ -83,11 +83,9 @@ const reducer = (state, action) => {
 const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <Store.Provider value={{ state, dispatch }}>
-      {children}
-    </Store.Provider>
+    <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>
   );
-}
+};
 
 // ----------
 // form component
@@ -100,13 +98,13 @@ const TodoForm = () => {
   // on change
   const onChange = (e) => {
     setFormValue(e.target.value);
-  }
+  };
   // on submit
   const onSubmit = (e) => {
     e.preventDefault();
     if (formValue.trim().length > 0) actionAddTodo(formValue, dispatch);
     setFormValue('');
-  }
+  };
   // jsx
   return (
     <form onSubmit={onSubmit} className="todo-form">
@@ -114,7 +112,7 @@ const TodoForm = () => {
       <button type="submit">Add Todo</button>
     </form>
   );
-}
+};
 
 // ----------
 // list component
@@ -131,10 +129,8 @@ const TodoList = () => {
       dispatch={dispatch}
     />
   ));
-  return (
-    <div className="todo-list">{todoList}</div>
-  );
-}
+  return <div className="todo-list">{todoList}</div>;
+};
 
 // ----------
 // todo component
@@ -143,7 +139,7 @@ const TodoList = () => {
 const Todo = (props) => {
   // destructure from props
   const { todoId, todoText, completed, dispatch } = props;
-  
+
   // ----------
   // event functions
   // ----------
@@ -167,7 +163,7 @@ const Todo = (props) => {
   const todoStyle = {
     color: completed ? '#90a4ae' : '#01579b',
     textDecoration: (completed && 'line-through') || 'none',
-  }
+  };
 
   // ----------
   // jsx
@@ -175,20 +171,14 @@ const Todo = (props) => {
 
   return (
     <div className="todo">
-      <span style={todoStyle}>
-        {todoText}
-      </span>
+      <span style={todoStyle}>{todoText}</span>
       <button onClick={() => changeStatus(todoId, completed, dispatch)}>
         change status
       </button>
-      <button onClick={() => removeTodo(todoId, dispatch)}>
-        remove
-      </button>
-      
+      <button onClick={() => removeTodo(todoId, dispatch)}>remove</button>
     </div>
   );
 };
-
 
 // APP COMPONENT
 
@@ -201,15 +191,15 @@ const App = () => {
         <TodoList />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ConnectedApp = () => {
   return (
     <StoreProvider>
       <App />
     </StoreProvider>
-  )
-}
+  );
+};
 
 export default ConnectedApp;

@@ -1,7 +1,7 @@
-import React from "react";
-import { Typography } from "@material-ui/core";
-import FlexContainer from "../components/flex-container";
-import PaddedPaper from "../components/padded-paper";
+import React from 'react';
+import { Typography } from '@material-ui/core';
+import FlexContainer from '../components/flex-container';
+import PaddedPaper from '../components/padded-paper';
 
 const About = () => {
   return (

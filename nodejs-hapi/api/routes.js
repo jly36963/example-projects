@@ -15,7 +15,7 @@ exports.plugin = {
       path: '/api/', // path (allows for parameters) ('/users/${userId}') ('/users/${userId?}')
       handler: (request, h) => {
         return { data: 'Hello World!', error: null };
-      }
+      },
     });
 
     // @route -- GET /api/home
@@ -27,8 +27,8 @@ exports.plugin = {
       path: '/api/home',
       handler: (request, h) => {
         return h.redirect('/api/'); // redirect
-      }
-    })
+      },
+    });
 
     // @route -- POST /api/greet
     // @desc -- return greeting using payload
@@ -39,19 +39,17 @@ exports.plugin = {
       path: '/api/greet',
       handler: (request, h) => {
         const { name } = request.payload; // access request body (JSON or plain text)
-        const greeting = name
-          ? `Hello, ${name}!`
-          : 'Hello there!';
+        const greeting = name ? `Hello, ${name}!` : 'Hello there!';
         return { data: greeting, error: null };
       },
       options: {
         validate: {
           payload: Joi.object({
-            name: Joi.string().min(2).max(30).required()
-          })
-        }
-      }
-    })
+            name: Joi.string().min(2).max(30).required(),
+          }),
+        },
+      },
+    });
 
     // @route -- GET /api/user/
     // @desc -- return associated user based on id in params
@@ -64,19 +62,19 @@ exports.plugin = {
         const id = request.params.id;
         try {
           const user = { name: 'Kakashi', id }; // pretend db data
-          return { data: user, error: null }
+          return { data: user, error: null };
         } catch (err) {
-          return { data: null, error: err.message }
+          return { data: null, error: err.message };
         }
       },
       options: {
         validate: {
           params: Joi.object({
-            id: Joi.string().required() // Joi.string().guid()
-          })
-        }
-      }
-    })
+            id: Joi.string().required(), // Joi.string().guid()
+          }),
+        },
+      },
+    });
 
     // @route -- GET /api/store/search
     // @desc -- return query object
@@ -92,12 +90,12 @@ exports.plugin = {
       options: {
         validate: {
           query: Joi.object({
-            k: Joi.string().required()
-          })
-        }
-      }
-    })
+            k: Joi.string().required(),
+          }),
+        },
+      },
+    });
 
     console.log('Routes added');
-  }
-}
+  },
+};

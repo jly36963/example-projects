@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import * as d3 from "d3";
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
 
-const D3Component = props => {
+const D3Component = (props) => {
   // ref
   const d3Container = useRef(null);
   // manipulate the DOM the react way (after component is mounted)
@@ -10,26 +10,19 @@ const D3Component = props => {
       // select
       const svg = d3.select(d3Container.current);
       // bind d3 data
-      const update = svg
-        .append("g")
-        .selectAll("text")
-        .data(props.data)
+      const update = svg.append('g').selectAll('text').data(props.data);
       // enter new D3 elements
       update
         .enter()
-        .append("text")
-        .attr("x", (d, i) => i * 25)
-        .attr("y", 40)
-        .style("font-size", 24)
-        .text(d => d);
+        .append('text')
+        .attr('x', (d, i) => i * 25)
+        .attr('y', 40)
+        .style('font-size', 24)
+        .text((d) => d);
       // update existing D3 elements
-      update
-        .attr("x", (d, i) => i * 40)
-        .text(d => d);
+      update.attr('x', (d, i) => i * 40).text((d) => d);
       // remove old D3 elements
-      update
-        .exit()
-        .remove();
+      update.exit().remove();
     }
   }, [props.data]);
   // jsx

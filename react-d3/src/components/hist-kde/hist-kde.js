@@ -1,6 +1,6 @@
 // package imports
-import React, { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
+import React, { useState, useRef, useEffect } from 'react';
+import * as d3 from 'd3';
 
 // data
 import jsonData from './old-faithful.json';
@@ -14,14 +14,13 @@ const D3Component = ({ data }) => {
   // ref
   const d3Container = useRef(null);
   // dimensions
-  const margin = ({ top: 20, right: 20, bottom: 30, left: 30 })
+  const margin = { top: 20, right: 20, bottom: 30, left: 30 };
   const height = 500;
   const width = 1.6 * height;
 
   // manipulate the DOM the react way (after component is mounted)
   useEffect(() => {
     if (data.length && d3Container.current) {
-
       // ------------
       // calculate axes
       // ------------
@@ -30,88 +29,102 @@ const D3Component = ({ data }) => {
       // ...
 
       // scale
-      const x = d3.scaleLinear()
-        .domain(d3.extent(data)).nice()
-        .range([margin.left, width - margin.right])
+      const x = d3
+        .scaleLinear()
+        .domain(d3.extent(data))
+        .nice()
+        .range([margin.left, width - margin.right]);
       const thresholds = x.ticks(40);
-      const bins = d3.histogram()
-        .domain(x.domain())
-        .thresholds(thresholds)
-        (data)
-      const y = d3.scaleLinear()
-        .domain([0, d3.max(bins, d => d.length) / data.length])
-        .range([height - margin.bottom, margin.top])
-
+      const bins = d3.histogram().domain(x.domain()).thresholds(thresholds)(
+        data,
+      );
+      const y = d3
+        .scaleLinear()
+        .domain([0, d3.max(bins, (d) => d.length) / data.length])
+        .range([height - margin.bottom, margin.top]);
 
       // axis
-      const xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x))
-        .call(g => g.append("text")
-          .attr("x", width - margin.right)
-          .attr("y", -6)
-          .attr("fill", "#000")
-          .attr("text-anchor", "end")
-          .attr("font-weight", "bold")
-          .text(data.title))
-      const yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(null, "%"))
-        .call(g => g.select(".domain").remove())
+      const xAxis = (g) =>
+        g
+          .attr('transform', `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x))
+          .call((g) =>
+            g
+              .append('text')
+              .attr('x', width - margin.right)
+              .attr('y', -6)
+              .attr('fill', '#000')
+              .attr('text-anchor', 'end')
+              .attr('font-weight', 'bold')
+              .text(data.title),
+          );
+      const yAxis = (g) =>
+        g
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y).ticks(null, '%'))
+          .call((g) => g.select('.domain').remove());
 
       // geometry
       const kde = (kernel, thresholds, data) => {
-        return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
-      }
+        return thresholds.map((t) => [t, d3.mean(data, (d) => kernel(t - d))]);
+      };
       const epanechnikov = (bandwidth) => {
-        return x => Math.abs(x /= bandwidth) <= 1 ? 0.75 * (1 - x * x) / bandwidth : 0;
-      }
+        return (x) =>
+          Math.abs((x /= bandwidth)) <= 1
+            ? (0.75 * (1 - x * x)) / bandwidth
+            : 0;
+      };
       const bandwidth = 6.0; // manually set
-      const density = kde(epanechnikov(bandwidth), thresholds, data)
-      const line = d3.line()
+      const density = kde(epanechnikov(bandwidth), thresholds, data);
+      const line = d3
+        .line()
         .curve(d3.curveBasis)
-        .x(d => x(d[0]))
-        .y(d => y(d[1]))
-
+        .x((d) => x(d[0]))
+        .y((d) => y(d[1]));
 
       // ------------
       // create d3 container
       // ------------
 
-      const svg = d3.select(d3Container.current)
-        .attr("viewBox", [0, 0, width, height]);
+      const svg = d3
+        .select(d3Container.current)
+        .attr('viewBox', [0, 0, width, height]);
 
-      svg.append("g")
-        .attr("fill", "#bbb")
-        .selectAll("rect")
+      svg
+        .append('g')
+        .attr('fill', '#bbb')
+        .selectAll('rect')
         .data(bins)
-        .join("rect")
-        .attr("x", d => x(d.x0) + 1)
-        .attr("y", d => y(d.length / data.length))
-        .attr("width", d => x(d.x1) - x(d.x0) - 1)
-        .attr("height", d => y(0) - y(d.length / data.length));
+        .join('rect')
+        .attr('x', (d) => x(d.x0) + 1)
+        .attr('y', (d) => y(d.length / data.length))
+        .attr('width', (d) => x(d.x1) - x(d.x0) - 1)
+        .attr('height', (d) => y(0) - y(d.length / data.length));
 
-      svg.append("path")
+      svg
+        .append('path')
         .datum(density)
-        .attr("fill", "none")
-        .attr("stroke", "#000")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-linejoin", "round")
-        .attr("d", line);
+        .attr('fill', 'none')
+        .attr('stroke', '#000')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('d', line);
 
-      svg.append("g")
-        .call(xAxis);
+      svg.append('g').call(xAxis);
 
-      svg.append("g")
-        .call(yAxis);
-
+      svg.append('g').call(yAxis);
 
       // svg.exit().remove(); // remove unnecessary data & dom nodes
     }
   }, [data]);
   // jsx
   return (
-    <svg className="d3-component" ref={d3Container} width={width} height={height} />
+    <svg
+      className="d3-component"
+      ref={d3Container}
+      width={width}
+      height={height}
+    />
   );
 };
 
@@ -123,7 +136,7 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       setData(jsonData);
-    }
+    };
     getData();
   }, []);
   // jsx

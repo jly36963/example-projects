@@ -1,4 +1,3 @@
-
 // ---------
 // imports
 // ---------
@@ -23,7 +22,7 @@ const Todo = ({ todo, index, completeTodo, removeTodo }) => {
       </div>
     </div>
   );
-}
+};
 
 // ---------
 // todoform functional component
@@ -38,7 +37,7 @@ const TodoForm = ({ addTodo }) => {
     if (!value) return; // if no value, end function
     addTodo(value); // add todo function (destructured from props)
     setValue(''); // reset form value
-  }
+  };
   // jsx
   return (
     <form onSubmit={handleSubmit}>
@@ -47,11 +46,11 @@ const TodoForm = ({ addTodo }) => {
         className="input"
         value={value}
         placeholder="Add Todo Item"
-        onChange={e => setValue(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
       />
     </form>
-  )
-}
+  );
+};
 
 // ---------
 // app functional component
@@ -62,15 +61,15 @@ const App = () => {
   const [todos, setTodos] = useState([
     {
       text: 'Learn react',
-      isCompleted: false
+      isCompleted: false,
     },
     {
       text: 'Learn express',
-      isCompleted: false
+      isCompleted: false,
     },
     {
       text: 'Learn elasticsearch',
-      isCompleted: false
+      isCompleted: false,
     },
   ]);
   // addTodo function
@@ -79,7 +78,7 @@ const App = () => {
     const newTodos = [...todos, { text, isCompleted: false }];
     // update state with new array
     setTodos(newTodos);
-  }
+  };
   // completeTodo function
   const completeTodo = (index) => {
     // get current array of todos
@@ -87,8 +86,8 @@ const App = () => {
     // change attribute of selected todo
     newTodos[index].isCompleted = true;
     // update state with updated array
-    setTodos(newTodos)
-  }
+    setTodos(newTodos);
+  };
   // removeTodo function
   const removeTodo = (index) => {
     // get current array of todos
@@ -97,7 +96,7 @@ const App = () => {
     newTodos.splice(index, 1);
     // update state with updated array
     setTodos(newTodos);
-  }
+  };
 
   return (
     <div className="app">
@@ -115,6 +114,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;

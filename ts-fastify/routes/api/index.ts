@@ -1,5 +1,5 @@
 // imports
-import auth from "../../middleware/auth";
+import auth from '../../middleware/auth';
 
 const routes = async (app, options) => {
   // ---------
@@ -10,7 +10,7 @@ const routes = async (app, options) => {
   // @desc -- return 200 OK
   // @access -- public
 
-  app.get("/", async (request, reply) => {
+  app.get('/', async (request, reply) => {
     return reply.status(200).send({});
   });
 
@@ -18,8 +18,8 @@ const routes = async (app, options) => {
   // @desc -- return 'Hello World' (with preHandler) (shorthand declaration)
   // @access -- protected
 
-  app.get("/hello", { preHandler: [auth] }, async (request, reply) => {
-    return reply.status(200).send({ message: "Hello world!" });
+  app.get('/hello', { preHandler: [auth] }, async (request, reply) => {
+    return reply.status(200).send({ message: 'Hello world!' });
   });
 
   // @route -- GET /api/hello2
@@ -27,11 +27,11 @@ const routes = async (app, options) => {
   // @access -- protected
 
   app.route({
-    method: "GET",
-    url: "/hello2",
+    method: 'GET',
+    url: '/hello2',
     preHandler: [auth],
     handler: async (request, reply) => {
-      return reply.status(200).send({ message: "Hello world!" });
+      return reply.status(200).send({ message: 'Hello world!' });
     },
   });
 
@@ -39,7 +39,7 @@ const routes = async (app, options) => {
   // @desc -- take name (body) and return greeting
   // @access -- protected
 
-  app.post("/greet", { preHandler: [auth] }, (request, reply) => {
+  app.post('/greet', { preHandler: [auth] }, (request, reply) => {
     try {
       const { name } = request.body;
       const greeting = `Hello there, ${name}!`; // create greeting
@@ -54,7 +54,7 @@ const routes = async (app, options) => {
   // @desc -- return query
   // @access -- public
 
-  app.get("/search", async (request, reply) => {
+  app.get('/search', async (request, reply) => {
     try {
       const { query } = request;
       return reply.status(200).send({ query });

@@ -16,11 +16,11 @@ npm i --save \
 
 ## middlewares
 
-* joi -- validation
-* inert -- static file serving
-* boom -- error handling
-* pino -- logging
-* bell -- authentication
+- joi -- validation
+- inert -- static file serving
+- boom -- error handling
+- pino -- logging
+- bell -- authentication
 
 ## validation (joi)
 
@@ -32,39 +32,30 @@ const Joi = require('@hapi/joi');
 
 // validation
 const paramsSchema = Joi.object({
-  id: Joi.string().guid()
+  id: Joi.string().guid(),
 });
 
 const querySchema = Joi.object({
-  limit: Joi.number().integer().min(1).max(100).default(10)
-})
+  limit: Joi.number().integer().min(1).max(100).default(10),
+});
 
 const payloadSchema = Joi.object({
   firstName: Joi.string().min(2).max(30),
   lastName: Joi.string().min(2).max(30),
-  username: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
-    .required(),
-  password: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+  username: Joi.string().alphanum().min(3).max(30).required(),
+  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
   repeat_password: Joi.ref('password'),
-  access_token: [
-    Joi.string(),
-    Joi.number()
-  ],
-  birth_year: Joi.number()
-    .integer()
-    .min(1900)
-    .max(2013),
-  email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-  })
-    .with('username', 'birth_year')
-    .xor('password', 'access_token')
-    .with('password', 'repeat_password')
-    .required();
+  access_token: [Joi.string(), Joi.number()],
+  birth_year: Joi.number().integer().min(1900).max(2013),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ['com', 'net'] },
+  }),
+})
+  .with('username', 'birth_year')
+  .xor('password', 'access_token')
+  .with('password', 'repeat_password')
+  .required();
 
 // route
 module.exports = (server) => {
@@ -74,18 +65,18 @@ module.exports = (server) => {
     handler: (request, h) => {
       const body = request.payload;
       console.log(body);
-      return { data: body, error: null }
+      return { data: body, error: null };
     },
     options: {
       validate: {
         // headers: true, // no validation
         // params: paramsSchema, // validate params
         // query: querySchema, // validate query
-        payload: payloadSchema // validate payload
-      }
-    }
-  })
-}
+        payload: payloadSchema, // validate payload
+      },
+    },
+  });
+};
 ```
 
 ## static file server (inert)
@@ -93,7 +84,7 @@ module.exports = (server) => {
 ```js
 // imports
 const Hapi = require('@hapi/hapi');
-const Inert = require('@hapi/inert')
+const Inert = require('@hapi/inert');
 // server initialize function
 const init = async () => {
   // register middleware
@@ -107,8 +98,8 @@ const init = async () => {
         path: '.',
         redirectToSlash: true,
         index: true,
-      }
-    }
+      },
+    },
   });
   // start server
   await server.start();
@@ -117,7 +108,6 @@ const init = async () => {
 };
 // initialize
 init();
-
 ```
 
 ## dynamically load routes by filename
@@ -132,32 +122,32 @@ const init = async () => {
   // initialize server
   const server = Hapi.server({
     port: 5000,
-    host: 'localhost'
+    host: 'localhost',
   });
   // register plugins
-  await server.register(Inert);  
+  await server.register(Inert);
   // routes
   const routeFilePaths = [
     // GET /api/ (none)
-    '/api/', 
+    '/api/',
     // POST /api/greet (payload: { name })
-    '/api/greet', 
+    '/api/greet',
     // GET /api/home (redirect to '/')
-    '/api/home', 
+    '/api/home',
     // GET /api/store/search (query: { k })
-    '/api/store/search', 
+    '/api/store/search',
     // GET /api/user/{id} (params: { id })
-    '/api/user/', 
+    '/api/user/',
     // GET / (static file server, uses files in '/public')
     '/',
     // * * (return 404 error)
-    '/not-found', 
-  ]
-  routeFilePaths.forEach(routeFilePath => {
-    console.log(`adding route ${routeFilePath}`)
+    '/not-found',
+  ];
+  routeFilePaths.forEach((routeFilePath) => {
+    console.log(`adding route ${routeFilePath}`);
     const addRouteToServer = require(`./routes${routeFilePath}`);
     addRouteToServer(server); // uses server param to run function that adds route.
-  })
+  });
 
   // start server
   await server.start();
@@ -181,7 +171,7 @@ module.exports = (server) => {
     path: '/api/', // path (allows for parameters) ('/users/${userId}') ('/users/${userId?}')
     handler: (request, h) => {
       return { data: 'Hello World!', error: null };
-    }
+    },
   });
 };
 ```
@@ -197,7 +187,7 @@ const init = async () => {
   // initialize server
   const server = Hapi.server({
     port: 5000,
-    host: 'localhost'
+    host: 'localhost',
   });
   // register plugins
   await server.register([
@@ -210,8 +200,8 @@ const init = async () => {
     // not found
     { plugin: require('./api/not-found'), options: {} },
     // pino logger
-    { plugin: require('hapi-pino'), options: { prettyPrint: true } }
-  ]);  
+    { plugin: require('hapi-pino'), options: { prettyPrint: true } },
+  ]);
 
   // start server
   await server.start();

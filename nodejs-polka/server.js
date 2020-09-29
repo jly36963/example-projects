@@ -7,7 +7,7 @@ const json = require('body-parser');
 app.use(json());
 
 // add routes
-app.use('/api', require('./routes/api/index'))
+app.use('/api', require('./routes/api/index'));
 
 // listen
 app.listen(port); // synchronous? (not a promise)

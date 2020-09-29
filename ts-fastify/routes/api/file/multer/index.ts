@@ -1,6 +1,6 @@
 // imports
-import auth from "../../../../middleware/auth";
-import multer from "fastify-multer";
+import auth from '../../../../middleware/auth';
+import multer from 'fastify-multer';
 const upload = multer();
 
 const routes = async (app, options) => {
@@ -12,8 +12,8 @@ const routes = async (app, options) => {
   // @access -- protected
 
   app.post(
-    "/single",
-    { preHandler: [auth, upload.single("file")] },
+    '/single',
+    { preHandler: [auth, upload.single('file')] },
     async (request, reply) => {
       try {
         const { originalname: filename } = request.file;
@@ -22,7 +22,7 @@ const routes = async (app, options) => {
         console.log(err);
         return reply.status(500).send({});
       }
-    }
+    },
   );
 
   // @route -- POST /api/file/multer/single
@@ -30,8 +30,8 @@ const routes = async (app, options) => {
   // @access -- protected
 
   app.post(
-    "/array",
-    { preHandler: [auth, upload.array("files")] },
+    '/array',
+    { preHandler: [auth, upload.array('files')] },
     async (request, reply) => {
       try {
         const { files } = request;
@@ -44,7 +44,7 @@ const routes = async (app, options) => {
         console.log(err);
         return reply.status(500).send({});
       }
-    }
+    },
   );
 };
 

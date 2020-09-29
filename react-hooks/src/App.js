@@ -1,8 +1,8 @@
 // package imports
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // components
-import landing from "./components/landing/landing";
+import landing from './components/landing/landing';
 import count from './components/usestate/count/count';
 import todo from './components/usestate/todo/todo';
 import dom from './components/useeffect/dom/dom';
@@ -22,7 +22,7 @@ const containerStyle = {
   alignItems: 'center',
   height: '100vh',
   fontSize: '32px',
-}
+};
 
 const childStyle = {
   textAlign: 'center',
@@ -32,8 +32,8 @@ const childStyle = {
   border: '1px solid #ddd',
   borderRadius: '3px',
   padding: '20px',
-  margin: 'auto'
-}
+  margin: 'auto',
+};
 
 // component
 const App = () => {
@@ -60,7 +60,6 @@ const App = () => {
         </BrowserRouter>
       </div>
     </div>
-    
   );
 };
 export default App;

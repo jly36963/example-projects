@@ -10,20 +10,16 @@ const upload = multer();
 // @desc -- get file from multi-part form request
 // @access -- public
 
-router.post(
-  '/',
-  upload.single('file'),
-  (req, res) => {
-    const { file } = req;
-    // fieldname -- form field name (argument for upload.single())
-    // originalname -- file name
-    // buffer -- data (bytes)
-    console.log(file);
-    try {
-      return res.json({ data: file.originalname, error: null })
-    } catch (err) {
-      return res.status(500).json({ data: null, error: err.message })
-    }
+router.post('/', upload.single('file'), (req, res) => {
+  const { file } = req;
+  // fieldname -- form field name (argument for upload.single())
+  // originalname -- file name
+  // buffer -- data (bytes)
+  console.log(file);
+  try {
+    return res.json({ data: file.originalname, error: null });
+  } catch (err) {
+    return res.status(500).json({ data: null, error: err.message });
   }
-);
+});
 module.exports = router;

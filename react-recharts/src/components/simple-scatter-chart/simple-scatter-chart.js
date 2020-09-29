@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 // example
 // http://recharts.org/en-US/examples/SimpleLineChart
@@ -22,17 +30,36 @@ const App = () => {
         width={400}
         height={400}
         margin={{
-          top: 20, right: 20, bottom: 20, left: 20,
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20,
         }}
       >
         <CartesianGrid />
-        <XAxis type="number" dataKey="x" name="stature" unit="cm" tick={{ fontSize: 12 }}/>
-        <YAxis type="number" dataKey="y" name="weight" unit="kg" tick={{ fontSize: 12 }} />
-        <Tooltip cursor={{ strokeDasharray: '3 3' }} labelStyle={{ fontSize: 14 }} itemStyle={{ fontSize: 12 }} />
+        <XAxis
+          type="number"
+          dataKey="x"
+          name="stature"
+          unit="cm"
+          tick={{ fontSize: 12 }}
+        />
+        <YAxis
+          type="number"
+          dataKey="y"
+          name="weight"
+          unit="kg"
+          tick={{ fontSize: 12 }}
+        />
+        <Tooltip
+          cursor={{ strokeDasharray: '3 3' }}
+          labelStyle={{ fontSize: 14 }}
+          itemStyle={{ fontSize: 12 }}
+        />
         <Scatter name="A school" data={data} fill="#8884d8" />
       </ScatterChart>
     </div>
-  )
-}
+  );
+};
 
 export default App;

@@ -36,13 +36,28 @@ const InfoForm = () => {
   // jsx
   return (
     <form onSubmit={onSubmit} className="todo-form">
-      <input type="text" name="firstName" value={formValues.firstName} onChange={onChange} />
-      <input type="text" name="lastName" value={formValues.lastName} onChange={onChange} />
-      <input type="text" name="email" value={formValues.email} onChange={onChange} />
+      <input
+        type="text"
+        name="firstName"
+        value={formValues.firstName}
+        onChange={onChange}
+      />
+      <input
+        type="text"
+        name="lastName"
+        value={formValues.lastName}
+        onChange={onChange}
+      />
+      <input
+        type="text"
+        name="email"
+        value={formValues.email}
+        onChange={onChange}
+      />
       <button type="submit">Update Info</button>
     </form>
   );
-}
+};
 
 // -------------
 // showinfo
@@ -56,8 +71,8 @@ const ShowInfo = () => {
       <p>Last Name: {info.lastName}</p>
       <p>Email: {info.email}</p>
     </div>
-  )
-}
+  );
+};
 
 // -------------
 // app
@@ -72,8 +87,8 @@ const App = () => {
         <ShowInfo />
       </div>
     </div>
-  )
-}
+  );
+};
 
 // -------------
 // provider
@@ -81,20 +96,16 @@ const App = () => {
 
 const StoreProvider = ({ children }) => {
   const [info, setInfo] = useState(initialState);
-  return (
-    <Store.Provider value={{ info, setInfo }}>
-      {children}
-    </Store.Provider>
-  )
-}
+  return <Store.Provider value={{ info, setInfo }}>{children}</Store.Provider>;
+};
 
 const ConnectedApp = () => {
   return (
     <StoreProvider>
       <App />
     </StoreProvider>
-  )
-}
+  );
+};
 
 export default ConnectedApp;
 

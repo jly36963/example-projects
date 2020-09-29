@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const routes = [
   { route: '/intro-line-chart', text: 'line chart' },
@@ -11,15 +11,18 @@ const routes = [
   { route: '/polar-area-chart', text: 'polar area chart' },
   { route: '/doughnut-chart', text: 'doughnut chart' },
   { route: '/mixed-chart', text: 'mixed chart' },
-
-]
+];
 
 const Landing = ({ history }) => {
   return (
     <>
-      {routes.map(r => (
+      {routes.map((r) => (
         <div key={r.text}>
-          <button onClick={() => { history.push(r.route) }}>
+          <button
+            onClick={() => {
+              history.push(r.route);
+            }}
+          >
             {r.text}
           </button>
           <br />

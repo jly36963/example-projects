@@ -1,5 +1,5 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import { grey } from "@material-ui/core/colors";
+import { createMuiTheme } from '@material-ui/core/styles';
+import { grey } from '@material-ui/core/colors';
 
 // theme (for material-ui)
 const lightTheme = createMuiTheme({
@@ -15,8 +15,8 @@ const lightTheme = createMuiTheme({
       dark: grey[700],
     },
     background: {
-      default: "#ddd",
-      paper: "#fff",
+      default: '#ddd',
+      paper: '#fff',
     },
   },
 });
@@ -27,7 +27,7 @@ const darkTheme = createMuiTheme({
     fontSize: 12,
   },
   palette: {
-    type: "dark",
+    type: 'dark',
     // primary: {},
     secondary: {
       light: grey[300],
@@ -35,8 +35,8 @@ const darkTheme = createMuiTheme({
       dark: grey[700],
     },
     background: {
-      default: "#111",
-      paper: "#222",
+      default: '#111',
+      paper: '#222',
     },
   },
 });
