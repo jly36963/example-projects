@@ -2,9 +2,16 @@
 **/.env
 **/*.pem
 
-# npm
+# nodejs
 **/node_modules/
 **/build
+
+# python
+**/__pycache__
+
+# go
+**/*.exe
+**/tmp
 
 # vscode
 **/.vscode/
@@ -16,9 +23,3 @@
 **/__sapper__
 **/.next
 **/.nuxt
-
-# old / unused notes
-**/zzz*/
-
-# python
-**/__pycache__
