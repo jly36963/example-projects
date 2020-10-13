@@ -69,7 +69,7 @@ func AddRouter(r *mux.Router) {
 		routeParams := mux.Vars(r)
 		id, _ := strconv.Atoi(routeParams["id"])
 		// get user from db
-		// ** db fetch logic here ***
+		// *** db fetch logic here ***
 		// payload
 		payload, err := json.Marshal(struct {
 			Id   int    `json:"id"`
