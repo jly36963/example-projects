@@ -3,6 +3,7 @@ package api
 import (
 	// standard packages
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -103,6 +104,70 @@ func AddRouter(r *mux.Router) {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write(payload)
 	})
+
+	// @route -- GET /api/store/search
+	// @desc -- return query params
+	// @access -- public
+	sr.HandleFunc("/store/search", func(w http.ResponseWriter, r *http.Request) {
+		// get query params
+		query := r.URL.Query()
+		q := query.Get("q")
+		// payload
+		payload, err := json.Marshal(struct {
+			Q string `json:"q"`
+		}{
+			q,
+		})
+		if err != nil {
+			log.Println(err)
+		}
+		// response
+		w.Header().Set("Content-Type", "application/json") // content type
+		w.WriteHeader(http.StatusOK)                       // status code
+		w.Write(payload)                                   // body
+	}).Methods("GET")
+
+	type User struct {
+		Id        int    `json:"id"`
+		FirstName string `json:"firstName"`
+		LastName  string `json:"lastName"`
+	}
+
+	// @route -- POST /api/user/create
+	// @desc -- save user to db and return newly created user
+	// @access -- public
+	sr.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {
+		var user User
+		// body -> []bytes -> struct
+		b, err1 := ioutil.ReadAll(r.Body)
+		if err1 != nil {
+			http.Error(w, err1.Error(), http.StatusInternalServerError)
+			return
+		}
+		err2 := json.Unmarshal(b, &user)
+		if err2 != nil {
+			http.Error(w, err2.Error(), http.StatusInternalServerError)
+			return
+		}
+		// validate user info
+		// *** validation logic here ***
+		// store user in db
+		// *** db insert logic here ***
+		newUser := User{
+			46,             // id
+			user.FirstName, // firstName
+			user.LastName,  // lastName
+		}
+		// payload
+		payload, err := json.Marshal(newUser)
+		if err != nil {
+			log.Println(err)
+		}
+		// response
+		w.Header().Set("Content-Type", "application/json") // content type
+		w.WriteHeader(http.StatusOK)                       // status code
+		w.Write(payload)                                   // body
+	}).Methods("POST")
 
 }
 

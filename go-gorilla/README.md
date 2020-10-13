@@ -6,9 +6,6 @@
 
 ## Todo
 
-- query
-- post
-
 ## Startup
 
 ```bash
