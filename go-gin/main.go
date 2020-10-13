@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strings"
 
 	// external packages
 	"github.com/gin-gonic/gin" // gin framework
@@ -19,7 +20,7 @@ import (
 
 	// local packages
 	"go-gin/middleware/logger"
-	"go-gin/routes/api/index"
+	"go-gin/routes/api"
 )
 
 // ---
@@ -39,14 +40,26 @@ func main() {
 	// middleware
 	r.Use(gin.Recovery())                               // use default recovery
 	r.Use(gin.LoggerWithFormatter(logger.PrettyLogger)) // use custom logger
+	// multipart memory threshold
+	r.MaxMultipartMemory = 8 << 20 // 8 MiB (default is 32 MiB)
 	// add router
-	index.Routes(r) // index router
-	// serve html page (SPA)
+	api.Routes(r) // index router
+	// spa and api 404 handler
 	r.LoadHTMLFiles("client/build/index.html")
 	r.NoRoute(func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Gin Example",
-		})
+		// get path and determine if it is an api request
+		path := c.Request.URL.Path
+		isApi := strings.HasPrefix(path, "/api")
+		if isApi {
+			// unknown api route
+			c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		} else {
+			// serve html page (SPA)
+			c.HTML(http.StatusOK, "index.html", gin.H{
+				"title": "Gin Example",
+			})
+		}
+
 	})
 
 	// server config

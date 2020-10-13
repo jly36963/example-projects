@@ -15,7 +15,7 @@ dev:
 	air
 
 run: 
-	go run $(ENTRY)
+	GIN_MODE=release go run $(ENTRY)
 
 build: 
 	go build -o $(OUTPUT)
