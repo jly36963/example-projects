@@ -1,7 +1,3 @@
-// ---
-// entry point
-// ---
-
 package main
 
 // ---
@@ -10,21 +6,25 @@ package main
 
 import (
 	// standard packages
-	"encoding/json"
+
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"runtime"
-	"time"
 
 	// external packages
 	"github.com/gin-gonic/gin" // gin framework
 	"github.com/joho/godotenv" // dotenv
 
 	// local packages
+	"go-gin/middleware/logger"
 	"go-gin/routes/api/index"
 )
+
+// ---
+// main
+// ---
 
 func main() {
 	// runtime details
@@ -37,8 +37,8 @@ func main() {
 	// instantiate gin server
 	r := gin.New()
 	// middleware
-	r.Use(gin.Recovery())                        // use default recovery
-	r.Use(gin.LoggerWithFormatter(prettyLogger)) // use custom logger
+	r.Use(gin.Recovery())                               // use default recovery
+	r.Use(gin.LoggerWithFormatter(logger.PrettyLogger)) // use custom logger
 	// add router
 	index.Routes(r) // index router
 	// serve html page (SPA)
@@ -76,48 +76,9 @@ func getRuntimeDetails() {
 }
 
 // ---
-// formatted logger
-// ---
-
-type formattedLogEntry struct {
-	Method   string `json:"method"`
-	Path     string `json:"path"`
-	Status   int    `json:"status"`
-	Duration string `json:"duration"`
-	Time     string `json:"time"`
-	Error    string `json:"error"`
-}
-
-func prettyLogger(param gin.LogFormatterParams) string {
-	// pretty json
-	entry, _ := json.MarshalIndent(formattedLogEntry{
-		param.Method,
-		param.Path,
-		param.StatusCode,
-		fmt.Sprintf("%s", param.Latency),
-		param.TimeStamp.Format(time.RFC1123),
-		param.ErrorMessage,
-	}, "", "  ")
-	// return entry
-	return fmt.Sprintf("%s\n\n", entry)
-}
-
-// gin docs -- https://github.com/gin-gonic/gin
-
-// ---
 // gin default instance
 // ---
 
 /*
 r := gin.Default() // gin instance with logger and recovery
 */
-
-// ---
-// todo
-// ---
-
-// serve file -- https://github.com/gin-gonic/gin#serving-static-files
-// handle file -- https://github.com/gin-gonic/gin#upload-files
-// post
-// serve data from file -- https://github.com/gin-gonic/gin#serving-static-files
-// grouping routes -- https://github.com/gin-gonic/gin#grouping-routes

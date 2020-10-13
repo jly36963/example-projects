@@ -1,6 +1,16 @@
 # Gin
 
-## startup
+https://github.com/gin-gonic/gin
+
+## Todo
+
+- serve file -- https://github.com/gin-gonic/gin#serving-static-files
+- handle file -- https://github.com/gin-gonic/gin#upload-files
+- post
+- serve data from file -- https://github.com/gin-gonic/gin#serving-static-files
+- grouping routes -- https://github.com/gin-gonic/gin#grouping-routes
+
+## Startup
 
 ```bash
 # dev (requires "air")

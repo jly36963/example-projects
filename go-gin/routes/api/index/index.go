@@ -2,7 +2,6 @@ package index
 
 import (
 	// standard packages
-
 	"net/http"
 
 	// local packages
