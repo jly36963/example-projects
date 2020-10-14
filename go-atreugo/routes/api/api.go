@@ -1,48 +1,49 @@
 package api
 
-// imports
 import (
 	// standard packages
 	"encoding/json"
 	"fmt"
 	"strconv"
 
-	// local packages
-	"go-fasthttp/middleware/auth"
-
 	// external packages
-	"github.com/fasthttp/router"
+	"github.com/savsgio/atreugo/v11"
 	"github.com/valyala/fasthttp"
+
+	// local packages
+	"go-atreugo/middleware/auth"
 )
 
-func AddRouter(r *router.Router) {
+func AddRouter(r *atreugo.Atreugo) {
 
 	// subrouter (group)
-	sr := r.Group("/api")
+	sr := r.NewGroupPath("/api")
 
 	// @route -- GET /api
 	// @desc -- return 200 OK
 	// @access -- public
-	sr.GET("", func(ctx *fasthttp.RequestCtx) {
+	sr.GET("", func(ctx *atreugo.RequestCtx) error {
 		// payload
 		payload, _ := json.Marshal(struct{}{})
 		// response
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
+		return nil
 	})
 
 	// @route -- GET /api/hello
 	// @desc -- redirect to "/api/hello-world"
 	// @access -- public
-	sr.GET("/hello", func(ctx *fasthttp.RequestCtx) {
+	sr.GET("/hello", func(ctx *atreugo.RequestCtx) error {
 		ctx.Redirect("/hello-world", fasthttp.StatusMovedPermanently)
+		return nil
 	})
 
 	// @route -- GET /api/hello-world
 	// @desc -- return "Hello World!"
 	// @access -- public
-	sr.GET("/hello-world", func(ctx *fasthttp.RequestCtx) {
+	sr.GET("/hello-world", func(ctx *atreugo.RequestCtx) error {
 		// payload
 		payload, _ := json.Marshal(struct {
 			Message string `json:"message"`
@@ -53,12 +54,13 @@ func AddRouter(r *router.Router) {
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
+		return nil
 	})
 
 	// @route -- GET /api/store/search
 	// @desc -- return query param
 	// @access -- public
-	sr.GET("/store/search", func(ctx *fasthttp.RequestCtx) {
+	sr.GET("/store/search", func(ctx *atreugo.RequestCtx) error {
 		// query
 		q := string(ctx.QueryArgs().Peek("q"))
 		// payload
@@ -71,6 +73,7 @@ func AddRouter(r *router.Router) {
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
+		return nil
 	})
 
 	type User struct {
@@ -82,8 +85,12 @@ func AddRouter(r *router.Router) {
 	// @route -- GET /api/user/:id
 	// @desc -- return user
 	// @access -- private
-	sr.GET("/user/{id}", auth.CheckToken(func(ctx *fasthttp.RequestCtx) {
-		id, _ := strconv.Atoi(fmt.Sprintf("%s", ctx.UserValue("id")))
+	sr.GET("/user/{id}", func(ctx *atreugo.RequestCtx) error {
+		id, err := strconv.Atoi(fmt.Sprintf("%s", ctx.UserValue("id")))
+		if err != nil {
+			ctx.Error("Error while fetching user", fasthttp.StatusInternalServerError)
+			return nil
+		}
 		// get user from db
 		// *** db fetch logic here ***
 		user := User{
@@ -92,22 +99,28 @@ func AddRouter(r *router.Router) {
 			"Hatake",  // lastName
 		}
 		// payload
-		payload, _ := json.Marshal(user)
+		payload, err2 := json.Marshal(user)
+		if err2 != nil {
+			ctx.Error("Error while fetching user", fasthttp.StatusInternalServerError)
+			return nil
+		}
 		// response
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
-	}))
+		return nil
+	}).UseBefore(auth.CheckToken)
 
 	// @route -- POST /api/user/create
 	// @desc -- add user to db and return new user
 	// @access -- private
-	sr.POST("/user/create", auth.CheckToken(func(ctx *fasthttp.RequestCtx) {
+	sr.POST("/user/create", func(ctx *atreugo.RequestCtx) error {
 		var user User
 		b := ctx.PostBody() // []bytes
 		err1 := json.Unmarshal(b, &user)
 		if err1 != nil {
 			ctx.Error("Error while creating user", fasthttp.StatusInternalServerError)
+			return nil
 		}
 		// get user from db
 		// *** db fetch logic here ***
@@ -120,23 +133,25 @@ func AddRouter(r *router.Router) {
 		payload, err2 := json.Marshal(newUser)
 		if err2 != nil {
 			ctx.Error("Error while fetching new user", fasthttp.StatusInternalServerError)
+			return nil
 		}
 		// response
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
-	}))
+		return nil
+	}).UseBefore(auth.CheckToken)
 
 	// @route -- POST /api/file/upload
 	// @desc -- handle file upload
 	// @access -- private
 	// @notes -- to save: `fasthttp.SaveMultipartFile(file, "desired-filename.ext")`
-	sr.POST("/file/upload", auth.CheckToken(func(ctx *fasthttp.RequestCtx) {
+	sr.POST("/file/upload", func(ctx *atreugo.RequestCtx) error {
 		// get file from multipart form
 		file, err := ctx.FormFile("file")
 		if err != nil {
 			ctx.Error("Error while processing file", fasthttp.StatusInternalServerError)
-			return
+			return nil
 		}
 		fn := file.Filename
 		// payload
@@ -149,17 +164,18 @@ func AddRouter(r *router.Router) {
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
-	}))
+		return nil
+	}).UseBefore(auth.CheckToken)
 
 	// @route -- POST /api/file/upload-multiple
 	// @desc -- handle file uploads
 	// @access -- private
-	sr.POST("/file/upload-multiple", auth.CheckToken(func(ctx *fasthttp.RequestCtx) {
+	sr.POST("/file/upload-multiple", func(ctx *atreugo.RequestCtx) error {
 		// get files from multipart form
 		form, err := ctx.MultipartForm()
 		if err != nil {
 			ctx.Error("Error while processing file", fasthttp.StatusInternalServerError)
-			return
+			return nil
 		}
 		fns := []string{}
 		filesMap := form.File
@@ -179,7 +195,9 @@ func AddRouter(r *router.Router) {
 		ctx.SetContentType("application/json")
 		ctx.SetStatusCode(fasthttp.StatusOK)
 		ctx.SetBody(payload)
-	}))
+		return nil
+	}).UseBefore(auth.CheckToken)
+
 }
 
 // ---

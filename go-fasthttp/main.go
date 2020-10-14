@@ -6,6 +6,7 @@ package main
 
 import (
 	// standard packages
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -51,6 +52,7 @@ func main() {
 	// add middleware
 	handler := r.Handler // *fasthttp.RequestCtx
 	handler = logger.PrettyLogger(handler)
+	handler = NotFoundHandler(handler)
 	// listen
 	fasthttp.ListenAndServe(p, handler)
 }
@@ -71,6 +73,25 @@ func getRuntimeDetails() {
 	// print each detail (for loop)
 	for _, d := range details {
 		fmt.Println(d)
+	}
+}
+
+// ---
+// NotFound handler
+// ---
+
+func NotFoundHandler(h fasthttp.RequestHandler) fasthttp.RequestHandler {
+	return func(ctx *fasthttp.RequestCtx) {
+		// original handler
+		h(ctx)
+		if ctx.Response.StatusCode() == fasthttp.StatusNotFound {
+			// payload
+			payload, _ := json.Marshal(struct{}{})
+			// response
+			ctx.SetContentType("application/json")
+			ctx.SetStatusCode(fasthttp.StatusNotFound)
+			ctx.SetBody(payload)
+		}
 	}
 }
 
