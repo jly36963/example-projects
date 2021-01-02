@@ -55,7 +55,7 @@ const deleteNinja = async (id: number): Promise<any> => {
 };
 
 // ---
-// jutsu
+// jutsus
 // ---
 
 const getJutsu = async (id: number): Promise<any> => {

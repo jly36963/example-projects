@@ -1,0 +1,80 @@
+# ---
+# query
+# ---
+
+type Query {
+  hello: String!
+  ninja(id: ID!): Ninja
+  jutsu(id: ID!): Jutsu
+}
+
+# ---
+# mutation
+# ---
+
+type Mutation {
+  # ninja
+  insertNinja(ninja: NinjaNew!): Ninja
+  updateNinja(id: ID!, updates: NinjaUpdates): Ninja
+  deleteNinja(id: ID!): Ninja
+  # jutsu
+  insertJutsu(jutsu: JutsuNew!): Jutsu
+  updateJutsu(id: ID!, updates: JutsuUpdates): Jutsu
+  deleteJutsu(id: ID!): Jutsu
+  # ninja & jutsu
+  addKnownJutsu(ninja_id: ID!, jutsu_id: ID!): Ninja
+  removeKnownJutsu(ninja_id: ID!, jutsu_id: ID!): Ninja
+}
+
+# ---
+# ninja
+# ---
+
+type Ninja {
+  # unique id
+  id: ID!
+  # first name
+  first_name: String!
+  # last name
+  last_name: String!
+  # jutsu known by ninja
+  jutsus: [Jutsu!]
+}
+
+input NinjaNew {
+  first_name: String!
+  last_name: String!
+}
+
+input NinjaUpdates {
+  # fields that can be updated
+  first_name: String
+  last_name: String
+}
+
+# ---
+# jutsu
+# ---
+
+type Jutsu {
+  # unique id
+  id: ID!
+  # name of jutsu
+  name: String!
+  # chakra nature of jutsu
+  chakra_nature: String!
+  # description of jutsu
+  description: String!
+}
+
+input JutsuNew {
+  name: String!
+  chakra_nature: String!
+  description: String
+}
+
+input JutsuUpdates {
+  name: String
+  chakra_nature: String
+  description: String
+}

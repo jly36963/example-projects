@@ -1,36 +1,41 @@
-# Express
+# py ariadne fastapi
 
-A simple express-graphql app with examples of basic usage, written in TS.
+## setup
 
-## Setup
+- make install
+- make migrate
 
-- populate `.env` file. template in `dev.env`
-- `make install`
+## startup (dev)
 
-## Migrations (dev)
+- make dev
 
-- `make migrate`
+## startup (prod)
 
-## Startup (dev)
+- make run
 
-- `make dev`
+## todo
 
-## Startup (prod)
+- make join/populate logic work
+- convert db to async
 
-- `make build`
-- `make run`
+## tools
 
-## Useful Notes
+- [ariadne](https://ariadnegraphql.org/)
+- [starlette](https://www.starlette.io/)
+- [fastapi](https://fastapi.tiangolo.com/)
+- [orator](https://orator-orm.com/)
+- [uvicorn](https://www.uvicorn.org/)
+- [arrow](https://arrow.readthedocs.io/en/stable/)
 
-- [knex](<https://github.com/jly36963/notes/blob/master/js--db/postgres(knex).js>)
-- [ts](https://github.com/jly36963/notes/blob/master/ts/typescript-basics.ts)
-- [express-graphql](https://marmelab.com/blog/2017/09/06/dive-into-graphql-part-iii-building-a-graphql-server-with-nodejs.html)
+## example queries
 
-## Example Queries
+### hello
 
-## graphiql
-
-Go to `localhost:5000/graphql`. (port 5000 is default, can be changed in `.env`)
+```graphql
+query Hello {
+  hello
+}
+```
 
 ### insert ninja
 

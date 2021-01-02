@@ -1,4 +1,5 @@
 type Query {
+  # get a ninja by id
   ninja(id: ID!): Ninja
 }
 
