@@ -1,5 +1,3 @@
-# standard library
-import json
 # package
 import arrow
 # models
