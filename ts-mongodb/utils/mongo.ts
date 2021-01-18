@@ -134,7 +134,7 @@ const getNinjaWithRelatedJutsus = async (_id: mongodb.ObjectID): Promise<Ninja> 
   return ninjaWithRelatedJutsus;
 };
 
-const getJutsuWithRelatedNinjas = async (_id: mongodb.ObjectID): Promise<Ninja> => {
+const getJutsuWithRelatedNinjas = async (_id: mongodb.ObjectID): Promise<Jutsu> => {
   const db = await getConnection();
   const [jutsuWithRelatedNinjas] = await db
     .collection(collections.NINJAS)
