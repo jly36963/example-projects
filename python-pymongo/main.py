@@ -38,10 +38,10 @@ def main():
         }
     )
     # select ninja
-    ninja = mongo_dal.get_ninja(id=inserted_ninja['_id'])
+    ninja = mongo_dal.get_ninja(_id=inserted_ninja['_id'])
     # update ninja
     updated_ninja = mongo_dal.update_ninja(
-        id=ninja['_id'],
+        _id=ninja['_id'],
         updates={
             'firstName': 'Kaka',
             'lastName': 'Sensei',
@@ -56,10 +56,10 @@ def main():
         }
     )
     # select jutsu
-    jutsu = mongo_dal.get_jutsu(id=inserted_jutsu['_id'])
+    jutsu = mongo_dal.get_jutsu(_id=inserted_jutsu['_id'])
     # update jutsu
     updated_jutsu = mongo_dal.update_jutsu(
-        id=jutsu['_id'],
+        _id=jutsu['_id'],
         updates={'description': 'A thousand birds'}
     )
     # add association
@@ -69,11 +69,11 @@ def main():
     )
     # get ninja with jutsu
     ninja_with_related_jutsu = (
-        mongo_dal.get_ninja_with_related_jutsu(id=ninja['_id'])
+        mongo_dal.get_ninja_with_related_jutsu(_id=ninja['_id'])
     )
     # get jutsu with ninjas
     jutsu_with_related_ninja = (
-        mongo_dal.get_jutsu_with_related_ninja(id=jutsu['_id'])
+        mongo_dal.get_jutsu_with_related_ninja(_id=jutsu['_id'])
     )
 
     print(

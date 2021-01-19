@@ -120,7 +120,6 @@ const getNinjaWithRelatedJutsus = async (_id: mongodb.ObjectID): Promise<Ninja> 
     .collection(collections.NINJAS)
     .aggregate([
       { $match: { _id } }, // condition
-      { $unwind: "$jutsuIds" }, // for each
       {
         $lookup: {
           from: "jutsus",
@@ -140,7 +139,6 @@ const getJutsuWithRelatedNinjas = async (_id: mongodb.ObjectID): Promise<Jutsu> 
     .collection(collections.NINJAS)
     .aggregate([
       { $match: { _id } }, // condition
-      { $unwind: "$ninjaIds" }, // for each
       {
         $lookup: {
           from: "ninjas",

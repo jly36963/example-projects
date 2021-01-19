@@ -26,8 +26,8 @@ class MongoDAL():
     # ninjas
     # ---
 
-    def get_ninja(self, id):
-        ninja = ninjas.find_one({'_id': id})
+    def get_ninja(self, _id):
+        ninja = ninjas.find_one({'_id': _id})
         return ninja
 
     def get_ninjas(self, conditions):
@@ -43,25 +43,25 @@ class MongoDAL():
         inserted_ninja = ninjas.find_one({'_id': result.inserted_id})
         return inserted_ninja
 
-    def update_ninja(self, id, updates):
+    def update_ninja(self, _id, updates):
         now = arrow.utcnow().format()
         updated_ninja = ninjas.find_one_and_update(
-            filter={'_id': id},
+            filter={'_id': _id},
             update={'$set': {**updates, 'updatedAt': now}},
             return_document=ReturnDocument.AFTER
         )
         return updated_ninja
 
-    def delete_ninja(self, id):
-        deleted_ninja = find_one_and_delete({'_id': id})
+    def delete_ninja(self, _id):
+        deleted_ninja = find_one_and_delete({'_id': _id})
         return deleted_ninja
 
     # ---
     # jutsus
     # ---
 
-    def get_jutsu(self, id):
-        jutsu = jutsus.find_one({'_id': id})
+    def get_jutsu(self, _id):
+        jutsu = jutsus.find_one({'_id': _id})
         return jutsu
 
     def get_jutsus(self, conditions):
@@ -77,17 +77,17 @@ class MongoDAL():
         inserted_jutsu = jutsus.find_one({'_id': result.inserted_id})
         return inserted_jutsu
 
-    def update_jutsu(self, id, updates):
+    def update_jutsu(self, _id, updates):
         now = arrow.utcnow().format()
         updated_jutsu = jutsus.find_one_and_update(
-            filter={'_id': id},
+            filter={'_id': _id},
             update={'$set': {**updates, 'updatedAt': now}},
             return_document=ReturnDocument.AFTER
         )
         return updated_jutsu
 
-    def delete_jutsu(self, id):
-        deleted_jutsu = find_one_and_delete({'_id': id})
+    def delete_jutsu(self, _id):
+        deleted_jutsu = find_one_and_delete({'_id': _id})
         return deleted_jutsu
 
     # ---
@@ -97,12 +97,10 @@ class MongoDAL():
     # query many-to-many
     # https://stackoverflow.com/a/39476690
 
-    def get_ninja_with_related_jutsu(self, id):
+    def get_ninja_with_related_jutsu(self, _id):
         ninja_with_related_jutsu = ninjas.aggregate([
             # condition
-            {"$match": {'_id': id}},
-            # for each
-            {'$unwind': '$jutsuIds'},
+            {"$match": {'_id': _id}},
             # with related
             {'$lookup': {
                 'from': 'jutsus',
@@ -113,12 +111,10 @@ class MongoDAL():
         ])
         return list(ninja_with_related_jutsu)
 
-    def get_jutsu_with_related_ninja(self, id):
+    def get_jutsu_with_related_ninja(self, _id):
         jutsu_with_related_ninja = jutsus.aggregate([
             # condition
-            {"$match": {'_id': id}},
-            # for each
-            {'$unwind': '$ninjaIds'},
+            {"$match": {'_id': _id}},
             # with related
             {'$lookup': {
                 'from': 'ninjas',
