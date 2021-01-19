@@ -1,5 +1,9 @@
 # gift
 
+## setup
+
+- main.go expects an image to exist at `img/lion.jpg`
+
 ## install
 
 ```bash

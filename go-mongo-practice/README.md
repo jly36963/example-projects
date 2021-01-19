@@ -1,4 +1,4 @@
-# pg
+# mongodb
 
 ## install
 

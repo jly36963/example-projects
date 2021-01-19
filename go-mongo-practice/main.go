@@ -31,7 +31,7 @@ func main() {
 	loadDotenv()
 	// get providers
 	providers := getProviders()
-	// use gorm
+	// use mongo
 	useMongo(providers)
 
 }
