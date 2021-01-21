@@ -73,7 +73,6 @@ func getProviders() (p *providers.Providers) {
 func useMongo(providers *providers.Providers) {
 
 	mongo := providers.MongoDAL
-	defer mongo.CloseConnection()
 
 	// ---
 	// insert ninja

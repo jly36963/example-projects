@@ -36,9 +36,6 @@ func main() {
 	// start server
 	startServer(providers)
 
-	// // use mongo
-	// useMongo(providers)
-
 }
 
 // ---
@@ -108,102 +105,6 @@ func startServer(providers *providers.Providers) {
 	fmt.Println("port:", port)
 	// start server
 	r.Run() // 0.0.0.0:8080 (unless PORT in .env)
-}
-
-// ---
-// mongo
-// ---
-
-func useMongo(providers *providers.Providers) {
-
-	mongo := providers.MongoDAL
-	defer mongo.CloseConnection()
-
-	// ---
-	// insert ninja
-	// ---
-
-	insertedNinja, err := mongo.InsertNinja(types.Ninja{
-		FirstName: "Kakashi",
-		LastName:  "Hatake",
-	})
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// select ninja
-	// ---
-
-	ninja, err := mongo.GetNinja(insertedNinja.ID)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// update ninja
-	// ---
-
-	updatedNinja, err := mongo.UpdateNinja(insertedNinja.ID, types.Ninja{FirstName: "Kaka", LastName: "Sensei"})
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// insert jutsu
-	// ---
-
-	insertedJutsu, err := mongo.InsertJutsu(types.Jutsu{
-		Name:         "Chidori",
-		ChakraNature: "Lightning",
-		Description:  "Lightning blade",
-	})
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// associate ninja/jutsu
-	// ---
-
-	success, err := mongo.AddKnownJutsu(insertedNinja.ID, insertedJutsu.ID)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// get ninja with jutsu
-	// ---
-
-	ninjaWithRelatedJutsu, err := mongo.GetNinjaWithRelatedJutsu(insertedNinja.ID)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// print results
-	// ---
-
-	bulkPrint(
-		"insertedNinja", stringify(insertedNinja),
-		"ninja", stringify(ninja),
-		"updatedNinja", stringify(updatedNinja),
-		"insertedJutsu", stringify(insertedJutsu),
-		"successfulAssociation", success,
-		"ninjaWithRelatedJutsu", stringify(ninjaWithRelatedJutsu),
-	)
 }
 
 // ---

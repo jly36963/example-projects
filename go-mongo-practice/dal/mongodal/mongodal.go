@@ -25,7 +25,6 @@ type IMongoDAL interface {
 	// connection
 	GetConnectionString() error
 	GetConnection() error
-	CloseConnection()
 	// ninjas
 	GetNinja(_id primitive.ObjectID) (ninja types.Ninja, err error)
 	InsertNinja(ninja types.Ninja) (insertedNinja types.Ninja, err error)
@@ -83,44 +82,51 @@ func (mongodal *MongoDAL) GetConnectionString() (err error) {
 // ---
 // connect to db
 // ---
-
-// GetConnection -- get connection string and create connection
 func (mongodal *MongoDAL) GetConnection() (err error) {
 	err = mongodal.GetConnectionString()
 	if err != nil {
 		return
 	}
 
-	// create client and connect
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// defer cancel()
+	// connect
+	ctx := context.TODO()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongodal.url))
 
-	// defer disconnect
-	// defer func() {
-	// 	if err = client.Disconnect(context.TODO()); err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }()
-
 	// ping (test connection)
-	if err = client.Ping(context.TODO(), readpref.Primary()); err != nil {
+	if err = client.Ping(ctx, readpref.Primary()); err != nil {
 		log.Fatal(err)
 	}
 
 	// set mongodal fields
 	mongodal.client = client
 	mongodal.ctx = ctx
-	mongodal.cancel = cancel
 	mongodal.ninjas = client.Database("practice").Collection("ninjas")
 	mongodal.jutsus = client.Database("practice").Collection("jutsus")
 	return
+
+	// // create client and connect
+	// ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	// // defer cancel()
+	// client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongodal.url))
+
+	// // ping (test connection)
+	// if err = client.Ping(context.TODO(), readpref.Primary()); err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// // set mongodal fields
+	// mongodal.client = client
+	// mongodal.ctx = ctx
+	// mongodal.cancel = cancel
+	// mongodal.ninjas = client.Database("practice").Collection("ninjas")
+	// mongodal.jutsus = client.Database("practice").Collection("jutsus")
+	// return
 }
 
 // CloseConnection -- close mongodb connection
-func (mongodal *MongoDAL) CloseConnection() {
-	mongodal.cancel()
-}
+// func (mongodal *MongoDAL) CloseConnection() {
+// 	mongodal.cancel()
+// }
 
 // ---
 // helper
