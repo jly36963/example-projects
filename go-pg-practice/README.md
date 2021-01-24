@@ -1,9 +1,5 @@
 # go-pg
 
-## todo
-
-- fix update logic (unsets values)
-
 ## install
 
 ```bash

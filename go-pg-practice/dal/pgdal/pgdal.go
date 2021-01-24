@@ -152,7 +152,7 @@ func (pgdal *PGDAL) UpdateNinja(id int, updates types.Ninja) (updatedNinja types
 	ninja := updates
 	ninja.ID = id
 	ninja.UpdatedAt = getTimeUTC()
-	if _, err = pgdal.db.Model(&ninja).WherePK().Update(); err != nil {
+	if _, err = pgdal.db.Model(&ninja).WherePK().UpdateNotZero(); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -201,7 +201,7 @@ func (pgdal *PGDAL) UpdateJutsu(id int, updates types.Jutsu) (updatedJutsu types
 	jutsu := updates
 	jutsu.ID = id
 	jutsu.UpdatedAt = getTimeUTC()
-	if _, err = pgdal.db.Model(&jutsu).WherePK().Update(); err != nil {
+	if _, err = pgdal.db.Model(&jutsu).WherePK().UpdateNotZero(); err != nil {
 		fmt.Println(err)
 		return
 	}
