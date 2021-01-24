@@ -2,6 +2,8 @@
 # variables
 # ---
 
+# KNEX = node_modules/.bin/knex
+
 ENTRY="main.go"
 OUTPUT="bin/app.exe"
 
@@ -27,18 +29,4 @@ prettier:
 install: 
 	go get -d ./...
 
-# ---
-# migrations
-# ---
 
-migration-init:
-	go run migrations/*.go init
-
-migrate:
-	go run migrations/*.go up
-
-rollback:
-	go run migrations/*.go down
-
-rollback-all:
-	go run migrations/*.go reset

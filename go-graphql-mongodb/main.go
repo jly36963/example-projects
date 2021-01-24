@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/gin-gonic/gin" // gin framework
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
 	"go-graphql-example/dal/mongodal"
@@ -144,13 +144,3 @@ func getRuntimeDetails() {
 		Version: runtime.Version(),
 	})
 }
-
-// // context
-// r.Use(func(c *gin.Context) {
-// 	ctx, cancel := context.WithCancel(c.Request.Context())
-// 	c.Set("providers", providers)
-// 	c.Next()
-// 	defer func() {
-// 		cancel()
-// 	}()
-// }) // add providers

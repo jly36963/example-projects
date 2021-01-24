@@ -2,18 +2,18 @@ package main
 
 import (
 	// standard packages
+
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"runtime"
 	"strings"
-	"time"
 
-	// external packages
-	"github.com/go-pg/pg/v10"
-	"github.com/go-pg/pg/v10/orm"
 	"github.com/joho/godotenv"
+
+	"go-pg-practice/dal/pgdal"
+	"go-pg-practice/providers"
+	"go-pg-practice/types"
 )
 
 // ---
@@ -23,10 +23,13 @@ import (
 func main() {
 	// runtime
 	getRuntimeDetails()
-	// dotenv
+	// load .env
 	loadDotenv()
-	// pg
-	usePg()
+	// get providers
+	providers, _ := getProviders()
+	// use mongo
+	usePG(providers)
+
 }
 
 // ---
@@ -41,279 +44,116 @@ func loadDotenv() {
 }
 
 // ---
-// helper func
+// providers
 // ---
 
-func bulkPrint(args ...interface{}) {
-	for _, a := range args {
-		fmt.Println(a)
+func getProviders() (p *providers.Providers, err error) {
+	p = &providers.Providers{
+		PGDAL: &pgdal.PGDAL{},
 	}
-}
+	// connect pg
+	err = p.PGDAL.GetConnection()
+	if err != nil {
+		fmt.Println("error while getting pg connection")
+		panic(err)
+	}
+	// test pg
+	err = p.PGDAL.TestConnection()
+	if err != nil {
+		fmt.Println("Error while testing pg connection")
+		panic(err)
+	}
+	// init associations
+	p.PGDAL.InitAssociations()
+	// *** connect/test other providers here ***
 
-func printSectionTitle(title string) {
-	fmt.Println("")
-	fmt.Println(strings.ToUpper(title))
-	fmt.Println("")
-}
-
-// ---------
-// notes
-// ---------
-
-// ---
-// runtime details
-// ---
-
-// RuntimeDetails : runtime details, gets logged immediately
-type RuntimeDetails struct {
-	Os      string `json:"os"`
-	Arch    string `json:"arch"`
-	CPUs    int    `json:"cpus"`
-	Version string `json:"version"`
-}
-
-func getRuntimeDetails() {
-	printSectionTitle("runtime")
-
-	fmt.Printf("%+v\n", RuntimeDetails{
-		Os:      runtime.GOOS,
-		Arch:    runtime.GOARCH,
-		CPUs:    runtime.NumCPU(),
-		Version: runtime.Version(),
-	})
+	// return
+	return
 }
 
 // ---
 // pg
 // ---
 
-// Person : db model
-type Person struct {
-	ID        int64     `pg:"id,pk"`
-	FirstName string    `pg:"first_name,notnull"`
-	LastName  string    `pg:"last_name,notnull"`
-	CreatedAt time.Time `pg:"created_at"`
-	UpdatedAt time.Time `pg:"updated_at"`
-	DeletedAt time.Time `pg:"deleted_at,soft_delete"`
-}
+func usePG(providers *providers.Providers) {
 
-func usePg() {
-	// ---
-	// connect to db
-	// ---
-
-	db := pg.Connect(&pg.Options{
-		Addr:     ":5432",
-		User:     os.Getenv("PG_USER"),
-		Password: os.Getenv("PG_PW"),
-		Database: os.Getenv("PG_DB"),
-	})
-
-	defer db.Close()
+	pg := providers.PGDAL
 
 	// ---
-	// create table
+	// insert ninja
 	// ---
 
-	if err := db.Model((*Person)(nil)).CreateTable(&orm.CreateTableOptions{
-		IfNotExists: true,
-	}); err != nil {
-		fmt.Println("Error while creating table")
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// create (insert)
-	// ---
-
-	person1 := &Person{
+	insertedNinja, err := pg.InsertNinja(types.Ninja{
 		FirstName: "Kakashi",
 		LastName:  "Hatake",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		DeletedAt: time.Time{},
-	}
-	person2 := &Person{
-		FirstName: "Hiruzen",
-		LastName:  "Sarutobi",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		DeletedAt: time.Time{},
-	}
-	people := []*Person{person1, person2}
+	})
 
-	// insert multiple (alternative syntax)
-	if _, err := db.Model(&people).Returning("*").Insert(); err != nil {
-		fmt.Println("Error while inserting")
-		fmt.Println(err)
-		return
-	}
-
-	/*
-		// insert multiple (alternative syntax)
-		if _, err := db.Model(person1, person2).Insert(); err != nil {
-			fmt.Println("Error while inserting")
-			fmt.Println(err)
-			return
-		}
-
-
-		if _, err := db.Model(people).Returning("*").Insert(); err != nil {
-			fmt.Println("Error while inserting")
-			fmt.Println(err)
-			return
-		}
-
-	*/
-
-	/*
-		// insert one record
-		if _, err := db.Model(person1).Returning("*").Insert(); err != nil {
-			fmt.Println("Error while inserting")
-			fmt.Println(err)
-			return
-		}
-	*/
-
-	// ---
-	// read (select) (all)
-	// ---
-
-	selectedPeople := []Person{}
-	if err := db.Model(&selectedPeople).Select(); err != nil {
-		fmt.Println("Error while fetching (many)")
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// read (select) (all) (count)
-	// ---
-
-	count, err := db.Model((*Person)(nil)).Count()
 	if err != nil {
-		fmt.Println("Error while counting")
+		fmt.Println("Error while inserting ninja")
 		fmt.Println(err)
 		return
 	}
 
 	// ---
-	// read (select) (primary key)
+	// select ninja
 	// ---
 
-	selectedPerson := &Person{ID: person1.ID}
-	if err := db.Model(selectedPerson).WherePK().Select(); err != nil {
-		fmt.Println("Error while fetching (one)")
-		fmt.Println(err)
-		return
-	}
+	ninja, err := pg.GetNinja(insertedNinja.ID)
 
-	// ---
-	// update
-	// ---
-
-	person1.FirstName = "Kaka"
-	person1.LastName = "Sensei"
-	person1.UpdatedAt = time.Now()
-
-	fmt.Println("person1", person1)
-
-	if _, err := db.Model(person1).WherePK().Update(); err != nil {
-		fmt.Println("Error while updating")
-		fmt.Println(err)
-		return
-	}
-
-	// ---
-	// delete (soft delete)
-	// ---
-
-	// soft delete
-	if _, err := db.Model(&people).WherePK().Delete(); err != nil {
-		fmt.Println("Error while deleting")
-		fmt.Println(err)
-		return
-	}
-
-	// count
-	postSoftDeleteCount, err := db.Model(&Person{}).Count()
 	if err != nil {
-		fmt.Println("Error while counting")
-		fmt.Println(err)
-		return
-	}
-
-	// undo soft delete
-	restoredPeople := []*Person{person1, person2}
-
-	person1.DeletedAt = time.Time{}
-	person1.UpdatedAt = time.Now()
-	person2.DeletedAt = time.Time{}
-	person2.UpdatedAt = time.Now()
-
-	if _, err := db.Model(&restoredPeople).WherePK().Column("deleted_at", "updated_at").Update(); err != nil {
-		fmt.Println("Error while updating")
-		fmt.Println(err)
-		return
-	}
-
-	// count
-	postRestoreCount, err := db.Model(&Person{}).Count()
-	if err != nil {
-		fmt.Println("Error while counting")
-		fmt.Println(err)
-		return
-	}
-
-	// real delete
-	if _, err := db.Model(&people).WherePK().ForceDelete(); err != nil {
-		fmt.Println("Error while deleting (hard)")
-		fmt.Println(err)
-		return
-	}
-
-	// count
-	postHardDeleteCount, err := db.Model(&Person{}).Count()
-	if err != nil {
-		fmt.Println("Error while counting")
+		fmt.Println("Error while selecting ninja")
 		fmt.Println(err)
 		return
 	}
 
 	// ---
-	// json
+	// update ninja
 	// ---
 
-	peopleJSON, err := json.MarshalIndent(people, "", "  ")
-	if err != nil {
-		fmt.Println("Error while stringifying")
-		fmt.Println(err)
-		return
-	}
-	updatedPersonJSON, err := json.MarshalIndent(person1, "", "  ")
-	if err != nil {
-		fmt.Println("Error while stringifying")
-		fmt.Println(err)
-		return
-	}
+	updatedNinja, err := pg.UpdateNinja(insertedNinja.ID, types.Ninja{FirstName: "Kaka", LastName: "Sensei"})
 
-	restoredPeopleJSON, err := json.MarshalIndent(restoredPeople, "", "  ")
 	if err != nil {
-		fmt.Println("Error while stringifying")
+		fmt.Println("Error while updating ninja")
 		fmt.Println(err)
 		return
 	}
 
 	// ---
-	// drop table
+	// insert jutsu
 	// ---
 
-	if err := db.Model((*Person)(nil)).DropTable(&orm.DropTableOptions{
-		IfExists: true,
-		Cascade:  true,
-	}); err != nil {
-		fmt.Println("Error while dropping table")
+	insertedJutsu, err := pg.InsertJutsu(types.Jutsu{
+		Name:         "Chidori",
+		ChakraNature: "Lightning",
+		Description:  "Lightning blade",
+	})
+
+	if err != nil {
+		fmt.Println("Error while inserting jutsu")
+		fmt.Println(err)
+		return
+	}
+
+	// ---
+	// associate ninja/jutsu
+	// ---
+
+	success, err := pg.AddKnownJutsu(insertedNinja.ID, insertedJutsu.ID)
+
+	if err != nil {
+		fmt.Println("Error while associating ninja and jutsu")
+		fmt.Println(err)
+		return
+	}
+
+	// ---
+	// get ninja with jutsu
+	// ---
+
+	ninjaWithRelatedJutsu, err := pg.GetNinjaWithRelatedJutsu(insertedNinja.ID)
+
+	if err != nil {
+		fmt.Println("Error while getting ninja with associated jutsus")
 		fmt.Println(err)
 		return
 	}
@@ -323,14 +163,49 @@ func usePg() {
 	// ---
 
 	bulkPrint(
-		"people", people,
-		"count", count,
-		"postSoftDeleteCount", postSoftDeleteCount,
-		"postRestoreCount", postRestoreCount,
-		"postHardDeleteCount", postHardDeleteCount,
-		"people", string(peopleJSON),
-		"updatedPersonJSON", string(updatedPersonJSON),
-		"restoredPeople", string(restoredPeopleJSON),
+		"insertedNinja", stringify(insertedNinja),
+		"ninja", stringify(ninja),
+		"updatedNinja", stringify(updatedNinja),
+		"insertedJutsu", stringify(insertedJutsu),
+		"successfulAssociation", success,
+		"ninjaWithRelatedJutsu", stringify(ninjaWithRelatedJutsu),
 	)
+}
 
+// ---
+// helper func
+// ---
+
+func stringify(thing ...interface{}) (str string) {
+	thingAsJSON, err := json.MarshalIndent(thing, "", "  ")
+	if err != nil {
+		str = "Invalid input, could not stringify"
+		return
+	}
+	str = string(thingAsJSON)
+	return
+}
+
+func bulkPrint(args ...interface{}) {
+	for _, a := range args {
+		fmt.Println(a)
+		fmt.Println("")
+	}
+}
+
+func printSectionTitle(title string) {
+	fmt.Println("")
+	fmt.Println(strings.ToUpper(title))
+	fmt.Println("")
+}
+
+func getRuntimeDetails() {
+	printSectionTitle("runtime")
+
+	fmt.Printf("%+v\n", types.RuntimeDetails{
+		Os:      runtime.GOOS,
+		Arch:    runtime.GOARCH,
+		CPUs:    runtime.NumCPU(),
+		Version: runtime.Version(),
+	})
 }
