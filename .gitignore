@@ -24,3 +24,6 @@
 **/__sapper__
 **/.next
 **/.nuxt
+
+# rust
+**/target
