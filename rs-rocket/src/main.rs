@@ -150,3 +150,4 @@ fn internal_error() -> &'static str {
 
 // TODO:
 // fairings -- https://rocket.rs/v0.4/guide/fairings/
+// handle files
