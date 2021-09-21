@@ -22,7 +22,7 @@ fn get_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
         #[derive(Serialize, Deserialize)]
         struct Data {
             message: String,
-        };
+        }
         let data = Data {
             message: "Hello!".to_string(),
         };
@@ -39,14 +39,17 @@ fn get_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
     let get_api_store_search = warp::path!("api" / "store" / "search")
         .and(warp::query::<HashMap<String, String>>())
         .map(|p: HashMap<String, String>| {
-            let q = p.get("q").unwrap_or(&String::from(""));
+            let q: String;
+            match p.get("q") {
+                Some(value) => q = value.to_string(),
+                None => q = String::from(""),
+            };
+            // let q: String = p.get("q").unwrap_or(&String::from("")).to_string();
             #[derive(Serialize, Deserialize)]
             struct Data {
                 q: String,
-            };
-            let data = Data {
-                q: "Hello!".to_string(),
-            };
+            }
+            let data = Data { q: q.to_string() };
             warp::reply::json(&data)
         });
 
@@ -58,7 +61,7 @@ fn get_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
             id: String,
             first_name: String,
             last_name: String,
-        };
+        }
         let user = User {
             id,
             first_name: String::from("Kakashi"),
