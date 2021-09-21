@@ -8,10 +8,6 @@
 ## Startup
 
 ```bash
-# dev (requires "air")
+# start dev server
 make dev
-# run
-make run
-# build / run
-make build; make run-build
 ```

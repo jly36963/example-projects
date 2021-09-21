@@ -5,8 +5,8 @@ https://rocket.rs/v0.4/overview/
 
 ## Setup
 
-- [docs](https://rocket.rs/v0.4/guide/quickstart/)
-- [docs](https://rocket.rs/v0.4/guide/getting-started/)
+- [quickstart](https://rocket.rs/v0.4/guide/quickstart/)
+- [getting started](https://rocket.rs/v0.4/guide/getting-started/)
 
 - Rocket requires nightly version of rust
   - rustup default nightly
@@ -17,10 +17,6 @@ https://rocket.rs/v0.4/overview/
 ## Startup
 
 ```bash
-# dev (requires "air")
+# start dev server
 make dev
-# run
-make run
-# build / run
-make build; make run-build
 ```
