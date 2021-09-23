@@ -1,13 +1,12 @@
 [package]
-name = "iron-example"
+name = "gotham-example"
 version = "0.1.0"
 edition = "2018"
 
 [dependencies]
+gotham = "0.6.0"
+mime = "0.3.16"
 tokio = { version = "1", features = ["full"] }
-warp = "0.3"
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.59"
-hyper = "0.14.13"
-
+serde_json = "1.0"
 
