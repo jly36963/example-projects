@@ -1,11 +1,13 @@
-use gotham::helpers::http::response::create_empty_response;
-use gotham::helpers::http::response::create_permanent_redirect;
-use gotham::helpers::http::response::create_response;
+#[macro_use]
+extern crate gotham_derive;
+
+use gotham::helpers::http::response::{
+    create_empty_response, create_permanent_redirect, create_response,
+};
 use gotham::hyper::{Body, Response, StatusCode};
 use gotham::router::builder::*;
-use gotham::router::response::extender::StaticResponseExtender;
 use gotham::router::Router;
-use gotham::state::{FromState, State, StateData};
+use gotham::state::{FromState, State};
 use mime;
 use serde::{Deserialize, Serialize};
 
@@ -30,12 +32,15 @@ fn get_router() -> Router {
             route.get("/").to(get_api);
             route.get("/health").to(get_api_health);
             route.get("/health-check").to(get_api_health_check);
-            // route
-            //     .get("/store/search")
-            //     .with_query_string_extractor::<StoreSearchQuery>()
-            //     .to(get_api_store_search);
+            route
+                .get("/store/search")
+                .with_query_string_extractor::<StoreSearchQuery>()
+                .to(get_api_store_search);
             route.scope("/user", |route| {
-                route.get("{id}").to(get_api_user_id);
+                route
+                    .get("/:id")
+                    .with_path_extractor::<UserIdPathParams>()
+                    .to(get_api_user_id);
                 route.post("/").to(post_api_user);
             })
         })
@@ -65,14 +70,6 @@ pub fn get_api(state: State) -> (State, Response<Body>) {
     let body = serde_json::to_string(&data).unwrap();
     let res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, body);
     (state, res)
-
-    // let body = serde_json::to_string(&data);
-    // let res: Response<Body>;
-    // match body {
-    //     Ok(body) => res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, body),
-    //     Err(_) => res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR),
-    // }
-    // (state, res)
 }
 
 // GET /api/health
@@ -89,25 +86,37 @@ pub fn get_api_health_check(state: State) -> (State, Response<Body>) {
     (state, res)
 }
 
-// // GET /api/store/search
-// // return query params
-// // not working: https://github.com/gotham-rs/gotham/blob/master/examples/query_string/introduction/src/main.rs
-// pub fn get_api_store_search(mut state: State) -> (State, Response<Body>) {
-//     let query = StoreSearchQuery::take_from(&mut state);
-//     #[derive(Serialize, Deserialize)]
-//     struct Data {
-//         q: String,
-//     }
-//     let data = Data { q: query.q };
-//     let body = serde_json::to_string(&data).unwrap();
-//     let res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, body);
-//     (state, res)
-// }
+// GET /api/store/search
+// return query params
+pub fn get_api_store_search(mut state: State) -> (State, Response<Body>) {
+    let query = StoreSearchQuery::take_from(&mut state);
+    #[derive(Serialize, Deserialize)]
+    struct Data {
+        q: String,
+    }
+    let data = Data { q: query.q };
+    let body = serde_json::to_string(&data).unwrap();
+    let res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, body);
+    (state, res)
+}
 
 // GET /api/user/:id
 // return (mock) user
-pub fn get_api_user_id(state: State) -> (State, &'static str) {
-    (state, "Hello!") // TODO: replace me
+pub fn get_api_user_id(state: State) -> (State, Response<Body>) {
+    let path_params = UserIdPathParams::borrow_from(&state);
+    let id = &path_params.id;
+    let user = User {
+        id: String::from(id),
+        first_name: String::from("Kakashi"),
+        last_name: String::from("Hatake"),
+    };
+    let body = serde_json::to_string(&user);
+    let res: Response<Body>;
+    match body {
+        Ok(body) => res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, body),
+        Err(_) => res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR),
+    }
+    (state, res)
 }
 
 // POST /api/user
@@ -133,7 +142,12 @@ struct UserNew {
     last_name: String,
 }
 
-// #[derive(Deserialize, StateData, StaticResponseExtender)]
-// struct StoreSearchQuery {
-//     q: String,
-// }
+#[derive(Deserialize, StateData, StaticResponseExtender)]
+struct StoreSearchQuery {
+    q: String,
+}
+
+#[derive(Deserialize, StateData, StaticResponseExtender)]
+struct UserIdPathParams {
+    id: String,
+}

@@ -272,10 +272,22 @@ name = "gotham-example"
 version = "0.1.0"
 dependencies = [
  "gotham",
+ "gotham_derive",
  "mime",
  "serde",
+ "serde_derive",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "gotham_derive"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "759a0e44326c652a7535f1ded7a9df63238e2dd601def67f6ca940d04af3a547"
+dependencies = [
+ "quote",
+ "syn",
 ]
 
 [[package]]
