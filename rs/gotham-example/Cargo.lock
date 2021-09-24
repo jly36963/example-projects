@@ -271,6 +271,7 @@ dependencies = [
 name = "gotham-example"
 version = "0.1.0"
 dependencies = [
+ "futures",
  "gotham",
  "gotham_derive",
  "mime",

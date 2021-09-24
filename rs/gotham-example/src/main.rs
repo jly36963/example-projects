@@ -1,10 +1,11 @@
 #[macro_use]
 extern crate gotham_derive;
 
+use gotham::handler::HandlerResult;
 use gotham::helpers::http::response::{
     create_empty_response, create_permanent_redirect, create_response,
 };
-use gotham::hyper::{Body, Response, StatusCode};
+use gotham::hyper::{body, Body, Response, StatusCode};
 use gotham::router::builder::*;
 use gotham::router::Router;
 use gotham::state::{FromState, State};
@@ -41,7 +42,7 @@ fn get_router() -> Router {
                     .get("/:id")
                     .with_path_extractor::<UserIdPathParams>()
                     .to(get_api_user_id);
-                route.post("/").to(post_api_user);
+                route.post("/").to_async(post_api_user);
             })
         })
     })
@@ -121,8 +122,47 @@ pub fn get_api_user_id(state: State) -> (State, Response<Body>) {
 
 // POST /api/user
 // (pretend) create new user
-pub fn post_api_user(state: State) -> (State, &'static str) {
-    (state, "Hello!") // TODO: replace me
+// async handler example -- https://github.com/gotham-rs/gotham/blob/gotham-0.6.0/examples/handlers/simple_async_handlers_await/src/main.rs
+pub async fn post_api_user(mut state: State) -> HandlerResult {
+    // Get body
+    let body: String;
+    match body::to_bytes(Body::take_from(&mut state)).await {
+        Ok(valid_body) => body = String::from_utf8(valid_body.to_vec()).unwrap(),
+        Err(_) => {
+            let res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR);
+            return Ok((state, res));
+        }
+    }
+    // Convert body to struct
+    let user_new: UserNew;
+    match serde_json::from_str(&body) {
+        Ok(u) => user_new = u, // res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, user)
+        Err(_) => {
+            let res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR);
+            return Ok((state, res));
+        }
+    }
+
+    // Create pretend user from input
+    let user = User {
+        id: String::from("b78984aa-f014-45d2-b884-49450f29758a"),
+        first_name: user_new.first_name,
+        last_name: user_new.last_name,
+    };
+
+    // Serialize pretend user
+    let data: String;
+    match serde_json::to_string(&user) {
+        Ok(s) => data = s,
+        Err(_) => {
+            let res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR);
+            return Ok((state, res));
+        }
+    }
+
+    // Return Response
+    let res = create_response(&state, StatusCode::OK, mime::APPLICATION_JSON, data);
+    Ok((state, res))
 }
 
 // ---
