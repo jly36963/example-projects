@@ -3,7 +3,6 @@ package pg
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"squirrel-example/types"
 	"time"
 
@@ -91,10 +90,6 @@ func (dal *PostgresDAL) ExecuteInsert(ib sq.InsertBuilder) (pgx.Row, error) {
 	ib = ib.PlaceholderFormat(sq.Dollar)
 	// get query and args from query builder
 	query, args, err := ib.ToSql()
-	fmt.Println("query")
-	fmt.Println(query)
-	fmt.Println("args")
-	fmt.Println(args)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +110,6 @@ func (dal *PostgresDAL) rowToNinja(row pgx.Row) (types.Ninja, error) {
 	var updatedAt sql.NullTime
 
 	if err := row.Scan(&id, &firstName, &lastName, &age, &createdAt, &updatedAt); err != nil {
-		fmt.Println("CreateNinja 2")
 		return types.Ninja{}, err
 	}
 
@@ -148,7 +142,6 @@ func (dal *PostgresDAL) CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error
 	row, err := dal.ExecuteInsert(ib)
 
 	if err != nil {
-		fmt.Println("CreateNinja 1")
 		return types.Ninja{}, err
 	}
 
