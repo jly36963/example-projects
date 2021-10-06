@@ -21,7 +21,7 @@ type IPostgresDAL interface {
 
 	// ninjas
 	CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error)
-	GetNinja(ninjaId string) (types.Ninja, error)
+	GetNinja(id string) (types.Ninja, error)
 	UpdateNinja(id string, ninjaUpdates types.NinjaNew) (types.Ninja, error)
 	DeleteNinja(id string) (types.Ninja, error)
 
@@ -182,13 +182,13 @@ func (dal *PostgresDAL) CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error
 	return ninja, nil
 }
 
-func (dal *PostgresDAL) GetNinja(ninjaId string) (types.Ninja, error) {
+func (dal *PostgresDAL) GetNinja(id string) (types.Ninja, error) {
 	// get query builder
 	qb := dal.GetQB()
 	selectBuilder := qb.
 		Select("*").
 		From("ninjas").
-		Where(sq.Eq{"id": ninjaId})
+		Where(sq.Eq{"id": id})
 
 	// execute query
 	row, err := dal.ExecuteSelect(selectBuilder)
