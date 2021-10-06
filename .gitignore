@@ -2,7 +2,7 @@
 **/.env
 **/*.pem
 
-# nodejs
+# node
 **/node_modules/
 **/build
 
@@ -13,6 +13,9 @@
 # go
 **/*.exe
 **/tmp
+
+# rust
+**/target
 
 # vscode
 **/.vscode/
@@ -25,5 +28,3 @@
 **/.next
 **/.nuxt
 
-# rust
-**/target
