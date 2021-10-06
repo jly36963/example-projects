@@ -60,11 +60,11 @@ func (dal *PostgresDAL) ExecuteRaw(query string, args ...interface{}) (pgx.Rows,
 }
 
 // ExecuteSelect takes a select statement query builder and executes it
-func (dal *PostgresDAL) ExecuteSelectMany(sb sq.SelectBuilder) (pgx.Rows, error) {
+func (dal *PostgresDAL) ExecuteSelectMany(selectBuilder sq.SelectBuilder) (pgx.Rows, error) {
 	// convert ? to $1 (postgres specific)
-	sb = sb.PlaceholderFormat(sq.Dollar)
+	selectBuilder = selectBuilder.PlaceholderFormat(sq.Dollar)
 	// get query and args from query builder
-	query, args, err := sb.ToSql()
+	query, args, err := selectBuilder.ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -73,11 +73,11 @@ func (dal *PostgresDAL) ExecuteSelectMany(sb sq.SelectBuilder) (pgx.Rows, error)
 }
 
 // ExecuteSelect takes a select statement query builder and executes it
-func (dal *PostgresDAL) ExecuteSelect(sb sq.SelectBuilder) (pgx.Row, error) {
+func (dal *PostgresDAL) ExecuteSelect(selectBuilder sq.SelectBuilder) (pgx.Row, error) {
 	// convert ? to $1 (postgres specific)
-	sb = sb.PlaceholderFormat(sq.Dollar)
+	selectBuilder = selectBuilder.PlaceholderFormat(sq.Dollar)
 	// get query and args from query builder
-	query, args, err := sb.ToSql()
+	query, args, err := selectBuilder.ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -86,11 +86,11 @@ func (dal *PostgresDAL) ExecuteSelect(sb sq.SelectBuilder) (pgx.Row, error) {
 }
 
 // ExecuteInsert takes an insert statement query builder and executes it
-func (dal *PostgresDAL) ExecuteInsert(ib sq.InsertBuilder) (pgx.Row, error) {
+func (dal *PostgresDAL) ExecuteInsert(insertBuilder sq.InsertBuilder) (pgx.Row, error) {
 	// convert ? to $1 (postgres specific)
-	ib = ib.PlaceholderFormat(sq.Dollar)
+	insertBuilder = insertBuilder.PlaceholderFormat(sq.Dollar)
 	// get query and args from query builder
-	query, args, err := ib.ToSql()
+	query, args, err := insertBuilder.ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -99,11 +99,24 @@ func (dal *PostgresDAL) ExecuteInsert(ib sq.InsertBuilder) (pgx.Row, error) {
 }
 
 // ExecuteUpdate takes an update statement query builder and executes it
-func (dal *PostgresDAL) ExecuteUpdate(ub sq.UpdateBuilder) (pgx.Row, error) {
+func (dal *PostgresDAL) ExecuteUpdate(updateBuilder sq.UpdateBuilder) (pgx.Row, error) {
 	// convert ? to $1 (postgres specific)
-	ub = ub.PlaceholderFormat(sq.Dollar)
+	updateBuilder = updateBuilder.PlaceholderFormat(sq.Dollar)
 	// get query and args from query builder
-	query, args, err := ub.ToSql()
+	query, args, err := updateBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+	// execute query
+	return dal.client.QueryRow(context.Background(), query, args...), nil
+}
+
+// ExecuteDelete takes a delete statement query builder and executes it
+func (dal *PostgresDAL) ExecuteDelete(deleteBuilder sq.DeleteBuilder) (pgx.Row, error) {
+	// convert ? to $1 (postgres specific)
+	deleteBuilder = deleteBuilder.PlaceholderFormat(sq.Dollar)
+	// get query and args from query builder
+	query, args, err := deleteBuilder.ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -149,14 +162,14 @@ func (dal *PostgresDAL) rowToNinja(row pgx.Row) (types.Ninja, error) {
 func (dal *PostgresDAL) CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error) {
 	// get query builder
 	qb := dal.GetQB()
-	ib := qb.
+	insertBuilder := qb.
 		Insert("ninjas").
 		Columns("first_name", "last_name", "age").
 		Values(ninjaNew.FirstName, ninjaNew.LastName, ninjaNew.Age).
 		Suffix("RETURNING *")
 
 	// execute query
-	row, err := dal.ExecuteInsert(ib)
+	row, err := dal.ExecuteInsert(insertBuilder)
 	if err != nil {
 		return types.Ninja{}, err
 	}
@@ -173,13 +186,13 @@ func (dal *PostgresDAL) CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error
 func (dal *PostgresDAL) GetNinja(ninjaId string) (types.Ninja, error) {
 	// get query builder
 	qb := dal.GetQB()
-	sb := qb.
+	selectBuilder := qb.
 		Select("*").
 		From("ninjas").
 		Where(sq.Eq{"id": ninjaId})
 
 	// execute query
-	row, err := dal.ExecuteSelect(sb)
+	row, err := dal.ExecuteSelect(selectBuilder)
 	if err != nil {
 		return types.Ninja{}, err
 	}
@@ -196,7 +209,7 @@ func (dal *PostgresDAL) GetNinja(ninjaId string) (types.Ninja, error) {
 func (dal *PostgresDAL) UpdateNinja(id string, ninjaUpdates types.NinjaNew) (types.Ninja, error) {
 	// get query builder
 	qb := dal.GetQB()
-	ub := qb.
+	updateBuilder := qb.
 		Update("ninjas").
 		Where(sq.Eq{"id": id}).
 		Suffix("Returning *")
@@ -204,15 +217,15 @@ func (dal *PostgresDAL) UpdateNinja(id string, ninjaUpdates types.NinjaNew) (typ
 	// dynamically add updates, determine if update should happen
 	shouldUpdate := false // return error
 	if ninjaUpdates.FirstName != "" {
-		ub = ub.Set("first_name", ninjaUpdates.FirstName)
+		updateBuilder = updateBuilder.Set("first_name", ninjaUpdates.FirstName)
 		shouldUpdate = true
 	}
 	if ninjaUpdates.LastName != "" {
-		ub = ub.Set("last_name", ninjaUpdates.LastName)
+		updateBuilder = updateBuilder.Set("last_name", ninjaUpdates.LastName)
 		shouldUpdate = true
 	}
 	if ninjaUpdates.Age != 0 {
-		ub = ub.Set("last_name", ninjaUpdates.Age)
+		updateBuilder = updateBuilder.Set("last_name", ninjaUpdates.Age)
 		shouldUpdate = true
 	}
 	if !shouldUpdate {
@@ -220,7 +233,30 @@ func (dal *PostgresDAL) UpdateNinja(id string, ninjaUpdates types.NinjaNew) (typ
 	}
 
 	// execute query
-	row, err := dal.ExecuteUpdate(ub)
+	row, err := dal.ExecuteUpdate(updateBuilder)
+	if err != nil {
+		return types.Ninja{}, err
+	}
+
+	// convert to struct
+	ninja, err := dal.rowToNinja(row)
+	if err != nil {
+		return types.Ninja{}, err
+	}
+
+	return ninja, err
+}
+
+func (dal *PostgresDAL) DeleteNinja(id string) (types.Ninja, error) {
+	// get query builder
+	qb := dal.GetQB()
+	deleteBuilder := qb.
+		Delete("ninjas").
+		Where(sq.Eq{"id": id}).
+		Suffix("Returning *")
+
+	// execute query
+	row, err := dal.ExecuteDelete(deleteBuilder)
 	if err != nil {
 		return types.Ninja{}, err
 	}

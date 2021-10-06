@@ -67,6 +67,13 @@ func main() {
 	}
 	fmt.Printf("%+v\n", ninja)
 
+	// delete ninja
+	ninja, err = PostgresDal.DeleteNinja(id)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", ninja)
+
 }
 
 // ---
