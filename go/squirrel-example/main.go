@@ -43,17 +43,28 @@ func main() {
 		LastName:  "Hatake",
 		Age:       27,
 	})
-
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("%+v\n", ninja)
 
 	// select ninja
 	id := ninja.ID
 	ninja, err = PostgresDal.GetNinja(id)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", ninja)
 
+	// update ninja
+	updates := types.NinjaNew{
+		FirstName: "Kaka",
+		LastName:  "Sensei",
+	}
+	ninja, err = PostgresDal.UpdateNinja(id, updates)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("%+v\n", ninja)
 
 }
