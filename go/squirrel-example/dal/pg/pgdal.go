@@ -23,8 +23,7 @@ type IPostgresDAL interface {
 	CreateNinja(ninjaNew types.NinjaNew) (types.Ninja, error)
 	GetNinja(ninjaId string) (types.Ninja, error)
 	UpdateNinja(id string, ninjaUpdates types.NinjaNew) (types.Ninja, error)
-
-	// TODO: delete ninja
+	DeleteNinja(id string) (types.Ninja, error)
 
 	// jutsus
 	// TODO: create jutsu
