@@ -20,7 +20,7 @@ const createRouter = (providers: Providers): express.Router => {
         return res.sendStatus(404);
       }
       return res.status(200).json(jutsu);
-    } catch (err) {
+    } catch {
       return res.sendStatus(500);
     }
   });
@@ -32,7 +32,7 @@ const createRouter = (providers: Providers): express.Router => {
       const jutsu = await pgdal.jutsus.insert(jutsuNew);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch (err) {
+    } catch {
       return res.sendStatus(500);
     }
   });
@@ -52,7 +52,7 @@ const createRouter = (providers: Providers): express.Router => {
       const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch (err) {
+    } catch {
       return res.sendStatus(500);
     }
   });
@@ -67,7 +67,7 @@ const createRouter = (providers: Providers): express.Router => {
       const jutsu = await pgdal.jutsus.del(id);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch (err) {
+    } catch {
       return res.sendStatus(500);
     }
   });

@@ -10,7 +10,7 @@ const main = async () => {
     .use(express.json())
     .use(pino({ prettyPrint: true }));
 
-  const paths = ['/api/ninja', '/api/ninja'];
+  const paths = ['/api/ninja', '/api/jutsu'];
   for (const p of paths) {
     const createRouter: (providers: Providers) => express.Router = (
       await import(`.${p}`)

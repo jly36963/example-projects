@@ -73,7 +73,7 @@ const main = async () => {
   // associate ninja & jutsu
   await fetch(`${baseUrl}/ninja/${ninjaId}/jutsu/${jutsuId}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    // headers: { 'Content-Type': 'application/json' }, // empty body
   });
   console.log('Associate jutsu result: ', 'ok');
 
@@ -88,7 +88,7 @@ const main = async () => {
   // remove ninja & jutsu association
   await fetch(`${baseUrl}/ninja/${ninjaId}/jutsu/${jutsuId}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+    // headers: { 'Content-Type': 'application/json' }, // empty body
   });
   console.log('Disassociate jutsu result: ', 'ok');
 
