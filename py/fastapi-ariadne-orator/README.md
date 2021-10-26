@@ -29,6 +29,8 @@
 
 ## example queries
 
+graphiql located at `http://localhost:8000/graphql` (or custom port if env var set)
+
 ### hello
 
 ```graphql
