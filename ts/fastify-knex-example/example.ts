@@ -114,7 +114,7 @@ const main = async () => {
     headers: { 'Content-Type': 'application/json' },
   });
   result = await response.json();
-  console.log('Delete ninja result: ', result);
+  console.log('Delete jutsu result: ', result);
 };
 
 main();
