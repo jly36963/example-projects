@@ -1,7 +1,6 @@
 package jutsu
 
 import (
-	"fmt"
 	"net/http"
 
 	"gin-squirrel-example/types"
@@ -32,13 +31,11 @@ func RegisterJutsu(r *gin.Engine) {
 			err := c.BindJSON(&jutsuNew)
 			if err != nil {
 				c.Status(http.StatusBadRequest)
-				fmt.Println(err)
 				return
 			}
 			jutsu, err := ctx.Providers.PGDAL.CreateJutsu(jutsuNew)
 			if err != nil {
 				c.Status(http.StatusInternalServerError)
-				fmt.Println(err)
 				return
 			}
 			c.JSON(http.StatusOK, jutsu)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
+	"fasthttp-squirrel-example/types"
 	"fmt"
-	"gin-squirrel-example/types"
 
 	resty "github.com/go-resty/resty/v2"
 )
@@ -28,7 +28,7 @@ func main() {
 	}
 	status := res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja := res.Result().(*types.Ninja)
 	fmt.Println("Create ninja")
@@ -44,7 +44,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja = res.Result().(*types.Ninja)
 	fmt.Println("Select ninja")
@@ -64,7 +64,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja = res.Result().(*types.Ninja)
 	fmt.Println("Update ninja")
@@ -86,7 +86,7 @@ func main() {
 	status = res.StatusCode()
 	fmt.Println(status)
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	jutsu := res.Result().(*types.Jutsu)
 	fmt.Println("Create jutsu")
@@ -102,7 +102,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	jutsu = res.Result().(*types.Jutsu)
 	fmt.Println("Select jutsu")
@@ -121,7 +121,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	jutsu = res.Result().(*types.Jutsu)
 	fmt.Println("Update jutsu")
@@ -136,7 +136,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	fmt.Println("Associate ninja & jutsu: ok")
 
@@ -150,7 +150,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja = res.Result().(*types.Ninja)
 	fmt.Println("Select ninja with jutsus")
@@ -165,7 +165,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	fmt.Println("Dissociate ninja & jutsu: ok")
 
@@ -179,7 +179,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja = res.Result().(*types.Ninja)
 	fmt.Println("Select ninja with jutsus (post dissociation)")
@@ -195,7 +195,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	ninja = res.Result().(*types.Ninja)
 	fmt.Println("Delete ninja")
@@ -211,7 +211,7 @@ func main() {
 	}
 	status = res.StatusCode()
 	if status >= 400 {
-		panic(errors.New("Error returned from server"))
+		panic(errors.New("error returned from server"))
 	}
 	jutsu = res.Result().(*types.Jutsu)
 	fmt.Println("Delete jutsu")
