@@ -1,6 +1,7 @@
 package jutsu
 
 import (
+	"fmt"
 	"net/http"
 
 	"gin-squirrel-example/types"
@@ -13,7 +14,7 @@ func RegisterJutsu(r *gin.Engine) {
 	sr := r.Group("/api/jutsu")
 	{
 		// Get jutsu
-		sr.GET("/:id", func(c *gin.Context) {
+		sr.GET("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			jutsu, err := ctx.Providers.PGDAL.GetJutsu(id)
@@ -31,18 +32,20 @@ func RegisterJutsu(r *gin.Engine) {
 			err := c.BindJSON(&jutsuNew)
 			if err != nil {
 				c.Status(http.StatusBadRequest)
+				fmt.Println(err)
 				return
 			}
 			jutsu, err := ctx.Providers.PGDAL.CreateJutsu(jutsuNew)
 			if err != nil {
 				c.Status(http.StatusInternalServerError)
+				fmt.Println(err)
 				return
 			}
 			c.JSON(http.StatusOK, jutsu)
 		})
 
 		// Update jutsu
-		sr.PUT("/:id", func(c *gin.Context) {
+		sr.PUT("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			var jutsuUpdates types.JutsuNew
@@ -60,7 +63,7 @@ func RegisterJutsu(r *gin.Engine) {
 		})
 
 		// Delete Jutsu
-		sr.DELETE("/:id", func(c *gin.Context) {
+		sr.DELETE("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			jutsu, err := ctx.Providers.PGDAL.DeleteJutsu(id)

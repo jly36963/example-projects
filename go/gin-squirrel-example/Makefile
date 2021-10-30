@@ -14,7 +14,7 @@ MIGRATIONS_PATH="./dal/pg/migrations"
 # commands
 # ---
 
-.PHONY: dev run build run-build prettier install \
+.PHONY: dev run run-example build run-build \
 	migrate rollback migration
 
 default:
@@ -26,17 +26,14 @@ dev:
 run: 
 	go run $(ENTRY)
 
+run-example:
+	go run ./example/main.go
+
 build: 
 	go build -o $(OUTPUT)
 
 run-build:
 	./$(OUTPUT)
-
-prettier: 
-	go fmt ./...
-
-install: 
-	go get -d ./...
 
 # ---
 # migrations

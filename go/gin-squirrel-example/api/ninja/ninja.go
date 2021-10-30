@@ -13,7 +13,7 @@ func RegisterNinja(r *gin.Engine) {
 	sr := r.Group("/api/ninja")
 	{
 		// Get ninja
-		sr.GET("/:id", func(c *gin.Context) {
+		sr.GET("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			ninja, err := ctx.Providers.PGDAL.GetNinja(id)
@@ -42,7 +42,7 @@ func RegisterNinja(r *gin.Engine) {
 		})
 
 		// Update ninja
-		sr.PUT("/:id", func(c *gin.Context) {
+		sr.PUT("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			var ninjaUpdates types.NinjaNew
@@ -60,7 +60,7 @@ func RegisterNinja(r *gin.Engine) {
 		})
 
 		// Delete Ninja
-		sr.DELETE("/:id", func(c *gin.Context) {
+		sr.DELETE("/:id/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			ninja, err := ctx.Providers.PGDAL.DeleteNinja(id)
@@ -72,7 +72,7 @@ func RegisterNinja(r *gin.Engine) {
 		})
 
 		// Get ninja with jutsus
-		sr.GET("/:id/jutsus", func(c *gin.Context) {
+		sr.GET("/:id/jutsus/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			id := c.Param("id")
 			ninja, err := ctx.Providers.PGDAL.GetNinjaWithJutsus(id)
@@ -89,7 +89,7 @@ func RegisterNinjaJutsu(r *gin.Engine) {
 	sr := r.Group("/api/ninja-jutsu")
 	{
 		// Associate ninja & jutsu
-		sr.POST("/:ninjaID/:jutsuID", func(c *gin.Context) {
+		sr.POST("/:ninjaID/:jutsuID/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			ninjaID := c.Param("ninjaID")
 			jutsuID := c.Param("jutsuID")
@@ -102,7 +102,7 @@ func RegisterNinjaJutsu(r *gin.Engine) {
 		})
 
 		// Dissociate ninja & jutsu
-		sr.DELETE("/:ninjaID/:jutsuID", func(c *gin.Context) {
+		sr.DELETE("/:ninjaID/:jutsuID/", func(c *gin.Context) {
 			ctx := xctx.ExtendContext(c)
 			ninjaID := c.Param("ninjaID")
 			jutsuID := c.Param("jutsuID")
