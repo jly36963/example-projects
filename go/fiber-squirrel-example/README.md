@@ -1,5 +1,8 @@
-# squirrel
+# fiber & squirrel
 
+- fiber: 
+  - https://github.com/gofiber/fiber
+  - https://docs.gofiber.io/api/fiber
 - squirrel: https://github.com/Masterminds/squirrel
 - pgx: https://github.com/jackc/pgx
 - migrate: 
