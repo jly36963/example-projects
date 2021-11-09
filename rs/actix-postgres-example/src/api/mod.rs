@@ -2,8 +2,9 @@ mod jutsu;
 mod ninja;
 
 use super::providers::Providers;
+use actix_web::middleware::Logger;
 use actix_web::web::Data;
-use actix_web::{middleware as actix_middleware, web, App, HttpServer};
+use actix_web::{web, App, HttpServer};
 
 pub async fn start(providers: Providers) -> std::io::Result<()> {
     // Config
@@ -14,7 +15,8 @@ pub async fn start(providers: Providers) -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             // logger middleware
-            .wrap(actix_middleware::Logger::default())
+            .wrap(Logger::default())
+            // .wrap(Logger::new("%a %r %s %b %{Referer}i %{User-Agent}i %T"))
             // limit size of payload (global config)
             .app_data(Data::new(web::JsonConfig::default().limit(4096)))
             // dependencies

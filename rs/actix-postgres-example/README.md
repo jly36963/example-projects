@@ -9,6 +9,11 @@
   - https://github.com/sfackler/rust-postgres
   - https://docs.rs/tokio-postgres/0.7.5/tokio_postgres/
 
+- reqwest
+  - https://github.com/seanmonstar/reqwest
+  - https://github.com/seanmonstar/reqwest/tree/master/examples
+  - https://docs.rs/reqwest/0.11.6/reqwest/
+
 - troubleshooting
   - tokio version conflict
     - https://github.com/actix/actix-web/issues/1283

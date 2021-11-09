@@ -8,7 +8,7 @@
 # commands
 # --- 
 
-.PHONY: dev dev-build build
+.PHONY: dev dev-build build run-example
 
 # creates (and runs) execurable in ./target/debug/<project-name>
 dev: 
@@ -21,4 +21,8 @@ dev-build:
 # creates executable in ./target/release/<project-name>
 build: 
 	@cargo build --release
+
+# run example script to test api
+run-example:
+	@cargo run --bin example
 

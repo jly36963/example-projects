@@ -4,7 +4,7 @@ use super::super::types;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use uuid::Uuid;
 
-#[get("/api/jutsu/:id/")]
+#[get("/api/jutsu/{id}/")]
 pub async fn get_jutsu(providers: web::Data<Providers>, path: web::Path<String>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
@@ -46,7 +46,7 @@ pub async fn insert_jutsu(
     HttpResponse::Ok().json(jutsu)
 }
 
-#[put("/api/jutsu/:id/")]
+#[put("/api/jutsu/{id}/")]
 pub async fn update_jutsu(
     providers: web::Data<Providers>,
     path: web::Path<String>,
@@ -79,7 +79,7 @@ pub async fn update_jutsu(
     HttpResponse::Ok().json(jutsu)
 }
 
-#[delete("/api/jutsu/:id/")]
+#[delete("/api/jutsu/{id}/")]
 pub async fn delete_jutsu(
     providers: web::Data<Providers>,
     path: web::Path<String>,

@@ -2,6 +2,7 @@
 name = "actix-postgres-example"
 version = "0.1.0"
 edition = "2021"
+default-run = "main"
 
 [dependencies]
 actix-web = "4.0.0-beta.10"
@@ -18,3 +19,13 @@ bb8-postgres = "0.7.0"
 uuid = { version = "0.8.2", features = ["serde"]}
 anyhow = "1.0.45"
 mime = "0.3.16"
+reqwest = { version = "0.11.6", features = ["json"]}
+env_logger = "0.9.0"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[[bin]]
+name = "example"
+path = "src/example.rs"

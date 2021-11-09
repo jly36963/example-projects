@@ -4,7 +4,7 @@ use super::super::types;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use uuid::Uuid;
 
-#[get("/api/ninja/:id/")]
+#[get("/api/ninja/{id}/")]
 pub async fn get_ninja(providers: web::Data<Providers>, path: web::Path<String>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
@@ -46,7 +46,7 @@ pub async fn insert_ninja(
     HttpResponse::Ok().json(ninja)
 }
 
-#[put("/api/ninja/:id/")]
+#[put("/api/ninja/{id}/")]
 pub async fn update_ninja(
     providers: web::Data<Providers>,
     path: web::Path<String>,
@@ -79,7 +79,7 @@ pub async fn update_ninja(
     HttpResponse::Ok().json(ninja)
 }
 
-#[delete("/api/ninja/:id/")]
+#[delete("/api/ninja/{id}/")]
 pub async fn delete_ninja(
     providers: web::Data<Providers>,
     path: web::Path<String>,
@@ -100,7 +100,7 @@ pub async fn delete_ninja(
     HttpResponse::Ok().json(ninja)
 }
 
-#[get("/api/ninja/:id/jutsus")]
+#[get("/api/ninja/{id}/jutsus/")]
 pub async fn get_ninja_with_jutsus(
     providers: web::Data<Providers>,
     path: web::Path<String>,
@@ -121,7 +121,7 @@ pub async fn get_ninja_with_jutsus(
     HttpResponse::Ok().json(ninja)
 }
 
-#[post("/api/ninja-jutsu/:ninja_id/:jutsu_id")]
+#[post("/api/ninja-jutsu/{ninja_id}/{jutsu_id}/")]
 pub async fn associate_ninja_and_jutsu(
     providers: web::Data<Providers>,
     path: web::Path<(String, String)>,
@@ -146,7 +146,7 @@ pub async fn associate_ninja_and_jutsu(
     HttpResponse::Ok().finish()
 }
 
-#[delete("/api/ninja-jutsu/:ninja_id/:jutsu_id")]
+#[delete("/api/ninja-jutsu/{ninja_id}/{jutsu_id}/")]
 pub async fn dissociate_ninja_and_jutsu(
     providers: web::Data<Providers>,
     path: web::Path<(String, String)>,
