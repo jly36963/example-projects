@@ -16,7 +16,6 @@ pub async fn start(providers: Providers) -> std::io::Result<()> {
         App::new()
             // logger middleware
             .wrap(Logger::default())
-            // .wrap(Logger::new("%a %r %s %b %{Referer}i %{User-Agent}i %T"))
             // limit size of payload (global config)
             .app_data(Data::new(web::JsonConfig::default().limit(4096)))
             // dependencies
