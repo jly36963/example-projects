@@ -1,7 +1,9 @@
 pub mod pg;
 
+use std::sync::Arc;
+
 pub struct Providers {
-    pub pgdal: pg::PostgresDAL,
+    pub pgdal: Arc<dyn pg::TPostgresDAL + Send>,
 }
 
 impl Clone for Providers {
@@ -14,9 +16,9 @@ impl Clone for Providers {
 
 pub async fn setup_providers() -> Providers {
     let providers = Providers {
-        pgdal: pg::PostgresDAL {
+        pgdal: Arc::new(pg::PostgresDAL {
             pg_pool: pg::helpers::get_pg_pool().await,
-        },
+        }),
     };
     return providers;
 }

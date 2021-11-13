@@ -1,10 +1,11 @@
 pub mod pg;
 
+use std::sync::Arc;
 use warp;
 use warp::Filter;
 
 pub struct Providers {
-    pub pgdal: pg::PostgresDAL,
+    pub pgdal: Arc<dyn pg::TPostgresDAL + Send>,
 }
 
 impl Clone for Providers {
@@ -15,15 +16,17 @@ impl Clone for Providers {
     }
 }
 
+// Used by main function to set up providers
 pub async fn setup_providers() -> Providers {
     let providers = Providers {
-        pgdal: pg::PostgresDAL {
+        pgdal: Arc::new(pg::PostgresDAL {
             pg_pool: pg::helpers::get_pg_pool().await,
-        },
+        }),
     };
     return providers;
 }
 
+// Middleware used to inject providers for route handler
 pub fn with_providers(
     providers: Providers,
 ) -> impl Filter<Extract = (Providers,), Error = std::convert::Infallible> + Clone {

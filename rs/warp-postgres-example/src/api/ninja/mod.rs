@@ -1,4 +1,3 @@
-use super::super::providers::pg::TPostgresDAL;
 use super::super::providers::{with_providers, Providers};
 use super::super::types;
 use std::convert::Infallible;

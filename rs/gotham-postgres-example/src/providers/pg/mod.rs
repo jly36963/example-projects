@@ -19,7 +19,7 @@ impl Clone for PostgresDAL {
 }
 
 #[async_trait]
-pub trait TPostgresDAL {
+pub trait TPostgresDAL: Sync {
     // ninjas
     async fn create_ninja(
         &self,
