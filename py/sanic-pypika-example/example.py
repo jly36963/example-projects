@@ -19,6 +19,7 @@ async def main():
         }
     )
     ninja = response['data']
+    print(ninja)
     assert isinstance(ninja, dict)
     print("Ninja insert result")
     pprint(ninja)

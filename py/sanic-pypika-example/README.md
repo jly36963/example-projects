@@ -1,6 +1,6 @@
-# fastapi-pypika-example
+# sanic-pypika-example
 
-- https://github.com/tiangolo/fastapi
+- sanic: https://github.com/sanic-org/sanic
 - pypika: https://github.com/kayak/pypika
 - asyncpg: https://github.com/MagicStack/asyncpg
 - psycopg2: https://github.com/psycopg/psycopg2 (only for sqlalchemy + alembic migrations)
