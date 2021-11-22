@@ -28,16 +28,7 @@ pub async fn start(providers: Providers) {
         .or(warp::path("graphql").and(graphql_filter))
         // rest
         .or(ninja::get_ninja(providers.clone()))
-        .or(ninja::insert_ninja(providers.clone()))
-        .or(ninja::update_ninja(providers.clone()))
-        .or(ninja::delete_ninja(providers.clone()))
-        .or(ninja::get_ninja_with_jutsus(providers.clone()))
-        .or(ninja::associate_ninja_and_jutsu(providers.clone()))
-        .or(ninja::dissociate_ninja_and_jutsu(providers.clone()))
         .or(jutsu::get_jutsu(providers.clone()))
-        .or(jutsu::insert_jutsu(providers.clone()))
-        .or(jutsu::update_jutsu(providers.clone()))
-        .or(jutsu::delete_jutsu(providers.clone()))
         // log
         .with(log);
 
