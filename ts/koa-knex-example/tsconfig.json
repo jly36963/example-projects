@@ -11,7 +11,8 @@
     "noEmit": false,
     "outDir": "build",
     "rootDir": ".",
-    "typeRoots": ["./types/declarations/"]
+    "typeRoots": ["./types/declarations/"],
+    "skipLibCheck": true // tsc breaks on packages in node_modules (@types/koa-pino-logger)
   },
   "exclude": ["node_modules"]
 }
