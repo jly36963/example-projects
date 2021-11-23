@@ -30,8 +30,8 @@ impl QueryRoot {
     async fn jutsu(&self, ctx: &Context<'_>, id: String) -> FieldResult<Option<types::Jutsu>> {
         let uuid = Uuid::parse_str(&id)?;
         let providers = ctx.data::<Providers>()?;
-        let ninja = providers.pgdal.get_jutsu(uuid).await?;
-        Ok(ninja)
+        let jutsu = providers.pgdal.get_jutsu(uuid).await?;
+        Ok(jutsu)
     }
 }
 
@@ -149,7 +149,7 @@ impl MutationRoot {
 }
 
 // ---
-// Schema
+// Schema and filters
 // ---
 
 type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;

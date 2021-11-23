@@ -31,8 +31,8 @@ impl QueryRoot {
         context: &types::graphql::Context,
     ) -> FieldResult<Option<types::Jutsu>> {
         let uuid = Uuid::parse_str(&id)?;
-        let ninja = context.providers.pgdal.get_jutsu(uuid).await?;
-        Ok(ninja)
+        let jutsu = context.providers.pgdal.get_jutsu(uuid).await?;
+        Ok(jutsu)
     }
 }
 

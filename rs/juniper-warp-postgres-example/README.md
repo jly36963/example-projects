@@ -16,10 +16,6 @@
   - https://github.com/seanmonstar/reqwest/tree/master/examples
   - https://docs.rs/reqwest/0.11.6/reqwest/
 
-- troubleshooting
-  - tokio version conflict
-    - https://github.com/actix/actix-web/issues/1283
-
 ## Startup
 
 ```bash
