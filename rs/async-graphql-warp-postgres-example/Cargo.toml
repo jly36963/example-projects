@@ -1,12 +1,12 @@
 [package]
-name = "juniper-warp-postgres-example"
+name = "async-graphql-warp-postgres-example"
 version = "0.1.0"
 edition = "2021"
 default-run = "main"
 
 [dependencies]
-juniper = { version = "0.15.7" }
-juniper_warp = { version = "0.7.0" }
+async-graphql = { version = "3.0", features = ["uuid", "chrono"]}
+async-graphql-warp = "3.0"
 warp = "0.3"
 hyper = "0.14.13"
 postgres = { version = "0.19" }

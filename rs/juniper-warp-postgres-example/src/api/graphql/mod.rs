@@ -117,7 +117,7 @@ impl MutationRoot {
     }
 
     // Associate ninja & jutsu
-    #[graphql(description = "Create a new ninja")]
+    #[graphql(description = "Associate a ninja and jutsu")]
     async fn associate_ninja_and_jutsu<'ctx>(
         ninja_id: String,
         jutsu_id: String,
@@ -134,7 +134,7 @@ impl MutationRoot {
     }
 
     // Dissociate ninja & jutsu
-    #[graphql(description = "Create a new ninja")]
+    #[graphql(description = "Dissociate a ninja and jutsu")]
     async fn dissociate_ninja_and_jutsu<'ctx>(
         ninja_id: String,
         jutsu_id: String,
