@@ -11,7 +11,7 @@ import (
 )
 
 func setupServer(providers *providers.Providers) *fiber.App {
-	// create fasthttp server
+	// create fiber server
 	app := fiber.New()
 
 	// add routes
