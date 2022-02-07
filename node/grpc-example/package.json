@@ -1,0 +1,24 @@
+{
+  "name": "grpc-notes",
+  "version": "1.0.0",
+  "description": "grpc notes",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "run-example": "node example.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mqtt"
+  ],
+  "author": "jly",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.4",
+    "@grpc/proto-loader": "^0.6.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
