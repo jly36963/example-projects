@@ -129,13 +129,13 @@ const createRouter = (providers: Providers): Router => {
       return;
     }
     try {
-      const ninjaWithJutus = await pgdal.ninjas.getNinjaWithJutsus(id);
-      if (!ninjaWithJutus) {
+      const ninjaWithJutsus = await pgdal.ninjas.getNinjaWithJutsus(id);
+      if (!ninjaWithJutsus) {
         ctx.status = 404;
         return;
       }
       ctx.status = 200;
-      ctx.body = ninjaWithJutus;
+      ctx.body = ninjaWithJutsus;
       return;
     } catch {
       ctx.status = 500;
