@@ -5,5 +5,6 @@ use (
 	./fiber-squirrel-example
 	./gin-squirrel-example
 	./go-graphql-mongodb
+	./iris-squirrel-example
 	./gqlgen-pg-gin
 )

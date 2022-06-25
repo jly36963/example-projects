@@ -24,13 +24,13 @@ func RegisterJutsu(app *fiber.App, providers *providers.Providers) {
 
 		// Insert jutsu
 		r.Post("/", func(c *fiber.Ctx) error {
-			var ninjaNew types.JutsuNew
+			var jutsuNew types.JutsuNew
 			body := c.Body()
-			err := json.Unmarshal(body, &ninjaNew)
+			err := json.Unmarshal(body, &jutsuNew)
 			if err != nil {
 				return c.SendStatus(http.StatusBadRequest)
 			}
-			jutsu, err := providers.PGDAL.CreateJutsu(ninjaNew)
+			jutsu, err := providers.PGDAL.CreateJutsu(jutsuNew)
 			if err != nil {
 				return c.SendStatus(http.StatusInternalServerError)
 			}
@@ -40,13 +40,13 @@ func RegisterJutsu(app *fiber.App, providers *providers.Providers) {
 		// Update jutsu
 		r.Put("/:id/", func(c *fiber.Ctx) error {
 			id := c.Params("id")
-			var ninjaUpdates types.JutsuNew
+			var jutsuUpdates types.JutsuNew
 			body := c.Body()
-			err := json.Unmarshal(body, &ninjaUpdates)
+			err := json.Unmarshal(body, &jutsuUpdates)
 			if err != nil {
 				return c.SendStatus(http.StatusBadRequest)
 			}
-			jutsu, err := providers.PGDAL.UpdateJutsu(id, ninjaUpdates)
+			jutsu, err := providers.PGDAL.UpdateJutsu(id, jutsuUpdates)
 			if err != nil {
 				return c.SendStatus(http.StatusInternalServerError)
 			}
