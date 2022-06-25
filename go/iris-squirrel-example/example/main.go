@@ -23,7 +23,7 @@ func main() {
 			Age:       27,
 		}).
 		SetResult(types.Ninja{}).
-		Post(baseUrl + "/ninja/")
+		Post(baseUrl + "/ninja")
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +39,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Ninja{}).
-		Get(baseUrl + "/ninja/" + ninja.ID + "/")
+		Get(baseUrl + "/ninja/" + ninja.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -80,7 +80,7 @@ func main() {
 			Description:  "Plover / a thousand birds",
 		}).
 		SetResult(types.Jutsu{}).
-		Post(baseUrl + "/jutsu/")
+		Post(baseUrl + "/jutsu")
 	if err != nil {
 		panic(err)
 	}
@@ -97,7 +97,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Jutsu{}).
-		Get(baseUrl + "/jutsu/" + jutsu.ID + "/")
+		Get(baseUrl + "/jutsu/" + jutsu.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +116,7 @@ func main() {
 		SetBody(types.JutsuNew{
 			Description: "Lightning blade",
 		}).
-		Put(baseUrl + "/jutsu/" + jutsu.ID + "/")
+		Put(baseUrl + "/jutsu/" + jutsu.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -131,7 +131,7 @@ func main() {
 	// Associate ninja & jutsu
 	res, err = client.R().
 		EnableTrace().
-		Post(baseUrl + "/ninja-jutsu/" + ninja.ID + "/" + jutsu.ID + "/")
+		Post(baseUrl + "/ninja-jutsu/" + ninja.ID + "/" + jutsu.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -145,7 +145,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Ninja{}).
-		Get(baseUrl + "/ninja/" + ninja.ID + "/jutsus/")
+		Get(baseUrl + "/ninja/" + ninja.ID + "/jutsus")
 	if err != nil {
 		panic(err)
 	}
@@ -158,12 +158,9 @@ func main() {
 	prettyPrint(ninja)
 
 	// Dissociate ninja & jutsu
-	fmt.Println("ninjaID", ninja.ID)
-	fmt.Println("jutsuID", jutsu.ID)
-	fmt.Println(baseUrl + "/ninja-jutsu/" + ninja.ID + "/" + jutsu.ID + "/")
 	res, err = client.R().
 		EnableTrace().
-		Delete(baseUrl + "/ninja-jutsu/" + ninja.ID + "/" + jutsu.ID + "/")
+		Delete(baseUrl + "/ninja-jutsu/" + ninja.ID + "/" + jutsu.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -178,7 +175,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Ninja{}).
-		Get(baseUrl + "/ninja/" + ninja.ID + "/jutsus/")
+		Get(baseUrl + "/ninja/" + ninja.ID + "/jutsus")
 	if err != nil {
 		panic(err)
 	}
@@ -194,7 +191,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Ninja{}).
-		Delete(baseUrl + "/ninja/" + ninja.ID + "/")
+		Delete(baseUrl + "/ninja/" + ninja.ID)
 	if err != nil {
 		panic(err)
 	}
@@ -210,7 +207,7 @@ func main() {
 	res, err = client.R().
 		EnableTrace().
 		SetResult(types.Jutsu{}).
-		Delete(baseUrl + "/jutsu/" + jutsu.ID + "/")
+		Delete(baseUrl + "/jutsu/" + jutsu.ID)
 	if err != nil {
 		panic(err)
 	}

@@ -1,8 +1,6 @@
 package ninja
 
 import (
-	"fmt"
-
 	iris "github.com/kataras/iris/v12"
 
 	"iris-squirrel-example/providers"
@@ -18,6 +16,7 @@ func RegisterNinja(app *iris.Application, providers *providers.Providers) {
 			ninja, err := providers.PGDAL.GetNinja(id)
 			if err != nil {
 				c.StatusCode(iris.StatusInternalServerError)
+				return
 			}
 			c.JSON(ninja)
 		})
@@ -84,7 +83,6 @@ func RegisterNinjaJutsu(app *iris.Application, providers *providers.Providers) {
 	{
 		// Associate ninja & jutsu
 		r.Post("/{ninjaID}/{jutsuID}", func(c iris.Context) {
-			fmt.Println("Associate")
 			ninjaID := c.Params().Get("ninjaID")
 			jutsuID := c.Params().Get("jutsuID")
 			err := providers.PGDAL.AssociateNinjaJutsu(ninjaID, jutsuID)
@@ -95,13 +93,8 @@ func RegisterNinjaJutsu(app *iris.Application, providers *providers.Providers) {
 			c.StatusCode(iris.StatusOK)
 		})
 
-		// TODO: this route returns 404 when DELETE
-		// For some reason it works when using PUT
-		// I tested this with Postman and go-resty/resty
-
 		// Dissociate ninja & jutsu
 		r.Delete("/{ninjaID}/{jutsuID}", func(c iris.Context) {
-			fmt.Println("Dissociate")
 			ninjaID := c.Params().Get("ninjaID")
 			jutsuID := c.Params().Get("jutsuID")
 			err := providers.PGDAL.DissociateNinjaJutsu(ninjaID, jutsuID)

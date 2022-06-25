@@ -1,10 +1,10 @@
 package jutsu
 
 import (
+	iris "github.com/kataras/iris/v12"
+
 	"iris-squirrel-example/providers"
 	"iris-squirrel-example/types"
-
-	iris "github.com/kataras/iris/v12"
 )
 
 func RegisterJutsu(app *iris.Application, providers *providers.Providers) {
