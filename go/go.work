@@ -1,6 +1,7 @@
 go 1.18
 
 use (
+	./echo-squirrel-example
 	./fasthttp-squirrel-example
 	./fiber-squirrel-example
 	./gin-squirrel-example
