@@ -9,10 +9,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Get ninja by id */
   router.get("/:id", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       const ninja = await pgdal.ninjas.get(id);
       if (!ninja) {
@@ -52,11 +48,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Update existing ninja */
   router.put("/:id", async (c) => {
     const id = c.params?.id;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
-
     const body = c.request.body();
     if (body.type !== "json") {
       c.response.status = 400;
@@ -81,10 +72,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Delete existing ninja */
   router.delete("/:id", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       const ninja = await pgdal.ninjas.del(id);
       if (!ninja) throw new Error();
@@ -98,10 +85,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Associate ninja & jutsu */
   router.post("/:ninjaId/jutsu/:jutsuId", async (c) => {
     const { ninjaId, jutsuId } = c.params;
-    if (typeof ninjaId !== "string" || typeof jutsuId !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       await pgdal.ninjas.associateJutsu(ninjaId, jutsuId);
       c.response.status = 204;
@@ -113,10 +96,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Dissociate ninja & jutsu */
   router.delete("/:ninjaId/jutsu/:jutsuId", async (c) => {
     const { ninjaId, jutsuId } = c.params;
-    if (typeof ninjaId !== "string" || typeof jutsuId !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       await pgdal.ninjas.disassociateJutsu(ninjaId, jutsuId);
       c.response.status = 204;
@@ -130,10 +109,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Get ninja with jutsus */
   router.get("/:id/jutsus", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       const ninjaWithJutsus = await pgdal.ninjas.getNinjaWithJutsus(id);
       if (!ninjaWithJutsus) {

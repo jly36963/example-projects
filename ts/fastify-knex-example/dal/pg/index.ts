@@ -1,12 +1,12 @@
 import ninjas from './ninjas';
 import jutsus from './jutsus';
-import { Ninja, Jutsu } from '../../types';
+import {Ninja, Jutsu} from '../../types';
 
 export interface PGDAL {
   ninjas: {
     get: (id: string) => Promise<Ninja | undefined>;
     insert: (
-      ninja: Pick<Ninja, 'firstName' | 'lastName' | 'age'>,
+      ninja: Pick<Ninja, 'firstName' | 'lastName' | 'age'>
     ) => Promise<Ninja | undefined>;
     update: (id: string, updates: Partial<Ninja>) => Promise<Ninja | undefined>;
     del: (id: string) => Promise<Ninja | undefined>;
@@ -17,7 +17,7 @@ export interface PGDAL {
   jutsus: {
     get: (id: string) => Promise<Jutsu | undefined>;
     insert: (
-      jutsu: Pick<Jutsu, 'name' | 'chakraNature' | 'description'>,
+      jutsu: Pick<Jutsu, 'name' | 'chakraNature' | 'description'>
     ) => Promise<Jutsu | undefined>;
     update: (id: string, updates: Partial<Jutsu>) => Promise<Jutsu | undefined>;
     del: (id: string) => Promise<Jutsu | undefined>;

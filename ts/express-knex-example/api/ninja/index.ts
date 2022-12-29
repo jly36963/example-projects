@@ -1,19 +1,15 @@
 // imports
 import express from 'express';
-import { pick } from 'lodash-es';
-import { Providers } from '../../dal/providers';
+import {pick} from 'lodash-es';
+import {Providers} from '../../dal/providers';
 
 const createRouter = (providers: Providers): express.Router => {
-  const { pgdal } = providers;
-
+  const {pgdal} = providers;
   const router = express.Router();
 
-  // Get ninja by id
+  /** Get ninja by id */
   router.get('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
+    const {id} = req.params;
     try {
       const ninja = await pgdal.ninjas.get(id);
       if (!ninja) {
@@ -25,7 +21,7 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // Insert new ninja
+  /** Insert new ninja */
   router.post('/', async (req: express.Request, res: express.Response) => {
     const ninjaNew = pick(req.body, ['firstName', 'lastName', 'age']);
     try {
@@ -37,13 +33,10 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // update
+  /** Update existing ninja */
   router.put('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
+    const {id} = req.params;
     const ninjaUpdates = pick(req.body, ['firstName', 'lastName', 'age']);
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
     try {
       const ninja = await pgdal.ninjas.update(id, ninjaUpdates);
       if (!ninja) throw new Error();
@@ -53,12 +46,9 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // delete
+  /** Delete ninja by id */
   router.delete('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
+    const {id} = req.params;
     try {
       const ninja = await pgdal.ninjas.del(id);
       if (!ninja) throw new Error();
@@ -68,48 +58,39 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // associate ninja & jutsu
+  /** Associate ninja and jutsu */
   router.post(
     '/:ninjaId/jutsu/:jutsuId',
     async (req: express.Request, res: express.Response) => {
-      const { ninjaId, jutsuId } = req.params;
-      if (typeof ninjaId !== 'string' || typeof jutsuId !== 'string') {
-        return res.sendStatus(400);
-      }
+      const {ninjaId, jutsuId} = req.params;
       try {
         await pgdal.ninjas.associateJutsu(ninjaId, jutsuId);
         return res.sendStatus(204);
       } catch {
         return res.sendStatus(500);
       }
-    },
+    }
   );
 
-  // disassociate ninja & jutsu
+  /** Disassociate ninja and jutsu */
   router.delete(
     '/:ninjaId/jutsu/:jutsuId',
     async (req: express.Request, res: express.Response) => {
-      const { ninjaId, jutsuId } = req.params;
-      if (typeof ninjaId !== 'string' || typeof jutsuId !== 'string') {
-        return res.sendStatus(400);
-      }
+      const {ninjaId, jutsuId} = req.params;
       try {
         await pgdal.ninjas.disassociateJutsu(ninjaId, jutsuId);
         return res.sendStatus(204);
       } catch {
         return res.sendStatus(500);
       }
-    },
+    }
   );
 
-  // get ninja with jutsus
+  /** Get ninja with jutsus */
   router.get(
     '/:id/jutsus',
     async (req: express.Request, res: express.Response) => {
-      const { id } = req.params;
-      if (typeof id !== 'string') {
-        return res.sendStatus(400);
-      }
+      const {id} = req.params;
       try {
         const ninjaWithJutus = await pgdal.ninjas.getNinjaWithJutsus(id);
         if (!ninjaWithJutus) {
@@ -119,7 +100,7 @@ const createRouter = (providers: Providers): express.Router => {
       } catch {
         return res.sendStatus(500);
       }
-    },
+    }
   );
 
   return router;

@@ -3,21 +3,18 @@ import {
   FastifyPluginCallback,
   FastifyPluginOptions,
 } from 'fastify';
-import { pick } from 'lodash-es';
-import { Providers } from '../../dal/providers';
-import { Jutsu } from '../../types';
+import {pick} from 'lodash-es';
+import {Providers} from '../../dal/providers';
+import {Jutsu} from '../../types';
 
 const createPlugin =
   (providers: Providers): FastifyPluginCallback =>
   async (app: FastifyInstance, options: FastifyPluginOptions) => {
-    const { pgdal } = providers;
+    const {pgdal} = providers;
 
-    // Get jutsu by id
-    app.get<{ Params: { id: string } }>('/:id', async (request, reply) => {
-      const { id } = request.params;
-      if (typeof id !== 'string') {
-        return reply.status(400).send({});
-      }
+    /** Get jutsu by id */
+    app.get<{Params: {id: string}}>('/:id', async (request, reply) => {
+      const {id} = request.params;
       try {
         const jutsu = await pgdal.jutsus.get(id);
         if (!jutsu) {
@@ -29,8 +26,8 @@ const createPlugin =
       }
     });
 
-    // Insert new jutsu
-    app.post<{ Body: Pick<Jutsu, 'name' | 'chakraNature' | 'description'> }>(
+    /** Insert new jutsu */
+    app.post<{Body: Pick<Jutsu, 'name' | 'chakraNature' | 'description'>}>(
       '/',
       async (request, reply) => {
         const jutsuNew = pick(request.body, [
@@ -45,20 +42,17 @@ const createPlugin =
         } catch {
           return reply.status(500).send({});
         }
-      },
+      }
     );
 
-    // update jutsu
-    app.put<{ Params: { id: string } }>('/:id', async (request, reply) => {
-      const { id } = request.params;
+    /** Update jutsu */
+    app.put<{Params: {id: string}}>('/:id', async (request, reply) => {
+      const {id} = request.params;
       const jutsuUpdates = pick(request.body, [
         'name',
         'description',
         'chakraNature',
       ]);
-      if (typeof id !== 'string') {
-        return reply.status(400).send({});
-      }
       try {
         const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
         if (!jutsu) throw new Error();
@@ -68,12 +62,9 @@ const createPlugin =
       }
     });
 
-    // delete jutsu
-    app.delete<{ Params: { id: string } }>('/:id', async (request, reply) => {
-      const { id } = request.params;
-      if (typeof id !== 'string') {
-        return reply.status(400).send({});
-      }
+    /** Delete jutsu */
+    app.delete<{Params: {id: string}}>('/:id', async (request, reply) => {
+      const {id} = request.params;
       try {
         const jutsu = await pgdal.jutsus.del(id);
         if (!jutsu) throw new Error();

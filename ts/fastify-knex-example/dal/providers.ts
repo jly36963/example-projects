@@ -1,4 +1,4 @@
-import { pgdal, PGDAL } from './pg';
+import {pgdal, PGDAL} from './pg';
 
 export interface Providers {
   pgdal: PGDAL;

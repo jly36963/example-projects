@@ -1,5 +1,5 @@
 // ---
-// ninja
+// Ninja
 // ---
 
 export interface Ninja {
@@ -19,7 +19,7 @@ export interface NinjaUpdates {
   last_name?: string;
 }
 
-// ninja (args)
+// Ninja (graphql input)
 
 export interface NinjaInsertArgs {
   ninja: NinjaNew;
@@ -35,7 +35,7 @@ export interface NinjaDeleteArgs {
 }
 
 // ---
-// jutsu
+// Jutsu
 // ---
 
 export interface Jutsu {
@@ -62,7 +62,7 @@ export interface JutsuUpdateArgs {
   updates: JutsuUpdates;
 }
 
-// jutsu (args)
+// Jutsu (graphql input)
 
 export interface JutsuInsertArgs {
   jutsu: JutsuNew;

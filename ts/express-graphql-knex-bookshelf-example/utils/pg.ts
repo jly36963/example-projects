@@ -10,8 +10,12 @@ export const TABLES = {
   NINJAS_JUTSUS: "ninjas_jutsus",
 };
 
+// TODO: move to providers file
+// TODO: interface for DI/IoC
+// TODO: add types to generic knex calls
+
 // ---
-// ninjas
+// Ninjas
 // ---
 
 const getNinja = async (id: number): Promise<any> => {

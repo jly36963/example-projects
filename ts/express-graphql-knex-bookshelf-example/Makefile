@@ -1,12 +1,14 @@
 # ---
-# variables
+# Variables
 # ---
 
 KNEX="node_modules/.bin/knex"
 
 # ---
-# commands (start/build)
+# Commands (start/build)
 # ---
+
+.PHONY: install dev build run test init-migrate migrate migration rollback
 
 install:
 	npm i
@@ -21,14 +23,14 @@ run:
 	npm start
 
 # ---
-# commands (test)
+# Commands (test)
 # ---
 
 test:
 	npm run test
 
 # ---
-# commands (db)
+# Commands (db)
 # ---
 
 # http://knexjs.org/#Installation-migrations

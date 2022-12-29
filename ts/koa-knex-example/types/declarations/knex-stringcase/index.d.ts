@@ -1,6 +1,6 @@
 declare module 'knex-stringcase' {
   // eslint-disable-next-line node/no-extraneous-import
-  import { Conventions } from 'stringcase';
+  import {Conventions} from 'stringcase';
 
   type StringcaseFn = (str: string) => string;
   type Stringcase = Conventions | StringcaseFn | (Conventions | StringcaseFn)[];
@@ -10,7 +10,7 @@ declare module 'knex-stringcase' {
     dbStringcase?: Stringcase;
     beforePostProcessResponse?(
       result: any[] | object,
-      queryContext: object,
+      queryContext: object
     ): any[] | object;
     beforeWrapIdentifier?(value: string, queryContext: object): string;
     ignoreStringcase?(obj: object): boolean;

@@ -1,19 +1,14 @@
 import Router from '@koa/router';
-import { pick } from 'lodash-es';
-import { Providers } from '../../dal/providers';
+import {pick} from 'lodash-es';
+import {Providers} from '../../dal/providers';
 
 const createRouter = (providers: Providers): Router => {
-  const { pgdal } = providers;
-
+  const {pgdal} = providers;
   const router = new Router();
 
-  // Get jutsu by id
-  router.get('/:id', async (ctx) => {
-    const { id } = ctx.params;
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Get jutsu by id */
+  router.get('/:id', async ctx => {
+    const {id} = ctx.params;
     try {
       const jutsu = await pgdal.jutsus.get(id);
       if (!jutsu) {
@@ -29,8 +24,8 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // Insert new jutsu
-  router.post('/', async (ctx) => {
+  /** Insert new jutsu */
+  router.post('/', async ctx => {
     const jutsuNew = pick(ctx.request.body, [
       'name',
       'description',
@@ -48,18 +43,14 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // update jutsu
-  router.put('/:id', async (ctx) => {
-    const { id } = ctx.params;
+  /** Update jutsu */
+  router.put('/:id', async ctx => {
+    const {id} = ctx.params;
     const jutsuUpdates = pick(ctx.request.body, [
       'name',
       'description',
       'chakraNature',
     ]);
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
     try {
       const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
       if (!jutsu) throw new Error();
@@ -72,13 +63,9 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // delete jutsu
-  router.delete('/:id', async (ctx) => {
-    const { id } = ctx.params;
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Delete jutsu */
+  router.delete('/:id', async ctx => {
+    const {id} = ctx.params;
     try {
       const jutsu = await pgdal.jutsus.del(id);
       if (!jutsu) throw new Error();

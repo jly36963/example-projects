@@ -1,13 +1,13 @@
 import knex from './connection';
 import tables from './tables';
-import { Ninja, Jutsu } from '../../types';
-import { pick, first } from 'lodash-es';
+import {Ninja, Jutsu} from '../../types';
+import {pick, first} from 'lodash-es';
 
 const get = async (id: string): Promise<Ninja | undefined> =>
-  knex<Ninja>(tables.NINJAS).select('*').where({ id }).first();
+  knex<Ninja>(tables.NINJAS).select('*').where({id}).first();
 
 const insert = async (
-  ninja: Pick<Ninja, 'firstName' | 'lastName' | 'age'>,
+  ninja: Pick<Ninja, 'firstName' | 'lastName' | 'age'>
 ): Promise<Ninja | undefined> => {
   const result = await knex<Ninja>(tables.NINJAS)
     .insert(pick(ninja, ['firstName', 'lastName', 'age']))
@@ -17,10 +17,10 @@ const insert = async (
 
 const update = async (
   id: string,
-  updates: Partial<Ninja>,
+  updates: Partial<Ninja>
 ): Promise<Ninja | undefined> => {
   const result = await knex<Ninja>(tables.NINJAS)
-    .where({ id })
+    .where({id})
     .update(updates)
     .returning('*');
   return first(result);
@@ -28,7 +28,7 @@ const update = async (
 
 const del = async (id: string): Promise<Ninja | undefined> => {
   const result = await knex<Ninja>(tables.NINJAS)
-    .where({ id })
+    .where({id})
     .del()
     .returning('*');
   return first(result);
@@ -36,29 +36,28 @@ const del = async (id: string): Promise<Ninja | undefined> => {
 
 const associateJutsu = async (
   ninjaId: string,
-  jutsuId: string,
-): Promise<void> => knex(tables.NINJAS_JUTSUS).insert({ ninjaId, jutsuId });
+  jutsuId: string
+): Promise<void> => knex(tables.NINJAS_JUTSUS).insert({ninjaId, jutsuId});
 
 const disassociateJutsu = async (
   ninjaId: string,
-  jutsuId: string,
-): Promise<void> =>
-  knex(tables.NINJAS_JUTSUS).where({ ninjaId, jutsuId }).del();
+  jutsuId: string
+): Promise<void> => knex(tables.NINJAS_JUTSUS).where({ninjaId, jutsuId}).del();
 
 const getNinjaWithJutsus = async (
-  ninjaId: string,
+  ninjaId: string
 ): Promise<Ninja | undefined> => {
   const [ninja, jutsus] = await Promise.all([
-    knex<Ninja>(tables.NINJAS).select('*').where({ id: ninjaId }).first(),
+    knex<Ninja>(tables.NINJAS).select('*').where({id: ninjaId}).first(),
     knex<Jutsu>(tables.JUTSUS)
       .select('*')
       .whereIn(
         'id',
-        knex(tables.NINJAS_JUTSUS).select('jutsuId').where({ ninjaId }),
+        knex(tables.NINJAS_JUTSUS).select('jutsuId').where({ninjaId})
       ),
   ]);
   if (!ninja) return undefined;
-  return { ...ninja, jutsus: jutsus || [] };
+  return {...ninja, jutsus: jutsus || []};
 };
 
 export default {

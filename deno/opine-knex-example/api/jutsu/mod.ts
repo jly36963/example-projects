@@ -3,16 +3,11 @@ import { CreateRouter, JutsuNew, JutsuUpdates } from "../../types/mod.ts";
 
 const createRouter: CreateRouter = (providers) => {
   const { pgdal } = providers;
-
   const router = Router();
 
   /** Get jutsu by id */
   router.get("/:id", async (req, res) => {
     const { id } = req.params;
-    if (typeof id !== "string") {
-      res.sendStatus(400);
-      return;
-    }
     try {
       const jutsu = await pgdal.jutsus.get(id);
       if (!jutsu) {
@@ -44,10 +39,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Update existing jutsu */
   router.put("/:id", async (req, res) => {
     const { id } = req.params;
-    if (typeof id !== "string") {
-      res.sendStatus(400);
-      return;
-    }
     const jutsuUpdates: JutsuUpdates = pick(req.body, [
       "name",
       "description",
@@ -66,10 +57,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Delete existing jutsu */
   router.delete("/:id", async (req, res) => {
     const { id } = req.params;
-    if (typeof id !== "string") {
-      res.sendStatus(400);
-      return;
-    }
     try {
       const jutsu = await pgdal.jutsus.del(id);
       if (!jutsu) throw new Error();

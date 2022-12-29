@@ -1,19 +1,16 @@
 // imports
 import express from 'express';
-import { pick } from 'lodash-es';
-import { Providers } from '../../dal/providers';
+import {pick} from 'lodash-es';
+import {Providers} from '../../dal/providers';
 
 const createRouter = (providers: Providers): express.Router => {
-  const { pgdal } = providers;
+  const {pgdal} = providers;
 
   const router = express.Router();
 
-  // Get jutsu by id
+  /** Get jutsu by id */
   router.get('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
+    const {id} = req.params;
     try {
       const jutsu = await pgdal.jutsus.get(id);
       if (!jutsu) {
@@ -25,7 +22,7 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // Insert new jutsu
+  /** Insert new jutsu */
   router.post('/', async (req: express.Request, res: express.Response) => {
     const jutsuNew = pick(req.body, ['name', 'description', 'chakraNature']);
     try {
@@ -37,17 +34,14 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // update jutsu
+  /** Update jutsu */
   router.put('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
+    const {id} = req.params;
     const jutsuUpdates = pick(req.body, [
       'name',
       'description',
       'chakraNature',
     ]);
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
     try {
       const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
       if (!jutsu) throw new Error();
@@ -57,12 +51,9 @@ const createRouter = (providers: Providers): express.Router => {
     }
   });
 
-  // delete jutsu
+  /** Delete jutsu */
   router.delete('/:id', async (req: express.Request, res: express.Response) => {
-    const { id } = req.params;
-    if (typeof id !== 'string') {
-      return res.sendStatus(400);
-    }
+    const {id} = req.params;
     try {
       const jutsu = await pgdal.jutsus.del(id);
       if (!jutsu) throw new Error();

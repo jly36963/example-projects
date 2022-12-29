@@ -8,7 +8,7 @@ const main = async () => {
   // create ninja
   response = await fetch(`${baseUrl}/ninja`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       firstName: 'Kakashi',
       lastName: 'Hatake',
@@ -19,10 +19,10 @@ const main = async () => {
   console.log('Create ninja result: ', result);
 
   // get ninja
-  const { id: ninjaId }: { id: string } = result;
+  const {id: ninjaId}: {id: string} = result;
   response = await fetch(`${baseUrl}/ninja/${ninjaId}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Get ninja result: ', result);
@@ -30,7 +30,7 @@ const main = async () => {
   // update ninja
   response = await fetch(`${baseUrl}/ninja/${ninjaId}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       firstName: 'Kaka',
       lastName: 'Sensei',
@@ -42,7 +42,7 @@ const main = async () => {
   // create jutsu
   response = await fetch(`${baseUrl}/jutsu`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       name: 'Chidori',
       chakraNature: 'Lightning',
@@ -53,10 +53,10 @@ const main = async () => {
   console.log('Create jutsu result: ', result);
 
   // get jutsu
-  const { id: jutsuId }: { id: string } = result;
+  const {id: jutsuId}: {id: string} = result;
   response = await fetch(`${baseUrl}/jutsu/${jutsuId}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Get jutsu result: ', result);
@@ -64,8 +64,8 @@ const main = async () => {
   // update jutsu
   response = await fetch(`${baseUrl}/jutsu/${jutsuId}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ description: 'Lightning blade' }),
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({description: 'Lightning blade'}),
   });
   result = await response.json();
   console.log('Update jutsu result: ', result);
@@ -80,7 +80,7 @@ const main = async () => {
   // get ninja with jutsus
   response = await fetch(`${baseUrl}/ninja/${ninjaId}/jutsus`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Get ninja with jutsus result: ', result);
@@ -95,7 +95,7 @@ const main = async () => {
   // get ninja with jutsus (post disasssociation)
   response = await fetch(`${baseUrl}/ninja/${ninjaId}/jutsus`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Get ninja with jutsus (post disassociation) result: ', result);
@@ -103,7 +103,7 @@ const main = async () => {
   // delete ninja
   response = await fetch(`${baseUrl}/ninja/${ninjaId}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Delete ninja result: ', result);
@@ -111,7 +111,7 @@ const main = async () => {
   // delete jutsu
   response = await fetch(`${baseUrl}/jutsu/${jutsuId}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   });
   result = await response.json();
   console.log('Delete jutsu result: ', result);

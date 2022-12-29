@@ -9,10 +9,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Get jutsu by id */
   router.get("/:id", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       const jutsu = await pgdal.jutsus.get(id);
       if (!jutsu) {
@@ -51,11 +47,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Update existing jutsu */
   router.put("/:id", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
-
     const body = c.request.body();
     if (body.type !== "json") {
       c.response.status = 400;
@@ -80,10 +71,6 @@ const createRouter: CreateRouter = (providers) => {
   /** Delete existing jutsu */
   router.delete("/:id", async (c) => {
     const { id } = c.params;
-    if (typeof id !== "string") {
-      c.response.status = 400;
-      return;
-    }
     try {
       const jutsu = await pgdal.jutsus.del(id);
       if (!jutsu) throw new Error();

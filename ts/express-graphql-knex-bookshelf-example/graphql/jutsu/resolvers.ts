@@ -4,7 +4,7 @@ import { JutsuInsertArgs, JutsuUpdateArgs, JutsuDeleteArgs } from "../../types";
 
 export default {
   Mutation: {
-    insertJutsu: async (obj, args: JutsuInsertArgs, context, info) => {
+    insertJutsu: async (_parent, args: JutsuInsertArgs, context, _info) => {
       const { jutsu } = args;
       try {
         const insertedJutsu = await context.pg.insertJutsu(jutsu);
@@ -14,7 +14,7 @@ export default {
         throw new GraphQLError("Error while inserting jutsu to database");
       }
     },
-    updateJutsu: async (obj, args: JutsuUpdateArgs, context, info) => {
+    updateJutsu: async (_parent, args: JutsuUpdateArgs, context, _info) => {
       const { id, updates } = args;
       try {
         const updatedJutsu = await context.pg.updateJutsu(id, updates);
@@ -24,7 +24,7 @@ export default {
         throw new GraphQLError("Error while updating jutsu in database");
       }
     },
-    deleteJutsu: async (obj, args: JutsuDeleteArgs, context, info) => {
+    deleteJutsu: async (_parent, args: JutsuDeleteArgs, context, _info) => {
       const { id } = args;
       try {
         const deletedJutsu = await context.pg.deleteJutsu(id);
@@ -36,7 +36,7 @@ export default {
     },
   },
   Query: {
-    jutsu: async (obj, args, context, info) => {
+    jutsu: async (_parent, args, context, _info) => {
       const { id } = args;
       try {
         const jutsuRecord = await context.pg.getJutsu(id);

@@ -1,19 +1,14 @@
-import { pick } from 'lodash-es';
-import { Providers } from '../../dal/providers';
+import {pick} from 'lodash-es';
+import {Providers} from '../../dal/providers';
 import Router from '@koa/router';
 
 const createRouter = (providers: Providers): Router => {
-  const { pgdal } = providers;
-
+  const {pgdal} = providers;
   const router = new Router();
 
-  // Get ninja by id
-  router.get('/:id', async (ctx) => {
-    const { id } = ctx.params;
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Get ninja by id */
+  router.get('/:id', async ctx => {
+    const {id} = ctx.params;
     try {
       const ninja = await pgdal.ninjas.get(id);
       if (!ninja) {
@@ -29,8 +24,8 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // Insert new ninja
-  router.post('/', async (ctx) => {
+  /** Insert new ninja */
+  router.post('/', async ctx => {
     const ninjaNew = pick(ctx.request.body, ['firstName', 'lastName', 'age']);
     try {
       const ninja = await pgdal.ninjas.insert(ninjaNew);
@@ -44,18 +39,14 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // update
-  router.put('/:id', async (ctx) => {
-    const { id } = ctx.params;
+  /** Update ninja */
+  router.put('/:id', async ctx => {
+    const {id} = ctx.params;
     const ninjaUpdates = pick(ctx.request.body, [
       'firstName',
       'lastName',
       'age',
     ]);
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
     try {
       const ninja = await pgdal.ninjas.update(id, ninjaUpdates);
       if (!ninja) throw new Error();
@@ -68,13 +59,9 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // delete
-  router.delete('/:id', async (ctx) => {
-    const { id } = ctx.params;
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Delete ninja */
+  router.delete('/:id', async ctx => {
+    const {id} = ctx.params;
     try {
       const ninja = await pgdal.ninjas.del(id);
       if (!ninja) throw new Error();
@@ -87,13 +74,9 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // associate ninja & jutsu
-  router.post('/:ninjaId/jutsu/:jutsuId', async (ctx) => {
-    const { ninjaId, jutsuId } = ctx.params;
-    if (typeof ninjaId !== 'string' || typeof jutsuId !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Associate ninja & jutsu */
+  router.post('/:ninjaId/jutsu/:jutsuId', async ctx => {
+    const {ninjaId, jutsuId} = ctx.params;
     try {
       await pgdal.ninjas.associateJutsu(ninjaId, jutsuId);
       ctx.status = 204;
@@ -104,13 +87,9 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // disassociate ninja & jutsu
-  router.delete('/:ninjaId/jutsu/:jutsuId', async (ctx) => {
-    const { ninjaId, jutsuId } = ctx.params;
-    if (typeof ninjaId !== 'string' || typeof jutsuId !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Disassociate ninja & jutsu */
+  router.delete('/:ninjaId/jutsu/:jutsuId', async ctx => {
+    const {ninjaId, jutsuId} = ctx.params;
     try {
       await pgdal.ninjas.disassociateJutsu(ninjaId, jutsuId);
       ctx.status = 204;
@@ -121,13 +100,9 @@ const createRouter = (providers: Providers): Router => {
     }
   });
 
-  // get ninja with jutsus
-  router.get('/:id/jutsus', async (ctx) => {
-    const { id } = ctx.params;
-    if (typeof id !== 'string') {
-      ctx.status = 400;
-      return;
-    }
+  /** Get ninja with jutsus */
+  router.get('/:id/jutsus', async ctx => {
+    const {id} = ctx.params;
     try {
       const ninjaWithJutsus = await pgdal.ninjas.getNinjaWithJutsus(id);
       if (!ninjaWithJutsus) {

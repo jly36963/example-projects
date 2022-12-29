@@ -9,7 +9,7 @@ import { NinjaInsertArgs, NinjaUpdateArgs, NinjaDeleteArgs } from "../../types";
 
 export default {
   Mutation: {
-    insertNinja: async (obj, args: NinjaInsertArgs, context, info) => {
+    insertNinja: async (_parent, args: NinjaInsertArgs, context, _info) => {
       const { ninja } = args;
       try {
         const insertedNinja = await context.pg.insertNinja(ninja);
@@ -19,7 +19,7 @@ export default {
         throw new GraphQLError("Error while inserting ninja to database");
       }
     },
-    updateNinja: async (obj, args: NinjaUpdateArgs, context, info) => {
+    updateNinja: async (_parent, args: NinjaUpdateArgs, context, _info) => {
       const { id, updates } = args;
       try {
         const updatedNinja = await context.pg.updateNinja(id, updates);
@@ -29,7 +29,7 @@ export default {
         throw new GraphQLError("Error while updating ninja in database");
       }
     },
-    deleteNinja: async (obj, args: NinjaDeleteArgs, context, info) => {
+    deleteNinja: async (_parent, args: NinjaDeleteArgs, context, _info) => {
       const { id } = args;
       try {
         const deletedNinja = await context.pg.deleteNinja(id);
@@ -39,7 +39,7 @@ export default {
         throw new GraphQLError("Error while deleteing ninja from database");
       }
     },
-    addKnownJutsu: async (obj, args, context, info) => {
+    addKnownJutsu: async (_parent, args, context, _info) => {
       const { ninja_id, jutsu_id } = args;
       try {
         const ninjaWithKnownJutsu = await context.pg.addKnownJutsu(ninja_id, jutsu_id);
@@ -49,7 +49,7 @@ export default {
         throw new GraphQLError("Error while associating ninja and jutsu");
       }
     },
-    removeKnownJutsu: async (obj, args, context, info) => {
+    removeKnownJutsu: async (_parent, args, context, _info) => {
       const { ninja_id, jutsu_id } = args;
       try {
         const ninjaWithKnownJutsu = await context.pg.removeKnownJutsu(ninja_id, jutsu_id);
@@ -61,7 +61,7 @@ export default {
     },
   },
   Query: {
-    ninja: async (obj, args, context, info) => {
+    ninja: async (_parent, args, context, _info) => {
       const { id } = args;
       try {
         const ninjaWithKnownJutsu = await context.pg.getNinjaWithRelatedJutsu(id);

@@ -3,8 +3,7 @@ import { Jutsu, Ninja } from "./types/mod.ts";
 const baseUrl = "http://localhost:5000/api";
 
 const main = async () => {
-  let response: Response,
-    result: Ninja | Jutsu;
+  let response: Response, result: Ninja | Jutsu;
 
   // Create ninja
   response = await fetch(`${baseUrl}/ninja`, {
