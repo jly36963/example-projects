@@ -31,7 +31,7 @@ func setupServer(providers *providers.Providers) *echo.Echo {
 }
 
 func Start(providers *providers.Providers) {
-	port := ":5000"
+	port := ":8080"
 	app := setupServer(providers)
 
 	log.Fatal(app.Start(port))

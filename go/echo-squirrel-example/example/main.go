@@ -1,16 +1,16 @@
 package main
 
 import (
+	"echo-squirrel-example/types"
 	"encoding/json"
 	"errors"
-	"fiber-squirrel-example/types"
 	"fmt"
 
 	resty "github.com/go-resty/resty/v2"
 )
 
 func main() {
-	baseUrl := "http://127.0.0.1:5000/api"
+	baseUrl := "http://127.0.0.1:8080/api"
 
 	client := resty.New()
 

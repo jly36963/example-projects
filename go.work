@@ -1,0 +1,11 @@
+go 1.18
+
+use (
+	./go/echo-squirrel-example
+	./go/fasthttp-squirrel-example
+	./go/fiber-squirrel-example
+	./go/gin-squirrel-example
+	./go/go-graphql-mongodb
+	./go/iris-squirrel-example
+	./go/gqlgen-pg-gin
+)

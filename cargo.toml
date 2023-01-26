@@ -1,0 +1,9 @@
+[workspace]
+
+members = [
+    "rs/actix-postgres-example",
+    "rs/async-graphql-warp-postgres",
+    "rs/gotham-postgres-example",
+    "rs/juniper-warp-postgres-example",
+    "rs/warp-postgres-example",
+]
