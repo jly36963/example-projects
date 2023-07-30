@@ -3,6 +3,8 @@ import {createHandler} from 'graphql-http/lib/use/express';
 import {getSchema} from './schema.js';
 import {Providers, GqlContext} from '../types/index.js';
 
+// TODO: set up graphiql
+
 /** Set up graphql router */
 export async function getGraphqlRouter(
   providers: Providers

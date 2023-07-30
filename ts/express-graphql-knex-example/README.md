@@ -4,9 +4,7 @@ A simple app using typescript, express, and graphql
 
 ## TODO
 
-- example file
-- update docs
-  - express-graphql -> graphql-http
+- Add docs in schema files
 - unit tests
 
 ## Setup
