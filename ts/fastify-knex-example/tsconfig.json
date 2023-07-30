@@ -4,14 +4,14 @@
     "target": "ESNext",
     "module": "es2020",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
-    "preserveConstEnums": true,
     "sourceMap": true,
-    "esModuleInterop": true,
     "noEmit": false,
     "outDir": "build",
     "rootDir": ".",
+    "skipLibCheck": true, // tsc breaks node_modules (node-fetch)
     "typeRoots": ["./types/declarations/"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build", "tests"]
 }

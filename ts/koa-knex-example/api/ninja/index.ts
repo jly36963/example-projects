@@ -1,16 +1,19 @@
-import {pick} from 'lodash-es';
-import {Providers} from '../../dal/providers';
+import {ZodError} from 'zod';
 import Router from '@koa/router';
+import {checkUuid} from '../../utils/index.js';
+import {NinjaInputSchema, NinjaUpdatesSchema} from '../../types/index.js';
+import type {routerFactory} from '../../types/index.js';
 
-const createRouter = (providers: Providers): Router => {
-  const {pgdal} = providers;
+const createRouter: routerFactory = providers => {
+  const {pgDal} = providers;
   const router = new Router();
 
   /** Get ninja by id */
   router.get('/:id', async ctx => {
     const {id} = ctx.params;
     try {
-      const ninja = await pgdal.ninjas.get(id);
+      checkUuid(id);
+      const ninja = await pgDal.ninjas.get(id);
       if (!ninja) {
         ctx.status = 404;
         return;
@@ -18,7 +21,12 @@ const createRouter = (providers: Providers): Router => {
       ctx.status = 200;
       ctx.body = ninja;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -26,14 +34,20 @@ const createRouter = (providers: Providers): Router => {
 
   /** Insert new ninja */
   router.post('/', async ctx => {
-    const ninjaNew = pick(ctx.request.body, ['firstName', 'lastName', 'age']);
+    const ninjaInput = ctx.request.body;
     try {
-      const ninja = await pgdal.ninjas.insert(ninjaNew);
+      const parsedNinjaInput = NinjaInputSchema.parse(ninjaInput);
+      const ninja = await pgDal.ninjas.insert(parsedNinjaInput);
       if (!ninja) throw new Error();
       ctx.status = 200;
       ctx.body = ninja;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -42,18 +56,24 @@ const createRouter = (providers: Providers): Router => {
   /** Update ninja */
   router.put('/:id', async ctx => {
     const {id} = ctx.params;
-    const ninjaUpdates = pick(ctx.request.body, [
-      'firstName',
-      'lastName',
-      'age',
-    ]);
+    const ninjaUpdates = ctx.request.body;
+
     try {
-      const ninja = await pgdal.ninjas.update(id, ninjaUpdates);
-      if (!ninja) throw new Error();
+      checkUuid(id);
+      const parsedNinjaUpdates = NinjaUpdatesSchema.parse(ninjaUpdates);
+      const ninja = await pgDal.ninjas.update(id, parsedNinjaUpdates);
+      if (!ninja) {
+        throw new Error();
+      }
       ctx.status = 200;
       ctx.body = ninja;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -63,12 +83,20 @@ const createRouter = (providers: Providers): Router => {
   router.delete('/:id', async ctx => {
     const {id} = ctx.params;
     try {
-      const ninja = await pgdal.ninjas.del(id);
-      if (!ninja) throw new Error();
+      checkUuid(id);
+      const ninja = await pgDal.ninjas.del(id);
+      if (!ninja) {
+        throw new Error();
+      }
       ctx.status = 200;
       ctx.body = ninja;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -78,10 +106,17 @@ const createRouter = (providers: Providers): Router => {
   router.post('/:ninjaId/jutsu/:jutsuId', async ctx => {
     const {ninjaId, jutsuId} = ctx.params;
     try {
-      await pgdal.ninjas.associateJutsu(ninjaId, jutsuId);
+      checkUuid(ninjaId);
+      checkUuid(jutsuId);
+      await pgDal.ninjas.associateJutsu(ninjaId, jutsuId);
       ctx.status = 204;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -91,10 +126,15 @@ const createRouter = (providers: Providers): Router => {
   router.delete('/:ninjaId/jutsu/:jutsuId', async ctx => {
     const {ninjaId, jutsuId} = ctx.params;
     try {
-      await pgdal.ninjas.disassociateJutsu(ninjaId, jutsuId);
+      await pgDal.ninjas.disassociateJutsu(ninjaId, jutsuId);
       ctx.status = 204;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -104,7 +144,8 @@ const createRouter = (providers: Providers): Router => {
   router.get('/:id/jutsus', async ctx => {
     const {id} = ctx.params;
     try {
-      const ninjaWithJutsus = await pgdal.ninjas.getNinjaWithJutsus(id);
+      checkUuid(id);
+      const ninjaWithJutsus = await pgDal.ninjas.getNinjaWithJutsus(id);
       if (!ninjaWithJutsus) {
         ctx.status = 404;
         return;
@@ -112,7 +153,12 @@ const createRouter = (providers: Providers): Router => {
       ctx.status = 200;
       ctx.body = ninjaWithJutsus;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }

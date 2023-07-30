@@ -1,36 +1,23 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-import fastify, {FastifyPluginCallback} from 'fastify';
+import fastify from 'fastify';
 import pino from 'pino';
-import {providers, Providers} from './dal/providers';
+import {getProviders} from './providers/index.js';
+import type {routerFactory, ServerConfig} from './types/index.js';
 
-const main = async () => {
-  // instantiate app
-  const app = fastify({
-    logger: pino({transport: {target: 'pino-pretty'}}),
-  });
+export async function startServer({nodeEnv, port, pgUrl}: ServerConfig) {
+  const dev = nodeEnv !== 'production';
+  const pinoConfig = dev ? {transport: {target: 'pino-pretty'}} : {};
+
+  const app = fastify({logger: pino(pinoConfig)});
+  const providers = getProviders({pgUrl});
+
   const paths = ['/api/ninja', '/api/jutsu'];
   for (const p of paths) {
-    const createPlugin: (providers: Providers) => FastifyPluginCallback = (
-      await import(`.${p}`)
-    ).default;
-    const plugin = createPlugin(providers);
-    app.register(plugin, {prefix: p});
+    const fp = `.${p}/index.js`;
+    const createRouter: routerFactory = (await import(fp)).default;
+    const router = createRouter(providers);
+    app.register(router, {prefix: p});
   }
 
-  // const port: string | number = process.env.PORT || 5000;
-  // await app.listen(port, (): void =>
-  //   console.log(`App listening at http://localhost:${port}`),
-  // );
-  try {
-    const port: string | number = process.env.PORT || 5000;
-    await app.listen(port);
-    app.log.info(`server listening on ${port}`);
-  } catch (err: any) {
-    app.log.error(err.message);
-    throw err;
-  }
-};
-
-main();
+  await app.listen({port});
+  app.log.info(`server listening on ${port}`);
+}

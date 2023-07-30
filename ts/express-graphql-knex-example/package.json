@@ -1,0 +1,50 @@
+{
+  "name": "ts-express-graphql",
+  "version": "1.0.0",
+  "description": "Graphql API using typescript, express, knex",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node ./build/start/prod.js",
+    "dev": "nodemon -x 'node --loader ts-node/esm' start/dev.ts",
+    "build": "rimraf build && tsc",
+    "pretest": "npm run build",
+    "test": "mocha \"tests/**/*.test.js\"",
+    "run-example": "node --loader ts-node/esm example.ts"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@graphql-tools/load-files": "^7.0.0",
+    "@graphql-tools/merge": "^9.0.0",
+    "@graphql-tools/schema": "^10.0.0",
+    "@graphql-tools/utils": "^10.0.4",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-pino-logger": "^5.0.0",
+    "graphql": "^16.7.1",
+    "graphql-http": "^1.21.0",
+    "graphql-tag": "^2.12.6",
+    "knex": "^2.5.1",
+    "knex-stringcase": "^1.4.6",
+    "lodash-es": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.11.1",
+    "pino-http": "^8.3.3",
+    "pino-pretty": "^10.2.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/express-pino-logger": "^4.0.3",
+    "@types/lodash-es": "^4.17.8",
+    "@types/node": "^20.4.5",
+    "eslint": "^8.46.0",
+    "gts": "^5.0.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

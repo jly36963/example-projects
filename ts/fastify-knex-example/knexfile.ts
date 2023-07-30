@@ -1,30 +1,29 @@
-import dotenv from 'dotenv';
-dotenv.config();
+const pgUrl = process.env.PG_URL;
 
 export default {
   development: {
     client: 'pg',
-    connection: process.env.PG_URI,
+    connection: pgUrl,
     pool: {
       min: 2,
       max: 10,
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './dal/pg/migrations',
+      directory: './providers/pg/migrations',
     },
   },
 
   production: {
     client: 'pg',
-    connection: process.env.PG_URI,
+    connection: pgUrl,
     pool: {
       min: 2,
       max: 10,
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './dal/pg/migrations',
+      directory: './providers/pg/migrations',
     },
   },
 };

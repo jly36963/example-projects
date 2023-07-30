@@ -1,64 +1,83 @@
 // imports
 import express from 'express';
-import {pick} from 'lodash-es';
-import {Providers} from '../../dal/providers';
+import {ZodError} from 'zod';
+import {checkUuid} from '../../utils/index.js';
+import {JutsuInputSchema, JutsuUpdatesSchema} from '../../types/index.js';
+import type {routerFactory} from '../../types/index.js';
 
-const createRouter = (providers: Providers): express.Router => {
-  const {pgdal} = providers;
+const createRouter: routerFactory = (providers) => {
+  const {pgDal} = providers;
 
   const router = express.Router();
 
   /** Get jutsu by id */
-  router.get('/:id', async (req: express.Request, res: express.Response) => {
+  router.get('/:id', async (req, res) => {
     const {id} = req.params;
     try {
-      const jutsu = await pgdal.jutsus.get(id);
+      checkUuid(id)
+      const jutsu = await pgDal.jutsus.get(id);
       if (!jutsu) {
         return res.sendStatus(404);
       }
       return res.status(200).json(jutsu);
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        return res.sendStatus(400)
+      }
       return res.sendStatus(500);
     }
   });
 
   /** Insert new jutsu */
-  router.post('/', async (req: express.Request, res: express.Response) => {
-    const jutsuNew = pick(req.body, ['name', 'description', 'chakraNature']);
+  router.post('/', async (req, res) => {
+    const jutsuInput = req.body
     try {
-      const jutsu = await pgdal.jutsus.insert(jutsuNew);
+      const parsedJutsuInput = JutsuInputSchema.parse(jutsuInput);
+      const jutsu = await pgDal.jutsus.insert(parsedJutsuInput);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        return res.sendStatus(400)
+      }
       return res.sendStatus(500);
     }
   });
 
   /** Update jutsu */
-  router.put('/:id', async (req: express.Request, res: express.Response) => {
+  router.put('/:id', async (req, res) => {
     const {id} = req.params;
-    const jutsuUpdates = pick(req.body, [
-      'name',
-      'description',
-      'chakraNature',
-    ]);
+    const jutsuInput = req.body
     try {
-      const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
+      checkUuid(id)
+      const parsedJutsuInput = JutsuUpdatesSchema.parse(jutsuInput);
+      const jutsu = await pgDal.jutsus.update(id, parsedJutsuInput);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        return res.sendStatus(400)
+      }
       return res.sendStatus(500);
     }
   });
 
   /** Delete jutsu */
-  router.delete('/:id', async (req: express.Request, res: express.Response) => {
+  router.delete('/:id', async (req, res) => {
     const {id} = req.params;
     try {
-      const jutsu = await pgdal.jutsus.del(id);
+      checkUuid(id)
+      const jutsu = await pgDal.jutsus.del(id);
       if (!jutsu) throw new Error();
       return res.status(200).json(jutsu);
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        return res.sendStatus(400)
+      }
       return res.sendStatus(500);
     }
   });

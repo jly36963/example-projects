@@ -1,16 +1,19 @@
+import {ZodError} from 'zod';
 import Router from '@koa/router';
-import {pick} from 'lodash-es';
-import {Providers} from '../../dal/providers';
+import {checkUuid} from '../../utils/index.js';
+import {JutsuInputSchema, JutsuUpdatesSchema} from '../../types/index.js';
+import type {routerFactory} from '../../types/index.js';
 
-const createRouter = (providers: Providers): Router => {
-  const {pgdal} = providers;
+const createRouter: routerFactory = providers => {
+  const {pgDal} = providers;
   const router = new Router();
 
   /** Get jutsu by id */
   router.get('/:id', async ctx => {
     const {id} = ctx.params;
     try {
-      const jutsu = await pgdal.jutsus.get(id);
+      checkUuid(id);
+      const jutsu = await pgDal.jutsus.get(id);
       if (!jutsu) {
         ctx.status = 404;
         return;
@@ -18,7 +21,12 @@ const createRouter = (providers: Providers): Router => {
       ctx.status = 200;
       ctx.body = jutsu;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -26,18 +34,21 @@ const createRouter = (providers: Providers): Router => {
 
   /** Insert new jutsu */
   router.post('/', async ctx => {
-    const jutsuNew = pick(ctx.request.body, [
-      'name',
-      'description',
-      'chakraNature',
-    ]);
+    const jutsuInput = ctx.request.body;
+
     try {
-      const jutsu = await pgdal.jutsus.insert(jutsuNew);
+      const parsedJutsuInput = JutsuInputSchema.parse(jutsuInput);
+      const jutsu = await pgDal.jutsus.insert(parsedJutsuInput);
       if (!jutsu) throw new Error();
       ctx.status = 200;
       ctx.body = jutsu;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -46,18 +57,21 @@ const createRouter = (providers: Providers): Router => {
   /** Update jutsu */
   router.put('/:id', async ctx => {
     const {id} = ctx.params;
-    const jutsuUpdates = pick(ctx.request.body, [
-      'name',
-      'description',
-      'chakraNature',
-    ]);
+    const jutsuInput = ctx.request.body;
     try {
-      const jutsu = await pgdal.jutsus.update(id, jutsuUpdates);
+      checkUuid(id);
+      const parsedJutsuInput = JutsuUpdatesSchema.parse(jutsuInput);
+      const jutsu = await pgDal.jutsus.update(id, parsedJutsuInput);
       if (!jutsu) throw new Error();
       ctx.status = 200;
       ctx.body = jutsu;
       return;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }
@@ -67,11 +81,17 @@ const createRouter = (providers: Providers): Router => {
   router.delete('/:id', async ctx => {
     const {id} = ctx.params;
     try {
-      const jutsu = await pgdal.jutsus.del(id);
+      checkUuid(id);
+      const jutsu = await pgDal.jutsus.del(id);
       if (!jutsu) throw new Error();
       ctx.status = 200;
       ctx.body = jutsu;
-    } catch {
+    } catch (err) {
+      console.log(err);
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+        return;
+      }
       ctx.status = 500;
       return;
     }

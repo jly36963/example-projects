@@ -1,33 +1,28 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import Koa from 'koa';
-import Router from '@koa/router';
 import pino from 'koa-pino-logger';
 import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
-import {providers, Providers} from './dal/providers';
+import {getProviders} from './providers/index.js';
+import type {routerFactory, ServerConfig} from './types/index.js';
 
-const main = async () => {
-  const app = new Koa()
-    .use(json())
-    .use(bodyParser())
-    .use(pino({prettyPrint: true}));
+export async function startServer({nodeEnv, port, pgUrl}: ServerConfig) {
+  const dev = nodeEnv !== 'production';
+  const pinoConfig = dev ? {transport: {target: 'pino-pretty'}} : {};
+
+  const app = new Koa().use(json()).use(bodyParser()).use(pino(pinoConfig));
+
+  const providers = getProviders({pgUrl});
 
   const paths = ['/api/ninja', '/api/jutsu'];
   for (const p of paths) {
-    const createRouter: (providers: Providers) => Router = (
-      await import(`.${p}`)
-    ).default;
+    const fp = `.${p}/index.js`;
+    const createRouter: routerFactory = (await import(fp)).default;
     const router = createRouter(providers);
     router.prefix(p);
     app.use(router.routes()).use(router.allowedMethods());
   }
 
-  const port: string | number = process.env.PORT || 5000;
-  app.listen(port, (): void =>
+  app.listen(port, () =>
     console.log(`App listening at http://localhost:${port}`)
   );
-};
-
-main();
+}

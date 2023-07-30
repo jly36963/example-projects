@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const baseUrl = 'http://localhost:5000/api';
+const baseUrl = 'http://localhost:3000/api';
 
 const main = async () => {
   let response, result: any;

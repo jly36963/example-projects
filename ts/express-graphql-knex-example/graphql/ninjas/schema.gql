@@ -1,0 +1,31 @@
+type Query {
+  ninja(id: String!): Ninja
+}
+
+type Mutation {
+  insertNinja(ninja: NinjaNew!): Ninja
+  updateNinja(id: String!, updates: NinjaUpdates): Ninja
+  deleteNinja(id: String!): Ninja
+  addKnownJutsu(ninjaId: String!, jutsuId: String!): Ninja
+  removeKnownJutsu(ninjaId: String!, jutsuId: String!): Ninja
+}
+
+type Ninja {
+  id: String!
+  firstName: String!
+  lastName: String!
+  age: Int!
+  jutsus: [Jutsu!]
+}
+
+input NinjaNew {
+  firstName: String!
+  lastName: String!
+  age: Int!
+}
+
+input NinjaUpdates {
+  firstName: String
+  lastName: String
+  age: Int
+}

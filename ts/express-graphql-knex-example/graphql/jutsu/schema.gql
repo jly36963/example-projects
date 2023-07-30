@@ -1,0 +1,32 @@
+type Query {
+  # Get a jutsu by id
+  jutsu(id: String!): Jutsu
+}
+
+type Mutation {
+  # Create new jutsu
+  insertJutsu(jutsu: JutsuNew!): Jutsu
+  # Update an existing jutsu
+  updateJutsu(id: String!, updates: JutsuUpdates): Jutsu
+  # Delete existing jutsu
+  deleteJutsu(id: String!): Jutsu
+}
+
+type Jutsu {
+  id: String!
+  name: String!
+  chakraNature: String!
+  description: String!
+}
+
+input JutsuNew {
+  name: String!
+  chakraNature: String!
+  description: String
+}
+
+input JutsuUpdates {
+  name: String
+  chakraNature: String
+  description: String
+}

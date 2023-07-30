@@ -1,9 +1,9 @@
-import fetch from 'node-fetch';
+import fetch, {Response} from 'node-fetch';
 
-const baseUrl = 'http://localhost:5000/api';
+const baseUrl = 'http://localhost:3000/api';
 
 const main = async () => {
-  let response, result: any;
+  let response: Response, result: any;
 
   // create ninja
   response = await fetch(`${baseUrl}/ninja`, {
