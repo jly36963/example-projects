@@ -6,7 +6,7 @@ import type {
   NinjaWithJutsus,
   NinjaInput,
   NinjaUpdates,
-} from '../../types';
+} from '../../types/index.js';
 
 export class NinjaDal {
   readonly db!: Kysely<Database>;

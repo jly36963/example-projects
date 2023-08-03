@@ -1,6 +1,11 @@
 import type {Kysely} from 'kysely';
 import {tables} from '../../types/index.js';
-import type {Database, Jutsu, JutsuInput, JutsuUpdates} from '../../types';
+import type {
+  Database,
+  Jutsu,
+  JutsuInput,
+  JutsuUpdates,
+} from '../../types/index.js';
 
 export class JutsuDal {
   readonly db!: Kysely<Database>;

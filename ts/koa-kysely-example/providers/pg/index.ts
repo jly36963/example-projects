@@ -1,5 +1,4 @@
 import {Database, PgConfig} from '../../types/index.js';
-// import Pool from 'pg-pool';
 import pg from 'pg';
 import pgcs from 'pg-connection-string';
 import {Kysely, PostgresDialect, CamelCasePlugin} from 'kysely';
