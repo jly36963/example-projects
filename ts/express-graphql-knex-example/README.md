@@ -5,11 +5,12 @@ A simple app using typescript, express, and graphql
 ## Todo
 
 - Add docs in schema files
-- unit tests
+- Unit tests
+- Remove Makefile, use package.json scripts
 
 ## Setup
 
-- populate `.env` file. template in `dev.env`
+- Populate `.env` file. template in `dev.env`
 - `make install`
 
 ## Migrations (dev)
@@ -31,4 +32,3 @@ A simple app using typescript, express, and graphql
 - [ts](https://github.com/jly36963/notes/blob/master/ts/typescript-basics.ts)
 - [graphql-tools](https://github.com/ardatan/graphql-tools)
 - [graphql-http](https://github.com/graphql/graphql-http)
-- [express-graphql](https://marmelab.com/blog/2017/09/06/dive-into-graphql-part-iii-building-a-graphql-server-with-nodejs.html)

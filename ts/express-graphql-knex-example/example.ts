@@ -184,7 +184,6 @@ async function main() {
       age: 27,
     },
   });
-
   console.log('Create ninja result: ', result.insertNinja);
 
   // Get ninja
