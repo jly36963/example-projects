@@ -1,8 +1,7 @@
-import {Database, PgConfig} from '../../types/index.js';
 import pg from 'pg';
 import pgcs from 'pg-connection-string';
 import {Kysely, PostgresDialect, CamelCasePlugin} from 'kysely';
-
+import {Database, PgConfig} from '../../types/index.js';
 import {NinjaDal} from './ninjas.js';
 import {JutsuDal} from './jutsus.js';
 

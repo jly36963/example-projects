@@ -1,5 +1,5 @@
-import {tables} from '../../types/index.js';
 import type {Kysely} from 'kysely';
+import {tables} from '../../types/index.js';
 import type {
   Database,
   Ninja,
