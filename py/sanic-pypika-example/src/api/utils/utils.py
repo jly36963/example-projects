@@ -2,9 +2,7 @@ import json
 
 
 def custom_serializer(obj):
-    """
-    Serializer that can handle datetime
-    """
+    """Serializer that can handle datetime"""
     return json.dumps(obj, default=str)
 
 

@@ -1,4 +1,5 @@
-from typing import Union, TypedDict, List
+from typing import Union, List
+from typing_extensions import TypedDict
 import datetime
 from uuid import UUID
 

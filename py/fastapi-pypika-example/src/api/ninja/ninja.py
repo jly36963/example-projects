@@ -12,9 +12,7 @@ async def get_ninja(
     id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Get ninja
-    """
+    """Get ninja"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}
@@ -33,9 +31,7 @@ async def create_ninja(
     ninja_new: NinjaNew,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Insert new ninja
-    """
+    """Insert new ninja"""
     try:
         ninja = await providers.pgdal.create_ninja(ninja_new)
         response.status_code = 200
@@ -52,9 +48,7 @@ async def update_ninja(
     ninja_updates: NinjaUpdates,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Update existing ninja
-    """
+    """Update existing ninja"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}
@@ -73,9 +67,7 @@ async def delete_ninja(
     id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Delete existing ninja
-    """
+    """Delete existing ninja"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}
@@ -95,9 +87,7 @@ async def associate_ninja_and_jutsu(
     jutsu_id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Associate ninja and jutsu
-    """
+    """Associate ninja and jutsu"""
     if not isinstance(ninja_id, str) and isinstance(jutsu_id, str):
         response.status_code = 400
         return {}
@@ -117,9 +107,7 @@ async def dissociate_ninja_and_jutsu(
     jutsu_id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Dissociate ninja and jutsu
-    """
+    """Dissociate ninja and jutsu"""
     if not isinstance(ninja_id, str) and isinstance(jutsu_id, str):
         response.status_code = 400
         return {}
@@ -138,9 +126,7 @@ async def get_ninja_with_jutsus(
     id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Get ninja with jutsus
-    """
+    """Get ninja with jutsus"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}

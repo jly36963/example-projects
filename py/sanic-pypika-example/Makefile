@@ -12,16 +12,17 @@ ALEMBIC=".venv/bin/alembic"
 	init-alembic migration migrate rollback rollback-all
 
 install:
-	@mkdir -p .venv; pipenv install
+	mkdir -p .venv
+	pipenv install --dev
 
 dev:
-	@pipenv run python3 main.py
-	
-run:
-	@PYTHON_ENV=production pipenv run python3 main.py
+	pipenv run python3 main.py
 
-run-example: 
-	@pipenv run python3 example.py
+run:
+	PYTHON_ENV=production pipenv run python3 main.py
+
+run-example:
+	pipenv run python3 example.py
 
 # ---
 # commands (db)

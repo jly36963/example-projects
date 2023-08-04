@@ -1,5 +1,10 @@
 # py ariadne fastapi
 
+## Todo
+
+- Wrap db connections in functions for dependency injection
+- Add types
+
 ## setup
 
 - make install
@@ -29,7 +34,8 @@
 
 ## example queries
 
-graphiql located at `http://localhost:8000/graphql` (or custom port if env var set)
+graphiql located at `http://localhost:8000/graphql` (or custom port if env var
+set)
 
 ### hello
 

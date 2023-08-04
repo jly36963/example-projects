@@ -51,9 +51,7 @@ class PGDAL:
         query: str,
         args: list = []
     ) -> Union[Any, None]:
-        """
-        Executes query in transaction and returns rows
-        """
+        """Executes query in transaction and returns rows"""
         query = self.replace_placeholder(query)
         conn = self.conn
         records = []
@@ -67,9 +65,7 @@ class PGDAL:
     # ---
 
     async def create_ninja(self, ninja_new: NinjaNew) -> Union[Ninja, None]:
-        """
-        Create a ninja and return it
-        """
+        """Create a ninja and return it"""
         table = Table(Tables.Ninjas.value)
         args: List[Any] = []
         qb = (
@@ -85,9 +81,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def get_ninja(self, id: UUID) -> Union[Ninja, None]:
-        """
-        Get a ninja by id
-        """
+        """Get a ninja by id"""
         table = Table(Tables.Ninjas.value)
         args: List[Any] = []
         qb = (
@@ -102,9 +96,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def update_ninja(self, id: UUID, ninja_updates: NinjaUpdates) -> Union[Ninja, None]:
-        """
-        Update a ninja by id and return it
-        """
+        """Update a ninja by id and return it"""
         table = Table(Tables.Ninjas.value)
         args: List[Any] = []
         qb = (
@@ -122,9 +114,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def delete_ninja(self, id: UUID) -> Union[Ninja, None]:
-        """
-        Delete a ninja and return it
-        """
+        """Delete a ninja and return it"""
         table = Table(Tables.Ninjas.value)
         args: List[Any] = []
         qb = (
@@ -140,9 +130,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def associate_ninja_and_jutsu(self, ninja_id: UUID, jutsu_id: UUID) -> None:
-        """
-        Associate a ninja and jutsu
-        """
+        """Associate a ninja and jutsu"""
         table = Table(Tables.NinjasJutsus.value)
         args: List[Any] = []
         qb = (
@@ -159,9 +147,7 @@ class PGDAL:
         return
 
     async def dissociate_ninja_and_jutsu(self, ninja_id: UUID, jutsu_id: UUID) -> None:
-        """
-        Dissociate a ninja and jutsu
-        """
+        """Dissociate a ninja and jutsu"""
         table = Table(Tables.NinjasJutsus.value)
         args: List[Any] = []
         qb = (
@@ -180,14 +166,12 @@ class PGDAL:
         return
 
     async def get_ninja_with_jutsus(self, ninja_id: UUID) -> Union[Ninja, None]:
-        """
-        Get ninja with associated jutsus
-        """
+        """Get ninja with associated jutsus"""
         ninjas_table = Table(Tables.Ninjas.value)
         jutsus_table = Table(Tables.Jutsus.value)
         ninjas_jutsus_table = Table(Tables.NinjasJutsus.value)
 
-        # get ninja
+        # Get ninja
         args: List[Any] = []
         qb = (
             PostgreSQLQuery
@@ -200,7 +184,7 @@ class PGDAL:
         rows = await self.execute_query(sql, args)
         ninja = rows[0] if (rows and len(rows)) else None
 
-        # get jutsus
+        # Get jutsus
         args: List[Any] = []
         qb = (
             PostgreSQLQuery
@@ -217,7 +201,6 @@ class PGDAL:
         sql = str(qb)
         jutsus = await self.execute_query(sql, args) or []
 
-        # result
         if not ninja:
             return None
         ninja['jutsus'] = jutsus
@@ -228,9 +211,7 @@ class PGDAL:
     # ---
 
     async def create_jutsu(self, jutsu_new: JutsuNew) -> Union[Jutsu, None]:
-        """
-        Create a jutsu and return it
-        """
+        """Create a jutsu and return it"""
         table = Table(Tables.Jutsus.value)
         args: List[Any] = []
         qb = (
@@ -246,9 +227,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def get_jutsu(self, id: UUID) -> Union[Jutsu, None]:
-        """
-        Get a jutsu by id
-        """
+        """Get a jutsu by id"""
         table = Table(Tables.Jutsus.value)
         args: List[Any] = []
         qb = (
@@ -263,9 +242,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def update_jutsu(self, id: UUID, jutsu_updates: JutsuUpdates) -> Union[Jutsu, None]:
-        """
-        Update a ninja by id and return it
-        """
+        """Update a ninja by id and return it"""
         table = Table(Tables.Jutsus.value)
         args: List[Any] = []
         qb = (
@@ -283,9 +260,7 @@ class PGDAL:
         return rows[0] if (rows and len(rows)) else None
 
     async def delete_jutsu(self, id: UUID) -> Union[Jutsu, None]:
-        """
-        Delete a jutsu and return it
-        """
+        """Delete a jutsu and return it"""
         table = Table(Tables.Jutsus.value)
         args: List[Any] = []
         qb = (

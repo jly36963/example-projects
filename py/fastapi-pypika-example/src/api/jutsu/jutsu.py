@@ -12,9 +12,7 @@ async def get_jutsu(
     id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Get jutsu
-    """
+    """Get jutsu"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}
@@ -33,9 +31,7 @@ async def create_jutsu(
     jutsu_new: JutsuNew,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Insert new jutsu
-    """
+    """Insert new jutsu"""
     try:
         jutsu = await providers.pgdal.create_jutsu(jutsu_new)
         response.status_code = 200
@@ -52,9 +48,7 @@ async def update_jutsu(
     jutsu_updates: JutsuUpdates,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Update existing jutsu
-    """
+    """Update existing jutsu"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}
@@ -73,9 +67,7 @@ async def delete_jutsu(
     id: str,
     providers: Providers = Depends(get_providers)
 ):
-    """
-    Delete existing jutsu
-    """
+    """Delete existing jutsu"""
     if not isinstance(id, str):
         response.status_code = 400
         return {}

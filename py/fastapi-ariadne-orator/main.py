@@ -7,21 +7,21 @@ from src.api import index
 from src.graphql.schema import schema
 from src.graphql.context import get_context_value
 
-# env
+# Env
 load_dotenv(verbose=True)
 port = int(os.getenv('PORT') or "8000")
 dev = os.getenv('PYTHON_ENV') != 'production'
 
-# app
+# App
 app = FastAPI()
 
-# rest routes
+# Rest
 app.include_router(
     index.router,
     prefix="/api",
 )
 
-# graphql
+# Graphql
 app.add_route(
     '/graphql',
     GraphQL(
@@ -32,10 +32,9 @@ app.add_route(
 )
 
 
-# listen
 if __name__ == "__main__":
     uvicorn.run('main:app', host="0.0.0.0", port=port, reload=dev)
 
-# developement
+# For developement
 # pipenv run python3 main.py
 # pipenv run uvicorn main:app --reload

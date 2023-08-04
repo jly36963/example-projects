@@ -51,8 +51,6 @@ async def fetch(
     if not isinstance(url, str):
         raise Exception('Argument "url" must be a string')
 
-    # TODO: retries
-
     async with httpx.AsyncClient() as client:
         response = await client.request(
             method,

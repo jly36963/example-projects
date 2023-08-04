@@ -31,13 +31,9 @@ type Mutation {
 # ---
 
 type Ninja {
-  # unique id
   id: ID!
-  # first name
   first_name: String!
-  # last name
   last_name: String!
-  # jutsu known by ninja
   jutsus: [Jutsu!]
 }
 
@@ -47,7 +43,6 @@ input NinjaNew {
 }
 
 input NinjaUpdates {
-  # fields that can be updated
   first_name: String
   last_name: String
 }
@@ -57,13 +52,9 @@ input NinjaUpdates {
 # ---
 
 type Jutsu {
-  # unique id
   id: ID!
-  # name of jutsu
   name: String!
-  # chakra nature of jutsu
   chakra_nature: String!
-  # description of jutsu
   description: String!
 }
 

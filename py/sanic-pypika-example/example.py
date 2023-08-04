@@ -3,9 +3,11 @@ from pprint import pprint
 import asyncio
 from src.utils.net import fetch
 
+# TODO: replace 'assert' with actual exception raising
+
 
 async def main():
-    base_url = 'http://localhost:5000/api'
+    base_url = 'http://localhost:3000/api'
 
     # create ninja
     response = await fetch(
