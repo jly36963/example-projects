@@ -2,7 +2,8 @@
 
 members = [
     "rs/actix-postgres-example",
-    "rs/async-graphql-warp-postgres",
+    "rs/axum-postgres-example",
+    "rs/async-graphql-warp-postgres-example",
     "rs/gotham-postgres-example",
     "rs/juniper-warp-postgres-example",
     "rs/warp-postgres-example",
