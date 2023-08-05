@@ -2,8 +2,8 @@
 
 - actix
   - https://actix.rs/
-  - https://docs.rs/actix-web/4.0.0-beta.10/actix_web/
-  - https://github.com/actix/actix-web/tree/web-v4.0.0-beta.10
+  - https://docs.rs/actix-web/
+  - https://github.com/actix/actix-web/
 
 - tokio-postgres
   - https://github.com/sfackler/rust-postgres

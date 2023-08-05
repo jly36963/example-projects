@@ -1,5 +1,5 @@
-use super::super::providers::Providers;
-use super::super::types;
+use crate::providers::Providers;
+use crate::types;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use uuid::Uuid;
 

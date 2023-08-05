@@ -1,6 +1,6 @@
 pub mod helpers;
 
-use super::super::types;
+use crate::types;
 use anyhow;
 use async_trait::async_trait;
 use postgres::types::ToSql;
@@ -20,7 +20,7 @@ impl Clone for PostgresDAL {
 
 #[async_trait]
 pub trait TPostgresDAL: Sync {
-    // ninjas
+    // Ninjas
     async fn create_ninja(
         &self,
         ninja_new: types::NinjaNew,
@@ -32,7 +32,8 @@ pub trait TPostgresDAL: Sync {
         ninja_updates: types::NinjaUpdates,
     ) -> anyhow::Result<Option<types::Ninja>>;
     async fn delete_ninja(&self, id: Uuid) -> anyhow::Result<Option<types::Ninja>>;
-    // jutsus
+
+    // Jutsus
     async fn create_jutsu(
         &self,
         jutsu_new: types::JutsuNew,
@@ -44,7 +45,8 @@ pub trait TPostgresDAL: Sync {
         jutsu_updates: types::JutsuUpdates,
     ) -> anyhow::Result<Option<types::Jutsu>>;
     async fn delete_jutsu(&self, id: Uuid) -> anyhow::Result<Option<types::Jutsu>>;
-    // ninjas_jutsus
+
+    // Ninjas_jutsus
     async fn associate_ninja_and_jutsu(&self, ninja_id: Uuid, jutsu_id: Uuid)
         -> anyhow::Result<()>;
     async fn dissociate_ninja_and_jutsu(
