@@ -117,12 +117,7 @@ async fn main() {
 
     // Associate ninja & jutsu
     let _ = client
-        .post(format!(
-            "{}/ninja-jutsu/{}/{}/",
-            base_url,
-            ninja_id.clone(),
-            jutsu_id.clone()
-        ))
+        .post(format!("{}/ninja-jutsu/{}/{}/", base_url, ninja_id.clone(), jutsu_id.clone()))
         .send()
         .await
         .unwrap()
@@ -147,12 +142,7 @@ async fn main() {
 
     // Dissociate ninja & jutsu
     let _ = client
-        .delete(format!(
-            "{}/ninja-jutsu/{}/{}/",
-            base_url,
-            ninja_id.clone(),
-            jutsu_id.clone()
-        ))
+        .delete(format!("{}/ninja-jutsu/{}/{}/", base_url, ninja_id.clone(), jutsu_id.clone()))
         .send()
         .await
         .unwrap()
@@ -173,10 +163,7 @@ async fn main() {
         .await
         .unwrap();
 
-    println!(
-        "Get ninja with jutsus result (post-dissociation): {:#?}",
-        ninja
-    );
+    println!("Get ninja with jutsus result (post-dissociation): {:#?}", ninja);
 
     // Delete ninja
     let ninja: types::Ninja = client

@@ -22,10 +22,7 @@ pub async fn get_ninja(providers: web::Data<Providers>, path: web::Path<String>)
 }
 
 #[post("/api/ninja/")]
-pub async fn insert_ninja(
-    providers: web::Data<Providers>,
-    ninja_new: web::Json<types::NinjaNew>,
-) -> HttpResponse {
+pub async fn insert_ninja(providers: web::Data<Providers>, ninja_new: web::Json<types::NinjaNew>) -> HttpResponse {
     let ninja = match providers
         .pgdal
         .create_ninja(types::NinjaNew {
@@ -46,11 +43,7 @@ pub async fn insert_ninja(
 }
 
 #[put("/api/ninja/{id}/")]
-pub async fn update_ninja(
-    providers: web::Data<Providers>,
-    path: web::Path<String>,
-    ninja_updates: web::Json<types::NinjaUpdates>,
-) -> HttpResponse {
+pub async fn update_ninja(providers: web::Data<Providers>, path: web::Path<String>, ninja_updates: web::Json<types::NinjaUpdates>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
@@ -79,10 +72,7 @@ pub async fn update_ninja(
 }
 
 #[delete("/api/ninja/{id}/")]
-pub async fn delete_ninja(
-    providers: web::Data<Providers>,
-    path: web::Path<String>,
-) -> HttpResponse {
+pub async fn delete_ninja(providers: web::Data<Providers>, path: web::Path<String>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
@@ -100,10 +90,7 @@ pub async fn delete_ninja(
 }
 
 #[get("/api/ninja/{id}/jutsus/")]
-pub async fn get_ninja_with_jutsus(
-    providers: web::Data<Providers>,
-    path: web::Path<String>,
-) -> HttpResponse {
+pub async fn get_ninja_with_jutsus(providers: web::Data<Providers>, path: web::Path<String>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
@@ -121,10 +108,7 @@ pub async fn get_ninja_with_jutsus(
 }
 
 #[post("/api/ninja-jutsu/{ninja_id}/{jutsu_id}/")]
-pub async fn associate_ninja_and_jutsu(
-    providers: web::Data<Providers>,
-    path: web::Path<(String, String)>,
-) -> HttpResponse {
+pub async fn associate_ninja_and_jutsu(providers: web::Data<Providers>, path: web::Path<(String, String)>) -> HttpResponse {
     let (ninja_id, jutsu_id) = path.into_inner();
     let ninja_uuid = match Uuid::parse_str(&ninja_id) {
         Ok(u) => u,
@@ -134,11 +118,7 @@ pub async fn associate_ninja_and_jutsu(
         Ok(u) => u,
         Err(_) => return HttpResponse::BadRequest().finish(),
     };
-    if let Err(_) = providers
-        .pgdal
-        .associate_ninja_and_jutsu(ninja_uuid, jutsu_uuid)
-        .await
-    {
+    if let Err(_) = providers.pgdal.associate_ninja_and_jutsu(ninja_uuid, jutsu_uuid).await {
         return HttpResponse::InternalServerError().finish();
     }
 
@@ -146,10 +126,7 @@ pub async fn associate_ninja_and_jutsu(
 }
 
 #[delete("/api/ninja-jutsu/{ninja_id}/{jutsu_id}/")]
-pub async fn dissociate_ninja_and_jutsu(
-    providers: web::Data<Providers>,
-    path: web::Path<(String, String)>,
-) -> HttpResponse {
+pub async fn dissociate_ninja_and_jutsu(providers: web::Data<Providers>, path: web::Path<(String, String)>) -> HttpResponse {
     let (ninja_id, jutsu_id) = path.into_inner();
     let ninja_uuid = match Uuid::parse_str(&ninja_id) {
         Ok(u) => u,
@@ -159,11 +136,7 @@ pub async fn dissociate_ninja_and_jutsu(
         Ok(u) => u,
         Err(_) => return HttpResponse::BadRequest().finish(),
     };
-    if let Err(_) = providers
-        .pgdal
-        .dissociate_ninja_and_jutsu(ninja_uuid, jutsu_uuid)
-        .await
-    {
+    if let Err(_) = providers.pgdal.dissociate_ninja_and_jutsu(ninja_uuid, jutsu_uuid).await {
         return HttpResponse::InternalServerError().finish();
     }
 

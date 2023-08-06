@@ -5,19 +5,14 @@ use warp::http::StatusCode;
 use warp::Filter;
 use warp::Reply;
 
-pub fn get_jutsu(
-    providers: Providers,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+pub fn get_jutsu(providers: Providers) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::path!("api" / "jutsu" / String)
         .and(warp::get())
         .and(with_providers(providers))
         .and_then(get_jutsu_handler)
 }
 
-async fn get_jutsu_handler(
-    id: String,
-    providers: Providers,
-) -> Result<impl warp::Reply, Infallible> {
+async fn get_jutsu_handler(id: String, providers: Providers) -> Result<impl warp::Reply, Infallible> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Ok(StatusCode::NOT_FOUND.into_response()),

@@ -22,10 +22,7 @@ pub async fn get_jutsu(providers: web::Data<Providers>, path: web::Path<String>)
 }
 
 #[post("/api/jutsu/")]
-pub async fn insert_jutsu(
-    providers: web::Data<Providers>,
-    jutsu_new: web::Json<types::JutsuNew>,
-) -> HttpResponse {
+pub async fn insert_jutsu(providers: web::Data<Providers>, jutsu_new: web::Json<types::JutsuNew>) -> HttpResponse {
     let jutsu = match providers
         .pgdal
         .create_jutsu(types::JutsuNew {
@@ -46,11 +43,7 @@ pub async fn insert_jutsu(
 }
 
 #[put("/api/jutsu/{id}/")]
-pub async fn update_jutsu(
-    providers: web::Data<Providers>,
-    path: web::Path<String>,
-    jutsu_updates: web::Json<types::JutsuUpdates>,
-) -> HttpResponse {
+pub async fn update_jutsu(providers: web::Data<Providers>, path: web::Path<String>, jutsu_updates: web::Json<types::JutsuUpdates>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
@@ -79,10 +72,7 @@ pub async fn update_jutsu(
 }
 
 #[delete("/api/jutsu/{id}/")]
-pub async fn delete_jutsu(
-    providers: web::Data<Providers>,
-    path: web::Path<String>,
-) -> HttpResponse {
+pub async fn delete_jutsu(providers: web::Data<Providers>, path: web::Path<String>) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,

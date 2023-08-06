@@ -216,11 +216,7 @@ pub async fn associate_ninja_and_jutsu(state: State) -> HandlerResult {
 
     // Associate ninja & jutsu
     let providers = Providers::borrow_from(&state);
-    if let Err(_) = providers
-        .pgdal
-        .associate_ninja_and_jutsu(ninja_id, jutsu_id)
-        .await
-    {
+    if let Err(_) = providers.pgdal.associate_ninja_and_jutsu(ninja_id, jutsu_id).await {
         let res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR);
         return Ok((state, res));
     }
@@ -238,11 +234,7 @@ pub async fn dissociate_ninja_and_jutsu(state: State) -> HandlerResult {
 
     // Dissociate ninja & jutsu
     let providers = Providers::borrow_from(&state);
-    if let Err(_) = providers
-        .pgdal
-        .dissociate_ninja_and_jutsu(ninja_id, jutsu_id)
-        .await
-    {
+    if let Err(_) = providers.pgdal.dissociate_ninja_and_jutsu(ninja_id, jutsu_id).await {
         let res = create_empty_response(&state, StatusCode::INTERNAL_SERVER_ERROR);
         return Ok((state, res));
     }

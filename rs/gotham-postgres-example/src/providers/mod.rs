@@ -9,9 +9,7 @@ pub struct Providers {
 
 impl Clone for Providers {
     fn clone(&self) -> Providers {
-        Providers {
-            pgdal: self.pgdal.clone(),
-        }
+        Providers { pgdal: self.pgdal.clone() }
     }
 }
 

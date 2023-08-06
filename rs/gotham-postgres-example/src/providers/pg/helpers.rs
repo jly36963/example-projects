@@ -41,8 +41,7 @@ pub fn replace_placeholders(mut sql: String) -> String {
 //     return pg_pool;
 // }
 
-pub fn get_pg_pool_sync(
-) -> bb8::Pool<bb8_postgres::PostgresConnectionManager<tokio_postgres::NoTls>> {
+pub fn get_pg_pool_sync() -> bb8::Pool<bb8_postgres::PostgresConnectionManager<tokio_postgres::NoTls>> {
     let pg_conn_str = "postgresql://postgres:postgres@localhost:5432/practice";
     let pg_config = tokio_postgres::config::Config::from_str(pg_conn_str).unwrap();
     let pg_manager = PostgresConnectionManager::new(pg_config, NoTls);
