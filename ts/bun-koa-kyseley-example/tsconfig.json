@@ -1,0 +1,29 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "composite": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "jsx": "preserve",
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": false, // Not bun default
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "build",
+    "rootDir": ".",
+    "skipLibCheck": true, // "tsc" breaks node_modules (node-fetch)
+    "typeRoots": ["./types/declarations/"],
+    "types": [
+      "bun-types" // add Bun global
+    ]
+  },
+  "exclude": ["node_modules", "tests"]
+}

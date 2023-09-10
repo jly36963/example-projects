@@ -1,20 +1,15 @@
 {
-  "name": "koa-kyseley-example",
-  "version": "1.0.0",
-  "description": "rest api using typescript, koa, zod, and knex",
-  "main": "index.js",
-  "license": "ISC",
+  "name": "bun-koa-kyseley-example",
+  "module": "index.ts",
   "type": "module",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "start": "node ./build/start/prod.js",
-    "dev": "nodemon -x 'node --loader ts-node/esm' start/dev.ts",
-    "build": "rimraf build && tsc",
-    "pretest": "npm run build",
+    "start": "bun run ./start/prod.js",
+    "dev": "bun --watch run ./start/dev.ts ",
     "test": "mocha \"tests/**/*.test.js\"",
-    "run-example": "node --loader ts-node/esm example.ts"
+    "run-example": "bun run example.ts"
   },
   "dependencies": {
     "@koa/router": "^12.0.0",
@@ -48,6 +43,7 @@
     "@types/pg-pool": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
+    "bun-types": "latest",
     "eslint": "^8.46.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.0",
