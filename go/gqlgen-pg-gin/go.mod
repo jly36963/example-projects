@@ -1,6 +1,6 @@
 module go-gqlgen-pg-gin
 
-go 1.15
+go 1.19
 
 require (
 	github.com/99designs/gqlgen v0.13.0

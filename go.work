@@ -1,6 +1,7 @@
 go 1.18
 
 use (
+	./go/chi-squirrel-example
 	./go/echo-squirrel-example
 	./go/fasthttp-squirrel-example
 	./go/fiber-squirrel-example

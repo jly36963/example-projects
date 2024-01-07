@@ -1,8 +1,6 @@
 package main
 
 import (
-	// standard packages
-
 	"encoding/json"
 	"fmt"
 	"log"
