@@ -10,7 +10,9 @@ pub struct Providers {
 
 impl Clone for Providers {
     fn clone(&self) -> Providers {
-        Providers { pgdal: self.pgdal.clone() }
+        Providers {
+            pgdal: self.pgdal.clone(),
+        }
     }
 }
 
@@ -31,6 +33,8 @@ pub async fn setup_providers() -> Providers {
 }
 
 // Middleware used to inject providers for route handler
-pub fn with_providers(providers: Providers) -> impl Filter<Extract = (Providers,), Error = std::convert::Infallible> + Clone {
+pub fn with_providers(
+    providers: Providers,
+) -> impl Filter<Extract = (Providers,), Error = std::convert::Infallible> + Clone {
     warp::any().map(move || providers.clone())
 }

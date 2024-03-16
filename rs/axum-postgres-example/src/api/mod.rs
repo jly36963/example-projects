@@ -23,8 +23,14 @@ pub async fn start(providers: Providers) {
         .route("/api/ninja/:id", put(ninja::update_ninja))
         .route("/api/ninja/:id", delete(ninja::delete_ninja))
         .route("/api/ninja/:id/jutsus", get(ninja::get_ninja_with_jutsus))
-        .route("/api/ninja-jutsu/:ninja_id/:jutsu_id", post(ninja::associate_ninja_and_jutsu))
-        .route("/api/ninja-jutsu/:ninja_id/:jutsu_id", delete(ninja::dissociate_ninja_and_jutsu))
+        .route(
+            "/api/ninja-jutsu/:ninja_id/:jutsu_id",
+            post(ninja::associate_ninja_and_jutsu),
+        )
+        .route(
+            "/api/ninja-jutsu/:ninja_id/:jutsu_id",
+            delete(ninja::dissociate_ninja_and_jutsu),
+        )
         .route("/api/jutsu/:id", get(jutsu::get_jutsu))
         .route("/api/jutsu", post(jutsu::insert_jutsu))
         .route("/api/jutsu/:id", put(jutsu::update_jutsu))

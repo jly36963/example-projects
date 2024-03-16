@@ -12,7 +12,9 @@ pub struct PostgresDAL {
 
 impl Clone for PostgresDAL {
     fn clone(&self) -> PostgresDAL {
-        PostgresDAL { pg_pool: self.pg_pool.clone() }
+        PostgresDAL {
+            pg_pool: self.pg_pool.clone(),
+        }
     }
 }
 
@@ -41,7 +43,9 @@ impl TPostgresDAL for PostgresDAL {
     async fn create_ninja(&self, ninja_new: types::NinjaNew) -> anyhow::Result<Option<types::Ninja>> {
         let conn = self.pg_pool.get().await?; // bb8::RunError<postgres::Error>
 
-        let sql = helpers::replace_placeholders(String::from("INSERT INTO ninjas (first_name, last_name, age) VALUES ( ?, ?, ? ) RETURNING *;"));
+        let sql = helpers::replace_placeholders(String::from(
+            "INSERT INTO ninjas (first_name, last_name, age) VALUES ( ?, ?, ? ) RETURNING *;",
+        ));
         let args: Vec<&(dyn ToSql + Sync)> = vec![&ninja_new.first_name, &ninja_new.last_name, &ninja_new.age];
 
         let rows = conn.query(&sql, &args).await?; // postgres::error::Error
@@ -114,7 +118,10 @@ impl TPostgresDAL for PostgresDAL {
         }
         args.push(&id);
         update_clause.push_str(&update_fields.join(", "));
-        let sql = helpers::replace_placeholders(String::from(format!("UPDATE ninjas {} WHERE id = ? RETURNING *;", update_clause)));
+        let sql = helpers::replace_placeholders(String::from(format!(
+            "UPDATE ninjas {} WHERE id = ? RETURNING *;",
+            update_clause
+        )));
 
         let rows = conn.query(&sql, &args).await?; // postgres::error::Error
         let row = match rows.get(0) {
@@ -229,7 +236,10 @@ impl TPostgresDAL for PostgresDAL {
         }
         args.push(&id);
         update_clause.push_str(&update_fields.join(", "));
-        let sql = helpers::replace_placeholders(String::from(format!("UPDATE jutsus {} WHERE id = ? RETURNING *;", update_clause)));
+        let sql = helpers::replace_placeholders(String::from(format!(
+            "UPDATE jutsus {} WHERE id = ? RETURNING *;",
+            update_clause
+        )));
 
         let rows = conn.query(&sql, &args).await?; // postgres::error::Error
         let row = match rows.get(0) {
@@ -273,7 +283,9 @@ impl TPostgresDAL for PostgresDAL {
     async fn associate_ninja_and_jutsu(&self, ninja_id: Uuid, jutsu_id: Uuid) -> anyhow::Result<()> {
         let conn = self.pg_pool.get().await?; // bb8::RunError<postgres::Error>
 
-        let sql = helpers::replace_placeholders(String::from("INSERT INTO ninjas_jutsus (ninja_id, jutsu_id) VALUES ( ?, ? ) RETURNING *;"));
+        let sql = helpers::replace_placeholders(String::from(
+            "INSERT INTO ninjas_jutsus (ninja_id, jutsu_id) VALUES ( ?, ? ) RETURNING *;",
+        ));
         let args: Vec<&(dyn ToSql + Sync)> = vec![&ninja_id, &jutsu_id];
 
         conn.execute(&sql, &args).await?; // postgres::error::Error
@@ -284,7 +296,9 @@ impl TPostgresDAL for PostgresDAL {
     async fn dissociate_ninja_and_jutsu(&self, ninja_id: Uuid, jutsu_id: Uuid) -> anyhow::Result<()> {
         let conn = self.pg_pool.get().await?; // bb8::RunError<postgres::Error>
 
-        let sql = helpers::replace_placeholders(String::from("DELETE FROM ninjas_jutsus WHERE (ninja_id = ? AND jutsu_id = ?) RETURNING *;"));
+        let sql = helpers::replace_placeholders(String::from(
+            "DELETE FROM ninjas_jutsus WHERE (ninja_id = ? AND jutsu_id = ?) RETURNING *;",
+        ));
         let args: Vec<&(dyn ToSql + Sync)> = vec![&ninja_id, &jutsu_id];
 
         conn.execute(&sql, &args).await?; // postgres::error::Error

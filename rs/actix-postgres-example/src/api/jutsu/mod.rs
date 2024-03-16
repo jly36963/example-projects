@@ -43,7 +43,11 @@ pub async fn insert_jutsu(providers: web::Data<Providers>, jutsu_new: web::Json<
 }
 
 #[put("/api/jutsu/{id}/")]
-pub async fn update_jutsu(providers: web::Data<Providers>, path: web::Path<String>, jutsu_updates: web::Json<types::JutsuUpdates>) -> HttpResponse {
+pub async fn update_jutsu(
+    providers: web::Data<Providers>,
+    path: web::Path<String>,
+    jutsu_updates: web::Json<types::JutsuUpdates>,
+) -> HttpResponse {
     let id = path.into_inner();
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,

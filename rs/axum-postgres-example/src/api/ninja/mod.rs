@@ -7,7 +7,10 @@ use axum::{
 };
 use uuid::Uuid;
 
-pub async fn get_ninja(State(providers): State<Providers>, Path(id): Path<String>) -> Result<Json<types::Ninja>, (StatusCode, String)> {
+pub async fn get_ninja(
+    State(providers): State<Providers>,
+    Path(id): Path<String>,
+) -> Result<Json<types::Ninja>, (StatusCode, String)> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Err((StatusCode::BAD_REQUEST, format!("Could not parse uuid: '{}'", id))),
@@ -23,11 +26,19 @@ pub async fn get_ninja(State(providers): State<Providers>, Path(id): Path<String
     Ok(Json(ninja))
 }
 
-pub async fn insert_ninja(State(providers): State<Providers>, Json(ninja_new): Json<types::NinjaNew>) -> Result<Json<types::Ninja>, (StatusCode, String)> {
+pub async fn insert_ninja(
+    State(providers): State<Providers>,
+    Json(ninja_new): Json<types::NinjaNew>,
+) -> Result<Json<types::Ninja>, (StatusCode, String)> {
     let ninja = match providers.pgdal.create_ninja(ninja_new).await {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving newly inserted ninja".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving newly inserted ninja".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
@@ -47,7 +58,12 @@ pub async fn update_ninja(
     let ninja = match providers.pgdal.update_ninja(uuid, ninja_updates).await {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving updated ninja".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving updated ninja".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
@@ -55,7 +71,10 @@ pub async fn update_ninja(
     Ok(Json(ninja))
 }
 
-pub async fn delete_ninja(State(providers): State<Providers>, Path(id): Path<String>) -> Result<Json<types::Ninja>, (StatusCode, String)> {
+pub async fn delete_ninja(
+    State(providers): State<Providers>,
+    Path(id): Path<String>,
+) -> Result<Json<types::Ninja>, (StatusCode, String)> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Err((StatusCode::BAD_REQUEST, format!("Could not parse uuid: '{}'", id))),
@@ -63,7 +82,12 @@ pub async fn delete_ninja(State(providers): State<Providers>, Path(id): Path<Str
     let ninja = match providers.pgdal.delete_ninja(uuid).await {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving deleted ninja".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving deleted ninja".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
@@ -71,7 +95,10 @@ pub async fn delete_ninja(State(providers): State<Providers>, Path(id): Path<Str
     Ok(Json(ninja))
 }
 
-pub async fn get_ninja_with_jutsus(State(providers): State<Providers>, Path(id): Path<String>) -> Result<Json<types::Ninja>, (StatusCode, String)> {
+pub async fn get_ninja_with_jutsus(
+    State(providers): State<Providers>,
+    Path(id): Path<String>,
+) -> Result<Json<types::Ninja>, (StatusCode, String)> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Err((StatusCode::BAD_REQUEST, format!("Could not parse uuid: '{}'", id))),

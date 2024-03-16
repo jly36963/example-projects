@@ -36,7 +36,10 @@ pub fn insert_jutsu(providers: Providers) -> impl Filter<Extract = impl warp::Re
         .and_then(insert_jutsu_handler)
 }
 
-async fn insert_jutsu_handler(jutsu_new: types::JutsuNew, providers: Providers) -> Result<impl warp::Reply, Infallible> {
+async fn insert_jutsu_handler(
+    jutsu_new: types::JutsuNew,
+    providers: Providers,
+) -> Result<impl warp::Reply, Infallible> {
     let jutsu = match providers.pgdal.create_jutsu(jutsu_new).await {
         Ok(n) => match n {
             Some(n) => n,
@@ -56,7 +59,11 @@ pub fn update_jutsu(providers: Providers) -> impl Filter<Extract = impl warp::Re
         .and_then(update_jutsu_handler)
 }
 
-async fn update_jutsu_handler(id: String, jutsu_updates: types::JutsuUpdates, providers: Providers) -> Result<impl warp::Reply, Infallible> {
+async fn update_jutsu_handler(
+    id: String,
+    jutsu_updates: types::JutsuUpdates,
+    providers: Providers,
+) -> Result<impl warp::Reply, Infallible> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Ok(StatusCode::NOT_FOUND.into_response()),

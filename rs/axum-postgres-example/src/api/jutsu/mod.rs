@@ -7,7 +7,10 @@ use axum::{
 };
 use uuid::Uuid;
 
-pub async fn get_jutsu(State(providers): State<Providers>, Path(id): Path<String>) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
+pub async fn get_jutsu(
+    State(providers): State<Providers>,
+    Path(id): Path<String>,
+) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Err((StatusCode::BAD_REQUEST, format!("Could not parse uuid: '{}'", id))),
@@ -23,7 +26,10 @@ pub async fn get_jutsu(State(providers): State<Providers>, Path(id): Path<String
     Ok(Json(jutsu))
 }
 
-pub async fn insert_jutsu(State(providers): State<Providers>, Json(jutsu_new): Json<types::JutsuNew>) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
+pub async fn insert_jutsu(
+    State(providers): State<Providers>,
+    Json(jutsu_new): Json<types::JutsuNew>,
+) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
     let jutsu = match providers
         .pgdal
         .create_jutsu(types::JutsuNew {
@@ -35,7 +41,12 @@ pub async fn insert_jutsu(State(providers): State<Providers>, Json(jutsu_new): J
     {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving inserted ninja".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving inserted ninja".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
@@ -55,7 +66,12 @@ pub async fn update_jutsu(
     let jutsu = match providers.pgdal.update_jutsu(uuid, jutsu_updates).await {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving updated jutsu".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving updated jutsu".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
@@ -63,7 +79,10 @@ pub async fn update_jutsu(
     Ok(Json(jutsu))
 }
 
-pub async fn delete_jutsu(State(providers): State<Providers>, Path(id): Path<String>) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
+pub async fn delete_jutsu(
+    State(providers): State<Providers>,
+    Path(id): Path<String>,
+) -> Result<Json<types::Jutsu>, (StatusCode, String)> {
     let uuid = match Uuid::parse_str(&id) {
         Ok(u) => u,
         Err(_) => return Err((StatusCode::BAD_REQUEST, format!("Could not parse uuid: '{}'", id))),
@@ -71,7 +90,12 @@ pub async fn delete_jutsu(State(providers): State<Providers>, Path(id): Path<Str
     let jutsu = match providers.pgdal.delete_jutsu(uuid).await {
         Ok(n) => match n {
             Some(n) => n,
-            None => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Error while retrieving deleted jutsu".into())),
+            None => {
+                return Err((
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Error while retrieving deleted jutsu".into(),
+                ))
+            }
         },
         Err(_) => return Err((StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".into())),
     };
