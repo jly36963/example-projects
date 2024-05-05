@@ -17,6 +17,12 @@ dev:
 build:
 	npm run build
 
+format:
+	npx @biomejs/biome format --write .
+
+lint:
+	npx @biomejs/biome lint --apply .
+
 run:
 	npm start
 
