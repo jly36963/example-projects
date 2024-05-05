@@ -1,9 +1,8 @@
 import { ZodError } from "zod";
-import { Hono, type Context } from "hono";
+import { Hono } from "hono";
 import { checkUuid } from "../../utils/index.js";
 import { NinjaInputSchema, NinjaUpdatesSchema } from "../../types/index.js";
 import type { routerFactory } from "../../types/index.js";
-
 
 const createRouter: routerFactory = (providers) => {
 	const { pgDal } = providers;
@@ -34,7 +33,6 @@ const createRouter: routerFactory = (providers) => {
 		try {
 			const ninjaInput = NinjaInputSchema.parse(input);
 			const ninja = await pgDal.ninjas.insert(ninjaInput);
-			console.log(ninja); // DELETE ME
 			return ctx.json(ninja);
 		} catch (err) {
 			if (err instanceof ZodError) {
