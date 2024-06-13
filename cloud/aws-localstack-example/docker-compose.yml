@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack-pro:3.4.0
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - SERVICES=secretsmanager,s3,lambda,sqs,ecr
+      - EXTRA_CORS_ALLOWED_ORIGINS=http://localhost:3000
+      - LOCALSTACK_AUTH_TOKEN=$LOCALSTACK_AUTH_TOKEN
+      - DEBUG=1
+    ports:
+      - "4566:4566"
+      - "4510:4510"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "./volume:/var/lib/localstack"
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
