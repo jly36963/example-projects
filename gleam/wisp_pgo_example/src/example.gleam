@@ -57,7 +57,7 @@ pub fn raise_for_status(response: response.Response(a)) {
 
 pub fn main() {
   // Create ninja
-  let assert Ok(ninja_new) = {
+  use ninja_new <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Post,
@@ -85,11 +85,11 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println("ninja_new: " <> ninja_new |> ninja_json_encode |> json.to_string)
 
   // Get ninja
-  let assert Ok(ninja) = {
+  use ninja <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Get,
@@ -105,11 +105,11 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println("ninja: " <> ninja |> ninja_json_encode |> json.to_string)
 
   // Update ninja
-  let assert Ok(ninja_updated) = {
+  use ninja_updated <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Put,
@@ -133,12 +133,12 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println(
     "ninja_updated: " <> ninja_updated |> ninja_json_encode |> json.to_string,
   )
   // Create jutsu
-  let assert Ok(jutsu_new) = {
+  use jutsu_new <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Post,
@@ -165,11 +165,11 @@ pub fn main() {
       "Couldn't parse jutsu",
     )
     Ok(jutsu)
-  }
+  })
   io.println("jutsu_new: " <> jutsu_new |> jutsu_json_encode |> json.to_string)
 
   // Get jutsu
-  let assert Ok(jutsu) = {
+  use jutsu <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Get,
@@ -185,11 +185,11 @@ pub fn main() {
       "Couldn't parse jutsu",
     )
     Ok(jutsu)
-  }
+  })
   io.println("jutsu: " <> jutsu |> jutsu_json_encode |> json.to_string)
 
   // Update jutsu
-  let assert Ok(jutsu_updated) = {
+  use jutsu_updated <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Put,
@@ -213,13 +213,13 @@ pub fn main() {
       "Couldn't parse jutsu",
     )
     Ok(jutsu)
-  }
+  })
   io.println(
     "jutsu_updated: " <> jutsu_updated |> jutsu_json_encode |> json.to_string,
   )
 
   // Associate ninja/jutsu
-  let assert Ok(_) = {
+  use _ <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Post,
@@ -231,11 +231,11 @@ pub fn main() {
     )
     use _ <- result.try(raise_for_status(response))
     Ok(Nil)
-  }
+  })
   io.println("ninja_add_jutsu result: Success")
 
   // Get ninja with jutsus
-  let assert Ok(ninja_with_jutsus) = {
+  use ninja_with_jutsus <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Get,
@@ -251,14 +251,14 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println(
     "ninja_with_jutsus (after association): "
     <> ninja_with_jutsus |> ninja_json_encode |> json.to_string,
   )
 
   // Dissociate ninja/jutsu
-  let assert Ok(_) = {
+  use _ <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Delete,
@@ -270,11 +270,11 @@ pub fn main() {
     )
     use _ <- result.try(raise_for_status(response))
     Ok(Nil)
-  }
+  })
   io.println("ninja_remove_jutsu result: Success")
 
   // Get ninja with jutsus
-  let assert Ok(ninja_with_jutsus) = {
+  use ninja_with_jutsus <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Get,
@@ -290,14 +290,14 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println(
     "ninja_with_jutsus (after dissociation): "
     <> ninja_with_jutsus |> ninja_json_encode |> json.to_string,
   )
 
   // Delete jutsu
-  let assert Ok(jutsu_deleted) = {
+  use jutsu_deleted <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Delete,
@@ -313,13 +313,13 @@ pub fn main() {
       "Couldn't parse jutsu",
     )
     Ok(jutsu)
-  }
+  })
   io.println(
     "jutsu_deleted: " <> jutsu_deleted |> jutsu_json_encode |> json.to_string,
   )
 
   // Delete ninja
-  let assert Ok(ninja_deleted) = {
+  use ninja_deleted <- result.try({
     use response <- snag_try(
       fetch(
         method: http.Delete,
@@ -335,10 +335,10 @@ pub fn main() {
       "Couldn't parse ninja",
     )
     Ok(ninja)
-  }
+  })
   io.println(
     "ninja_deleted: " <> ninja_deleted |> ninja_json_encode |> json.to_string,
   )
 
-  Nil
+  Ok(Nil)
 }
