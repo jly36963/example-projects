@@ -1,7 +1,7 @@
 import cake
 import cake/dialect/postgres_dialect as cpd
 import cake/internal/read_query as cirq
-import cake/internal/write_query.{type UpdateSet} as ciwq
+import cake/internal/write_query as ciwq
 import cake/param as cp
 import gleam/int
 import gleam/list
@@ -42,10 +42,10 @@ pub fn param_to_value(param: cp.Param) -> pgo.Value {
 
 /// For an optional input, append to List(UpdateSet) if is_some
 pub fn maybe_append_update_param(
-  update_sets: List(UpdateSet),
+  update_sets: List(ciwq.UpdateSet),
   maybe_input: option.Option(a),
-  to_update_set: fn(a) -> UpdateSet,
-) -> List(UpdateSet) {
+  to_update_set: fn(a) -> ciwq.UpdateSet,
+) -> List(ciwq.UpdateSet) {
   case maybe_input {
     Some(v) -> list.append(update_sets, [to_update_set(v)])
     None -> update_sets
