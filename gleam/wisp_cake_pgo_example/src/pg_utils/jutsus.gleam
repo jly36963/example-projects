@@ -1,6 +1,6 @@
 import cake/delete as cd
 import cake/insert as ci
-import cake/internal/param as cip
+import cake/param as cp
 import cake/select as cs
 import cake/update as cu
 import cake/where as cw
@@ -49,10 +49,10 @@ pub fn insert(db: pgo.Connection, jutsu: Jutsu) -> snag.Result(Jutsu) {
       [jutsu],
       fn(j) {
         ci.row([
-          ci.param("id", cip.StringParam(j.id)),
-          ci.param("name", cip.StringParam(j.name)),
-          ci.param("chakra_nature", cip.StringParam(j.chakra_nature)),
-          ci.param("description", cip.StringParam(j.description)),
+          ci.param("id", cp.StringParam(j.id)),
+          ci.param("name", cp.StringParam(j.name)),
+          ci.param("chakra_nature", cp.StringParam(j.chakra_nature)),
+          ci.param("description", cp.StringParam(j.description)),
         ])
       },
     )
@@ -83,13 +83,13 @@ pub fn update(
   use update_sets <- result.try(
     []
     |> maybe_append_update_param(updates.name, fn(v) {
-      cu.set_to_param("name", cip.StringParam(v))
+      cu.set_to_param("name", cp.StringParam(v))
     })
     |> maybe_append_update_param(updates.chakra_nature, fn(v) {
-      cu.set_to_param("chakra_nature", cip.StringParam(v))
+      cu.set_to_param("chakra_nature", cp.StringParam(v))
     })
     |> maybe_append_update_param(updates.description, fn(v) {
-      cu.set_to_param("description", cip.StringParam(v))
+      cu.set_to_param("description", cp.StringParam(v))
     })
     |> fn(set) {
       case list.is_empty(set) {

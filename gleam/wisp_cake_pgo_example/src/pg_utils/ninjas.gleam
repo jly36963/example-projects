@@ -1,6 +1,6 @@
 import cake/delete as cd
 import cake/insert as ci
-import cake/internal/param
+import cake/param as cp
 import cake/select as cs
 import cake/update as cu
 import cake/where as cw
@@ -50,10 +50,10 @@ pub fn insert(db: pgo.Connection, ninja: Ninja) -> snag.Result(Ninja) {
       [ninja],
       fn(n) {
         ci.row([
-          ci.param("id", param.StringParam(n.id)),
-          ci.param("first_name", param.StringParam(n.first_name)),
-          ci.param("last_name", param.StringParam(n.last_name)),
-          ci.param("age", param.IntParam(n.age)),
+          ci.param("id", cp.StringParam(n.id)),
+          ci.param("first_name", cp.StringParam(n.first_name)),
+          ci.param("last_name", cp.StringParam(n.last_name)),
+          ci.param("age", cp.IntParam(n.age)),
         ])
       },
     )
@@ -83,13 +83,13 @@ pub fn update(
   use update_sets <- result.try(
     []
     |> maybe_append_update_param(updates.first_name, fn(v) {
-      cu.set_to_param("first_name", param.StringParam(v))
+      cu.set_to_param("first_name", cp.StringParam(v))
     })
     |> maybe_append_update_param(updates.last_name, fn(v) {
-      cu.set_to_param("last_name", param.StringParam(v))
+      cu.set_to_param("last_name", cp.StringParam(v))
     })
     |> maybe_append_update_param(updates.age, fn(v) {
-      cu.set_to_param("age", param.IntParam(v))
+      cu.set_to_param("age", cp.IntParam(v))
     })
     |> fn(sets) {
       case list.is_empty(sets) {

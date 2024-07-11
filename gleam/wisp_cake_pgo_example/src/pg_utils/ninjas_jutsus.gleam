@@ -1,6 +1,6 @@
 import cake/delete as cd
 import cake/insert as ci
-import cake/internal/param as cip
+import cake/param as cp
 import cake/where as cw
 import gleam/dynamic
 import gleam/list
@@ -28,8 +28,8 @@ pub fn associate_ninja_jutsu(
   let #(sql, raw_params) =
     ci.from_values("ninjas_jutsus", ["ninja_id", "jutsu_id"], [
       ci.row([
-        ci.param("ninja_id", cip.StringParam(ninja_id)),
-        ci.param("jutsu_id", cip.StringParam(jutsu_id)),
+        ci.param("ninja_id", cp.StringParam(ninja_id)),
+        ci.param("jutsu_id", cp.StringParam(jutsu_id)),
       ]),
     ])
     |> ci.returning(["*"])
