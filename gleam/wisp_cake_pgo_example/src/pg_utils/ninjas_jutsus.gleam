@@ -1,8 +1,7 @@
-import cake/delete as sql_delete
-import cake/insert as sql_insert
-import cake/internal/param
-import cake/internal/write_query.{InsertParam, InsertRow}
-import cake/where as sql_where
+import cake/delete as cd
+import cake/insert as ci
+import cake/internal/param as cip
+import cake/where as cw
 import gleam/dynamic
 import gleam/list
 import gleam/option.{Some}
@@ -19,20 +18,22 @@ import types/jutsu.{
 }
 import types/ninja.{type Ninja, Ninja}
 
+// import cake/internal/write_query.{InsertParam, InsertRow}
+
 pub fn associate_ninja_jutsu(
   db: pgo.Connection,
   ninja_id: String,
   jutsu_id: String,
 ) -> snag.Result(Nil) {
   let #(sql, raw_params) =
-    sql_insert.from_values("ninjas_jutsus", ["ninja_id", "jutsu_id"], [
-      InsertRow([
-        InsertParam(column: "ninja_id", param: param.StringParam(ninja_id)),
-        InsertParam(column: "jutsu_id", param: param.StringParam(jutsu_id)),
+    ci.from_values("ninjas_jutsus", ["ninja_id", "jutsu_id"], [
+      ci.row([
+        ci.param("ninja_id", cip.StringParam(ninja_id)),
+        ci.param("jutsu_id", cip.StringParam(jutsu_id)),
       ]),
     ])
-    |> sql_insert.returning(["*"])
-    |> sql_insert.to_query
+    |> ci.returning(["*"])
+    |> ci.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -50,16 +51,12 @@ pub fn dissociate_ninja_jutsu(
   jutsu_id: String,
 ) -> snag.Result(Nil) {
   let #(sql, raw_params) =
-    sql_delete.new()
-    |> sql_delete.table("ninjas_jutsus")
-    |> sql_delete.where(
-      sql_where.col("ninja_id") |> sql_where.eq(sql_where.string(ninja_id)),
-    )
-    |> sql_delete.where(
-      sql_where.col("jutsu_id") |> sql_where.eq(sql_where.string(jutsu_id)),
-    )
-    |> sql_delete.returning(["*"])
-    |> sql_delete.to_query
+    cd.new()
+    |> cd.table("ninjas_jutsus")
+    |> cd.where(cw.col("ninja_id") |> cw.eq(cw.string(ninja_id)))
+    |> cd.where(cw.col("jutsu_id") |> cw.eq(cw.string(jutsu_id)))
+    |> cd.returning(["*"])
+    |> cd.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -70,6 +67,8 @@ pub fn dissociate_ninja_jutsu(
   )
   Ok(Nil)
 }
+
+// TODO: replace raw sql with cake
 
 pub fn get_ninja_jutsus(
   db: pgo.Connection,

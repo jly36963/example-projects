@@ -1,8 +1,8 @@
 import cake
-import cake/dialect/postgres_dialect
-import cake/internal/param
-import cake/internal/query
-import cake/internal/write_query.{type UpdateSet}
+import cake/dialect/postgres_dialect as cpd
+import cake/internal/param as cip
+import cake/internal/query as ciq
+import cake/internal/write_query.{type UpdateSet} as ciwq
 import gleam/int
 import gleam/list
 import gleam/option.{None, Some}
@@ -14,31 +14,29 @@ import gleam/string
 // ---
 
 /// Convert select query to sql/params
-pub fn query_to_sql(query: query.Query) -> #(String, List(param.Param)) {
-  let ps = postgres_dialect.query_to_prepared_statement(query)
+pub fn query_to_sql(query: ciq.Query) -> #(String, List(cip.Param)) {
+  let ps = cpd.query_to_prepared_statement(query)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
   #(sql, params)
 }
 
 /// Convert write query to sql/params
-pub fn write_query_to_sql(
-  wq: write_query.WriteQuery(t),
-) -> #(String, List(param.Param)) {
-  let ps = postgres_dialect.write_query_to_prepared_statement(wq)
+pub fn write_query_to_sql(wq: ciwq.WriteQuery(t)) -> #(String, List(cip.Param)) {
+  let ps = cpd.write_query_to_prepared_statement(wq)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
   #(sql, params)
 }
 
 /// Convert cake param to pgo value
-pub fn param_to_value(param: param.Param) -> pgo.Value {
+pub fn param_to_value(param: cip.Param) -> pgo.Value {
   case param {
-    param.BoolParam(b) -> pgo.bool(b)
-    param.IntParam(i) -> pgo.int(i)
-    param.FloatParam(f) -> pgo.float(f)
-    param.StringParam(s) -> pgo.text(s)
-    param.NullParam -> pgo.null()
+    cip.BoolParam(b) -> pgo.bool(b)
+    cip.IntParam(i) -> pgo.int(i)
+    cip.FloatParam(f) -> pgo.float(f)
+    cip.StringParam(s) -> pgo.text(s)
+    cip.NullParam -> pgo.null()
   }
 }
 
@@ -57,6 +55,10 @@ pub fn maybe_append_update_param(
 // ---
 // pgo
 // ---
+
+// TODO:
+// delete `replace_placeholders` and `maybe_append_param`
+// logic once completely on cake
 
 /// Recursively replace "?" placeholders
 fn rp_inner(

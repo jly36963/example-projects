@@ -1,10 +1,9 @@
-import cake/delete as sql_delete
-import cake/insert as sql_insert
-import cake/internal/param
-import cake/internal/write_query.{InsertParam, InsertRow, UpdateParamSet}
-import cake/select as sql_select
-import cake/update as sql_update
-import cake/where as sql_where
+import cake/delete as cd
+import cake/insert as ci
+import cake/internal/param as cip
+import cake/select as cs
+import cake/update as cu
+import cake/where as cw
 import gleam/list
 import gleam/pgo
 import gleam/result
@@ -18,15 +17,15 @@ import types/jutsu.{
   jutsu_from_sql_tuple,
 }
 
+// import cake/internal/write_query.{InsertParam, InsertRow, UpdateParamSet}
+
 pub fn get(db: pgo.Connection, id: String) -> snag.Result(Jutsu) {
   let #(sql, raw_params) =
-    sql_select.new()
-    |> sql_select.from_table("jutsus")
-    |> sql_select.select(sql_select.col("*"))
-    |> sql_select.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_select.to_query
+    cs.new()
+    |> cs.from_table("jutsus")
+    |> cs.select(cs.col("*"))
+    |> cs.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cs.to_query
     |> query_to_sql
 
   let decoder = get_jutsu_sql_decoder()
@@ -44,27 +43,21 @@ pub fn get(db: pgo.Connection, id: String) -> snag.Result(Jutsu) {
 
 pub fn insert(db: pgo.Connection, jutsu: Jutsu) -> snag.Result(Jutsu) {
   let #(sql, raw_params) =
-    sql_insert.from_records(
+    ci.from_records(
       "jutsus",
       ["id", "name", "chakra_nature", "description"],
       [jutsu],
       fn(j) {
-        InsertRow([
-          InsertParam(column: "id", param: param.StringParam(j.id)),
-          InsertParam(column: "name", param: param.StringParam(j.name)),
-          InsertParam(
-            column: "chakra_nature",
-            param: param.StringParam(j.chakra_nature),
-          ),
-          InsertParam(
-            column: "description",
-            param: param.StringParam(j.description),
-          ),
+        ci.row([
+          ci.param("id", cip.StringParam(j.id)),
+          ci.param("name", cip.StringParam(j.name)),
+          ci.param("chakra_nature", cip.StringParam(j.chakra_nature)),
+          ci.param("description", cip.StringParam(j.description)),
         ])
       },
     )
-    |> sql_insert.returning(["*"])
-    |> sql_insert.to_query
+    |> ci.returning(["*"])
+    |> ci.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -90,13 +83,13 @@ pub fn update(
   use update_sets <- result.try(
     []
     |> maybe_append_update_param(updates.name, fn(v) {
-      UpdateParamSet("name", param.StringParam(v))
+      cu.set_to_param("name", cip.StringParam(v))
     })
     |> maybe_append_update_param(updates.chakra_nature, fn(v) {
-      UpdateParamSet("chakra_nature", param.StringParam(v))
+      cu.set_to_param("chakra_nature", cip.StringParam(v))
     })
     |> maybe_append_update_param(updates.description, fn(v) {
-      UpdateParamSet("description", param.StringParam(v))
+      cu.set_to_param("description", cip.StringParam(v))
     })
     |> fn(set) {
       case list.is_empty(set) {
@@ -107,14 +100,12 @@ pub fn update(
   )
 
   let #(sql, raw_params) =
-    sql_update.new()
-    |> sql_update.table("jutsus")
-    |> sql_update.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_update.sets(update_sets)
-    |> sql_update.returning(["*"])
-    |> sql_update.to_query
+    cu.new()
+    |> cu.table("jutsus")
+    |> cu.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cu.sets(update_sets)
+    |> cu.returning(["*"])
+    |> cu.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -133,13 +124,11 @@ pub fn update(
 
 pub fn delete(db: pgo.Connection, id: String) -> snag.Result(Jutsu) {
   let #(sql, raw_params) =
-    sql_delete.new()
-    |> sql_delete.table("jutsus")
-    |> sql_delete.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_delete.returning(["*"])
-    |> sql_delete.to_query
+    cd.new()
+    |> cd.table("jutsus")
+    |> cd.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cd.returning(["*"])
+    |> cd.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)

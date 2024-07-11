@@ -1,10 +1,9 @@
-import cake/delete as sql_delete
-import cake/insert as sql_insert
+import cake/delete as cd
+import cake/insert as ci
 import cake/internal/param
-import cake/internal/write_query.{InsertParam, InsertRow, UpdateParamSet}
-import cake/select as sql_select
-import cake/update as sql_update
-import cake/where as sql_where
+import cake/select as cs
+import cake/update as cu
+import cake/where as cw
 import gleam/list
 import gleam/pgo
 import gleam/result
@@ -18,15 +17,15 @@ import types/ninja.{
   ninja_from_sql_tuple,
 }
 
+// import cake/internal/write_query.{UpdateParamSet}
+
 pub fn get(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
-    sql_select.new()
-    |> sql_select.from_table("ninjas")
-    |> sql_select.select(sql_select.col("*"))
-    |> sql_select.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_select.to_query
+    cs.new()
+    |> cs.from_table("ninjas")
+    |> cs.select(cs.col("*"))
+    |> cs.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cs.to_query
     |> query_to_sql
 
   let decoder = get_ninja_sql_decoder()
@@ -45,27 +44,21 @@ pub fn get(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
 
 pub fn insert(db: pgo.Connection, ninja: Ninja) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
-    sql_insert.from_records(
+    ci.from_records(
       "ninjas",
       ["id", "first_name", "last_name", "age"],
       [ninja],
       fn(n) {
-        InsertRow([
-          InsertParam(column: "id", param: param.StringParam(n.id)),
-          InsertParam(
-            column: "first_name",
-            param: param.StringParam(n.first_name),
-          ),
-          InsertParam(
-            column: "last_name",
-            param: param.StringParam(n.last_name),
-          ),
-          InsertParam(column: "age", param: param.IntParam(n.age)),
+        ci.row([
+          ci.param("id", param.StringParam(n.id)),
+          ci.param("first_name", param.StringParam(n.first_name)),
+          ci.param("last_name", param.StringParam(n.last_name)),
+          ci.param("age", param.IntParam(n.age)),
         ])
       },
     )
-    |> sql_insert.returning(["*"])
-    |> sql_insert.to_query
+    |> ci.returning(["*"])
+    |> ci.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -90,31 +83,29 @@ pub fn update(
   use update_sets <- result.try(
     []
     |> maybe_append_update_param(updates.first_name, fn(v) {
-      UpdateParamSet("first_name", param.StringParam(v))
+      cu.set_to_param("first_name", param.StringParam(v))
     })
     |> maybe_append_update_param(updates.last_name, fn(v) {
-      UpdateParamSet("last_name", param.StringParam(v))
+      cu.set_to_param("last_name", param.StringParam(v))
     })
     |> maybe_append_update_param(updates.age, fn(v) {
-      UpdateParamSet("age", param.IntParam(v))
+      cu.set_to_param("age", param.IntParam(v))
     })
-    |> fn(set) {
-      case list.is_empty(set) {
+    |> fn(sets) {
+      case list.is_empty(sets) {
         True -> snag.error("No updates found")
-        False -> Ok(set)
+        False -> Ok(sets)
       }
     },
   )
 
   let #(sql, raw_params) =
-    sql_update.new()
-    |> sql_update.table("ninjas")
-    |> sql_update.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_update.sets(update_sets)
-    |> sql_update.returning(["*"])
-    |> sql_update.to_query
+    cu.new()
+    |> cu.table("ninjas")
+    |> cu.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cu.sets(update_sets)
+    |> cu.returning(["*"])
+    |> cu.to_query
     |> write_query_to_sql
 
   let params = list.map(raw_params, param_to_value)
@@ -133,13 +124,11 @@ pub fn update(
 
 pub fn delete(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
-    sql_delete.new()
-    |> sql_delete.table("ninjas")
-    |> sql_delete.where(
-      sql_where.col("id") |> sql_where.eq(sql_where.string(id)),
-    )
-    |> sql_delete.returning(["*"])
-    |> sql_delete.to_query
+    cd.new()
+    |> cd.table("ninjas")
+    |> cd.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cd.returning(["*"])
+    |> cd.to_query
     |> write_query_to_sql
 
   let decoder = get_ninja_sql_decoder()
