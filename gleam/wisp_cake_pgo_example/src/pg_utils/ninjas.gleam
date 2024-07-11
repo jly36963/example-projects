@@ -17,8 +17,6 @@ import types/ninja.{
   ninja_from_sql_tuple,
 }
 
-// import cake/internal/write_query.{UpdateParamSet}
-
 pub fn get(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
     cs.new()

@@ -17,8 +17,6 @@ import types/jutsu.{
   jutsu_from_sql_tuple,
 }
 
-// import cake/internal/write_query.{InsertParam, InsertRow, UpdateParamSet}
-
 pub fn get(db: pgo.Connection, id: String) -> snag.Result(Jutsu) {
   let #(sql, raw_params) =
     cs.new()

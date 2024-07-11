@@ -18,8 +18,6 @@ import types/jutsu.{
 }
 import types/ninja.{type Ninja, Ninja}
 
-// import cake/internal/write_query.{InsertParam, InsertRow}
-
 pub fn associate_ninja_jutsu(
   db: pgo.Connection,
   ninja_id: String,
@@ -68,7 +66,7 @@ pub fn dissociate_ninja_jutsu(
   Ok(Nil)
 }
 
-// TODO: replace raw sql with cake
+// TODO: replace raw sql with cake (select with subquery)
 
 pub fn get_ninja_jutsus(
   db: pgo.Connection,

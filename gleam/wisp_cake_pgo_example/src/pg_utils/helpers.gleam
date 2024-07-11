@@ -14,8 +14,8 @@ import gleam/string
 // ---
 
 /// Convert select query to sql/params
-pub fn query_to_sql(query: cirq.ReadQuery) -> #(String, List(cp.Param)) {
-  let ps = cpd.query_to_prepared_statement(query)
+pub fn query_to_sql(rq: cirq.ReadQuery) -> #(String, List(cp.Param)) {
+  let ps = cpd.query_to_prepared_statement(rq)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
   #(sql, params)
