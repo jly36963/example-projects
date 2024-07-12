@@ -1,8 +1,7 @@
 import cake
 import cake/dialect/postgres_dialect as cpd
-import cake/internal/read_query as cirq
-import cake/internal/write_query as ciwq
 import cake/param as cp
+import cake/update as cu
 import gleam/int
 import gleam/list
 import gleam/option.{None, Some}
@@ -14,7 +13,7 @@ import gleam/string
 // ---
 
 /// Convert select query to sql/params
-pub fn query_to_sql(rq: cirq.ReadQuery) -> #(String, List(cp.Param)) {
+pub fn query_to_sql(rq: cake.ReadQuery) -> #(String, List(cp.Param)) {
   let ps = cpd.query_to_prepared_statement(rq)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
@@ -22,7 +21,7 @@ pub fn query_to_sql(rq: cirq.ReadQuery) -> #(String, List(cp.Param)) {
 }
 
 /// Convert write query to sql/params
-pub fn write_query_to_sql(wq: ciwq.WriteQuery(t)) -> #(String, List(cp.Param)) {
+pub fn write_query_to_sql(wq: cake.WriteQuery(t)) -> #(String, List(cp.Param)) {
   let ps = cpd.write_query_to_prepared_statement(wq)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
@@ -42,10 +41,10 @@ pub fn param_to_value(param: cp.Param) -> pgo.Value {
 
 /// For an optional input, append to List(UpdateSet) if is_some
 pub fn maybe_append_update_param(
-  update_sets: List(ciwq.UpdateSet),
+  update_sets: List(cu.UpdateSet),
   maybe_input: option.Option(a),
-  to_update_set: fn(a) -> ciwq.UpdateSet,
-) -> List(ciwq.UpdateSet) {
+  to_update_set: fn(a) -> cu.UpdateSet,
+) -> List(cu.UpdateSet) {
   case maybe_input {
     Some(v) -> list.append(update_sets, [to_update_set(v)])
     None -> update_sets
