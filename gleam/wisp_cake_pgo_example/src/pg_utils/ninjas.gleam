@@ -8,7 +8,8 @@ import gleam/list
 import gleam/pgo
 import gleam/result
 import pg_utils/helpers.{
-  maybe_append_update_param, param_to_value, query_to_sql, write_query_to_sql,
+  maybe_append_update_param, param_to_value, read_query_to_sql,
+  write_query_to_sql,
 }
 import snag
 import snag_utils.{snag_try}
@@ -22,9 +23,9 @@ pub fn get(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
     cs.new()
     |> cs.from_table("ninjas")
     |> cs.select(cs.col("*"))
-    |> cs.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cs.where(cw.eq(cw.col("id"), cw.string(id)))
     |> cs.to_query
-    |> query_to_sql
+    |> read_query_to_sql
 
   let decoder = get_ninja_sql_decoder()
   let params = list.map(raw_params, param_to_value)
@@ -100,7 +101,7 @@ pub fn update(
   let #(sql, raw_params) =
     cu.new()
     |> cu.table("ninjas")
-    |> cu.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cu.where(cw.eq(cw.col("id"), cw.string(id)))
     |> cu.sets(update_sets)
     |> cu.returning(["*"])
     |> cu.to_query
@@ -124,7 +125,7 @@ pub fn delete(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
     cd.new()
     |> cd.table("ninjas")
-    |> cd.where(cw.col("id") |> cw.eq(cw.string(id)))
+    |> cd.where(cw.eq(cw.col("id"), cw.string(id)))
     |> cd.returning(["*"])
     |> cd.to_query
     |> write_query_to_sql

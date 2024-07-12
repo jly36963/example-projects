@@ -1,15 +1,14 @@
 import cake/delete as cd
 import cake/insert as ci
 import cake/param as cp
+import cake/select as cs
 import cake/where as cw
 import gleam/dynamic
 import gleam/list
 import gleam/option.{Some}
 import gleam/pgo
 import gleam/result
-import pg_utils/helpers.{
-  param_to_value, replace_placeholders, write_query_to_sql,
-}
+import pg_utils/helpers.{param_to_value, read_query_to_sql, write_query_to_sql}
 import pg_utils/ninjas as pg_ninjas
 import snag
 import snag_utils.{snag_try}
@@ -51,8 +50,8 @@ pub fn dissociate_ninja_jutsu(
   let #(sql, raw_params) =
     cd.new()
     |> cd.table("ninjas_jutsus")
-    |> cd.where(cw.col("ninja_id") |> cw.eq(cw.string(ninja_id)))
-    |> cd.where(cw.col("jutsu_id") |> cw.eq(cw.string(jutsu_id)))
+    |> cd.where(cw.eq(cw.col("ninja_id"), cw.string(ninja_id)))
+    |> cd.where(cw.eq(cw.col("jutsu_id"), cw.string(jutsu_id)))
     |> cd.returning(["*"])
     |> cd.to_query
     |> write_query_to_sql
@@ -66,18 +65,30 @@ pub fn dissociate_ninja_jutsu(
   Ok(Nil)
 }
 
-// TODO: replace raw sql with cake (select with subquery)
-
 pub fn get_ninja_jutsus(
   db: pgo.Connection,
   id: String,
 ) -> snag.Result(List(Jutsu)) {
-  let sql =
-    replace_placeholders(
-      "SELECT * FROM jutsus WHERE jutsus.id IN (SELECT jutsu_id FROM ninjas_jutsus WHERE ninjas_jutsus.ninja_id = ?);",
+  let #(sql, raw_params) =
+    cs.new()
+    |> cs.from_table("jutsus")
+    |> cs.select(cs.col("*"))
+    |> cs.where(
+      // id in ids subquery
+      cw.in_query(
+        cw.col("jutsus.id"),
+        cs.new()
+          |> cs.from_table("ninjas_jutsus")
+          |> cs.select(cs.col("jutsu_id"))
+          |> cs.where(cw.eq(cw.col("ninja_id"), cw.string(id)))
+          |> cs.to_query,
+      ),
     )
-  let params = [pgo.text(id)]
+    |> cs.to_query
+    |> read_query_to_sql
+
   let decoder = get_jutsu_sql_decoder()
+  let params = list.map(raw_params, param_to_value)
 
   use res <- snag_try(
     pgo.execute(sql, db, params, decoder),

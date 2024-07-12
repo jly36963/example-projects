@@ -4,7 +4,7 @@
 packages = [
   { name = "backoff", version = "1.1.6", build_tools = ["rebar3"], requirements = [], otp_app = "backoff", source = "hex", outer_checksum = "CF0CFFF8995FB20562F822E5CC47D8CCF664C5ECDC26A684CBE85C225F9D7C39" },
   { name = "birl", version = "1.7.1", build_tools = ["gleam"], requirements = ["gleam_stdlib", "ranger"], otp_app = "birl", source = "hex", outer_checksum = "5C66647D62BCB11FE327E7A6024907C4A17954EF22865FE0940B54A852446D01" },
-  { name = "cake", version = "0.12.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "cake", source = "hex", outer_checksum = "3A38DE0CFF205DF6D313243190EC6992FB749C5687D72E0AB9E5C9212FCD997B" },
+  { name = "cake", version = "0.13.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "cake", source = "hex", outer_checksum = "E0F2B0541A3E1C3BD08A7A83FBCE46BBFDD2BB6FCBDFBEF11CF53BA1E295133A" },
   { name = "certifi", version = "2.12.0", build_tools = ["rebar3"], requirements = [], otp_app = "certifi", source = "hex", outer_checksum = "EE68D85DF22E554040CDB4BE100F33873AC6051387BAF6A8F6CE82272340FF1C" },
   { name = "decode", version = "0.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "decode", source = "hex", outer_checksum = "965F517F67B8C172CA27A5C8E34C73733139E8C9E64736181B8C3179281F9793" },
   { name = "envoy", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "envoy", source = "hex", outer_checksum = "CFAACCCFC47654F7E8B75E614746ED924C65BD08B1DE21101548AC314A8B6A41" },
@@ -48,7 +48,7 @@ packages = [
 
 [requirements]
 birl = { version = ">= 1.7.1 and < 2.0.0" }
-cake = { version = ">= 0.12.0 and < 1.0.0" }
+cake = { version = ">= 0.13.0 and < 1.0.0" }
 decode = { version = ">= 0.1.0 and < 1.0.0" }
 envoy = { version = ">= 1.0.1 and < 2.0.0" }
 filepath = { version = ">= 1.0.0 and < 2.0.0" }

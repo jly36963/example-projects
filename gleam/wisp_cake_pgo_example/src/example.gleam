@@ -86,6 +86,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println("ninja_new: " <> ninja_new |> ninja_json_encode |> json.to_string)
 
   // Get ninja
@@ -106,6 +107,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println("ninja: " <> ninja |> ninja_json_encode |> json.to_string)
 
   // Update ninja
@@ -134,6 +136,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println(
     "ninja_updated: " <> ninja_updated |> ninja_json_encode |> json.to_string,
   )
@@ -166,6 +169,7 @@ pub fn main() {
     )
     Ok(jutsu)
   })
+  io.println("\n")
   io.println("jutsu_new: " <> jutsu_new |> jutsu_json_encode |> json.to_string)
 
   // Get jutsu
@@ -186,6 +190,7 @@ pub fn main() {
     )
     Ok(jutsu)
   })
+  io.println("\n")
   io.println("jutsu: " <> jutsu |> jutsu_json_encode |> json.to_string)
 
   // Update jutsu
@@ -214,6 +219,7 @@ pub fn main() {
     )
     Ok(jutsu)
   })
+  io.println("\n")
   io.println(
     "jutsu_updated: " <> jutsu_updated |> jutsu_json_encode |> json.to_string,
   )
@@ -232,6 +238,7 @@ pub fn main() {
     use _ <- result.try(raise_for_status(response))
     Ok(Nil)
   })
+  io.println("\n")
   io.println("ninja_add_jutsu result: Success")
 
   // Get ninja with jutsus
@@ -252,6 +259,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println(
     "ninja_with_jutsus (after association): "
     <> ninja_with_jutsus |> ninja_json_encode |> json.to_string,
@@ -271,6 +279,7 @@ pub fn main() {
     use _ <- result.try(raise_for_status(response))
     Ok(Nil)
   })
+  io.println("\n")
   io.println("ninja_remove_jutsu result: Success")
 
   // Get ninja with jutsus
@@ -291,6 +300,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println(
     "ninja_with_jutsus (after dissociation): "
     <> ninja_with_jutsus |> ninja_json_encode |> json.to_string,
@@ -314,6 +324,7 @@ pub fn main() {
     )
     Ok(jutsu)
   })
+  io.println("\n")
   io.println(
     "jutsu_deleted: " <> jutsu_deleted |> jutsu_json_encode |> json.to_string,
   )
@@ -336,6 +347,7 @@ pub fn main() {
     )
     Ok(ninja)
   })
+  io.println("\n")
   io.println(
     "ninja_deleted: " <> ninja_deleted |> ninja_json_encode |> json.to_string,
   )
