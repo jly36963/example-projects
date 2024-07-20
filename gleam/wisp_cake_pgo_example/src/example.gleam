@@ -55,7 +55,7 @@ pub fn raise_for_status(response: response.Response(a)) {
   }
 }
 
-pub fn main() {
+pub fn run_examples() {
   // Create ninja
   use ninja_new <- result.try({
     use response <- snag_try(
@@ -353,4 +353,12 @@ pub fn main() {
   )
 
   Ok(Nil)
+}
+
+pub fn main() {
+  let res = run_examples()
+  case res {
+    Ok(_) -> io.println("Success")
+    Error(e) -> e |> string.inspect |> io.println
+  }
 }
