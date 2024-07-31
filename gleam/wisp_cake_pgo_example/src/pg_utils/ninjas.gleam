@@ -1,6 +1,5 @@
 import cake/delete as cd
 import cake/insert as ci
-import cake/param as cp
 import cake/select as cs
 import cake/update as cu
 import cake/where as cw
@@ -17,6 +16,8 @@ import types/ninja.{
   type Ninja, type NinjaUpdates, Ninja, NinjaUpdates, get_ninja_sql_decoder,
   ninja_from_sql_tuple,
 }
+
+// import cake/param as cp
 
 pub fn get(db: pgo.Connection, id: String) -> snag.Result(Ninja) {
   let #(sql, raw_params) =
@@ -49,10 +50,10 @@ pub fn insert(db: pgo.Connection, ninja: Ninja) -> snag.Result(Ninja) {
       [ninja],
       fn(n) {
         ci.row([
-          ci.param("id", cp.StringParam(n.id)),
-          ci.param("first_name", cp.StringParam(n.first_name)),
-          ci.param("last_name", cp.StringParam(n.last_name)),
-          ci.param("age", cp.IntParam(n.age)),
+          ci.string(n.id),
+          ci.string(n.first_name),
+          ci.string(n.last_name),
+          ci.int(n.age),
         ])
       },
     )
@@ -82,14 +83,12 @@ pub fn update(
   use update_sets <- result.try(
     []
     |> maybe_append_update_param(updates.first_name, fn(v) {
-      cu.set_to_param("first_name", cp.StringParam(v))
+      cu.set_string("first_name", v)
     })
     |> maybe_append_update_param(updates.last_name, fn(v) {
-      cu.set_to_param("last_name", cp.StringParam(v))
+      cu.set_string("last_name", v)
     })
-    |> maybe_append_update_param(updates.age, fn(v) {
-      cu.set_to_param("age", cp.IntParam(v))
-    })
+    |> maybe_append_update_param(updates.age, fn(v) { cu.set_int("age", v) })
     |> fn(sets) {
       case list.is_empty(sets) {
         True -> snag.error("No updates found")

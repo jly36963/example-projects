@@ -13,7 +13,7 @@ version = "1.0.0"
 # https://gleam.run/writing-gleam/gleam-toml/.
 
 [dependencies]
-gleam_stdlib = "~> 0.38 or ~> 1.0"
+gleam_stdlib = "~> 0.39 or ~> 1.0"
 gleam_erlang = ">= 0.25.0 and < 1.0.0"
 filepath = ">= 1.0.0 and < 2.0.0"
 gleam_json = "== 1.0.1"                # Must be <2 until OTP 27 is available
@@ -31,7 +31,7 @@ gleam_http = ">= 3.6.0 and < 4.0.0"
 mist = ">= 1.2.0 and < 2.0.0"
 hackney = ">= 1.20.1 and < 2.0.0"
 gleam_hackney = ">= 1.2.0 and < 2.0.0"
-cake = ">= 0.13.0 and < 1.0.0"
+cake = ">= 1.0.1 and < 2.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"

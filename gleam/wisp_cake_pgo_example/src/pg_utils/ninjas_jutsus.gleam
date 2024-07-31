@@ -1,6 +1,5 @@
 import cake/delete as cd
 import cake/insert as ci
-import cake/param as cp
 import cake/select as cs
 import cake/where as cw
 import gleam/dynamic
@@ -17,6 +16,8 @@ import types/jutsu.{
 }
 import types/ninja.{type Ninja, Ninja}
 
+// import cake/param as cp
+
 pub fn associate_ninja_jutsu(
   db: pgo.Connection,
   ninja_id: String,
@@ -24,10 +25,7 @@ pub fn associate_ninja_jutsu(
 ) -> snag.Result(Nil) {
   let #(sql, raw_params) =
     ci.from_values("ninjas_jutsus", ["ninja_id", "jutsu_id"], [
-      ci.row([
-        ci.param("ninja_id", cp.StringParam(ninja_id)),
-        ci.param("jutsu_id", cp.StringParam(jutsu_id)),
-      ]),
+      ci.row([ci.string(ninja_id), ci.string(jutsu_id)]),
     ])
     |> ci.returning(["*"])
     |> ci.to_query
