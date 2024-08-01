@@ -1,0 +1,51 @@
+[package]
+name = "actix-seaquery-example"
+version = "0.1.0"
+edition = "2021"
+default-run = "main"
+
+[dependencies]
+actix-web = "4"
+chrono = { version = "0.4", features = ["serde"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_derive = "1.0"
+async-trait = "0.1.81"
+sqlx = { version = "0.7.4", features = [
+    "postgres",
+    "runtime-async-std-native-tls",
+    "migrate",
+    "uuid",
+    "chrono",
+] }
+sea-query = { version = "0.30", features = [
+    "derive",
+    "attr",
+    "thread-safe",
+    "backend-postgres",
+    "with-chrono",
+    "with-uuid",
+] }
+sea-query-binder = { version = "0.5", features = [
+    "sqlx-postgres",
+    "with-chrono",
+    "with-json",
+    "with-uuid",
+    "runtime-async-std-native-tls",
+] }
+uuid = { version = "1.10.0", features = ["serde", "v4"] }
+anyhow = "1.0.86"
+mime = "0.3"
+reqwest = { version = "0.11", features = ["json"] }
+env_logger = "0.9.3"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+
+# # Uncomment to run example
+# [[bin]]
+# name = "example"
+# path = "src/example.rs"

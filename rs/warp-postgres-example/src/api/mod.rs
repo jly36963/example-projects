@@ -10,7 +10,7 @@ pub async fn start(providers: Providers) {
     // Config
     let host = String::from("127.0.0.1");
     let ip = IpAddr::from_str(&host).unwrap();
-    let port = 5000;
+    let port = 3000;
     println!("Serving on {}:{}", ip, port);
 
     // Logger

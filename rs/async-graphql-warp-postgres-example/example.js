@@ -1,6 +1,4 @@
-import fetch from "node-fetch";
-
-const baseUrl = "http://localhost:5000";
+const baseUrl = "http://localhost:3000";
 
 const main = async () => {
   let response, result;

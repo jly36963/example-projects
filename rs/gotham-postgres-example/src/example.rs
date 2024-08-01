@@ -6,7 +6,7 @@ use reqwest;
 #[tokio::main]
 async fn main() {
     // Setup
-    let base_url = "http://127.0.0.1:5000/api";
+    let base_url = "http://127.0.0.1:3000/api";
     let client = reqwest::Client::new();
 
     // Create ninja

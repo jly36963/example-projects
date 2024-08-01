@@ -1,0 +1,11 @@
+dev:
+	cargo run
+
+dev-build:
+	cargo build
+
+build:
+	cargo build --release
+
+run-example:
+    cargo run --bin example

@@ -46,6 +46,7 @@ env_logger = "0.9.3"
 name = "main"
 path = "src/main.rs"
 
-[[bin]]
-name = "example"
-path = "src/example.rs"
+# # Uncomment to run example
+# [[bin]]
+# name = "example"
+# path = "src/example.rs"

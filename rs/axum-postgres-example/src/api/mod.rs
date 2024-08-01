@@ -1,5 +1,3 @@
-use std::net::SocketAddr;
-
 use axum::{
     routing::{delete, get, post, put},
     Router,
@@ -10,9 +8,7 @@ mod ninja;
 use crate::providers::Providers;
 
 pub async fn start(providers: Providers) {
-    // Config
-    let port = 3000;
-    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    let addr = "0.0.0.0:3000";
     println!("Serving on {}", addr);
 
     // Server
@@ -38,5 +34,7 @@ pub async fn start(providers: Providers) {
         // State/deps
         .with_state(providers.clone());
 
-    axum::Server::bind(&addr).serve(app.into_make_service()).await.unwrap();
+    // axum::Server::bind(&addr).serve(app.into_make_service()).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }
