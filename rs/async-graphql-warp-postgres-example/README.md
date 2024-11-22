@@ -2,19 +2,12 @@
 
 - async-graphql
   - https://github.com/async-graphql/async-graphql
-
 - warp
   - https://github.com/seanmonstar/warp
   - https://docs.rs/warp/0.3.2/warp/
-
 - tokio-postgres
   - https://github.com/sfackler/rust-postgres
   - https://docs.rs/tokio-postgres/0.7.5/tokio_postgres/
-
-- reqwest
-  - https://github.com/seanmonstar/reqwest
-  - https://github.com/seanmonstar/reqwest/tree/master/examples
-  - https://docs.rs/reqwest/0.11.6/reqwest/
 
 ## Startup
 
@@ -42,8 +35,3 @@ sqlx migrate run
 # revert migration
 sqlx migrate revert
 ```
-
-### additional migration docs/issues
-
-- https://github.com/launchbadge/sqlx/issues/356
-- https://github.com/launchbadge/sqlx/issues/1306

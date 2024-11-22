@@ -194,6 +194,7 @@ impl TPostgresDAL for PostgresDAL {
 
         Ok(Some(jutsu))
     }
+
     async fn update_jutsu(
         &self,
         id: Uuid,

@@ -1,9 +1,8 @@
-## gotham tokio-postgres
+## gotham + tokio-postgres
 
 - gotham
   - https://gotham.rs/
   - https://docs.rs/gotham/0.6.0/gotham/
-
 - tokio-postgres
   - https://github.com/sfackler/rust-postgres
   - https://docs.rs/tokio-postgres/0.7.5/tokio_postgres/
