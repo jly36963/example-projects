@@ -12,7 +12,7 @@ import gleam/pgo
 
 /// Convert select query to sql/params
 pub fn read_query_to_sql(rq: cake.ReadQuery) -> #(String, List(cp.Param)) {
-  let ps = cpd.query_to_prepared_statement(rq)
+  let ps = cpd.read_query_to_prepared_statement(rq)
   let sql = cake.get_sql(ps)
   let params = cake.get_params(ps)
   #(sql, params)

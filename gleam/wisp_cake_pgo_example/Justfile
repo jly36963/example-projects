@@ -1,6 +1,8 @@
 install:
     gleam deps download
+
 dev:
     gleam run
+
 run-example:
     gleam run -m example

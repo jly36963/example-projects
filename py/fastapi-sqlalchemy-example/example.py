@@ -1,7 +1,6 @@
 """Run CRUD examples."""
 
 import asyncio
-from pprint import pprint
 
 from src.utils.net import fetch
 
@@ -17,9 +16,9 @@ async def main():
         payload={"first_name": "Kakashi", "last_name": "Hatake", "age": 27},
     )
     ninja = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja insert result")
-    pprint(ninja)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja insert result:", ninja)
 
     # get ninja
     response = await fetch(
@@ -28,9 +27,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     ninja = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja select result")
-    pprint(ninja)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja select result:", ninja)
 
     # update ninja
     response = await fetch(
@@ -43,9 +42,9 @@ async def main():
         },
     )
     ninja = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja update result")
-    pprint(ninja)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja update result:", ninja)
 
     # create jutsu
     response = await fetch(
@@ -59,9 +58,9 @@ async def main():
         },
     )
     jutsu = response["data"]
-    assert isinstance(jutsu, dict)
-    print("Jutsu insert result")
-    pprint(jutsu)
+    if not isinstance(jutsu, dict):
+        raise RuntimeError()
+    print("Jutsu insert result:", jutsu)
 
     # get jutsu
     response = await fetch(
@@ -70,9 +69,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     jutsu = response["data"]
-    assert isinstance(jutsu, dict)
-    print("Jutsu select result")
-    pprint(jutsu)
+    if not isinstance(jutsu, dict):
+        raise RuntimeError()
+    print("Jutsu select result:", jutsu)
 
     # update jutsu
     response = await fetch(
@@ -82,9 +81,9 @@ async def main():
         payload={"description": "Lightning blade"},
     )
     jutsu = response["data"]
-    assert isinstance(jutsu, dict)
-    print("Jutsu update result")
-    pprint(jutsu)
+    if not isinstance(jutsu, dict):
+        raise RuntimeError()
+    print("Jutsu update result:", jutsu)
 
     # associate ninja & jutsu
     await fetch(
@@ -101,9 +100,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     ninja_with_jutsus = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja with jutsus result")
-    pprint(ninja_with_jutsus)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja with jutsus result:", ninja_with_jutsus)
 
     # dissociate ninja & jutsu
     await fetch(
@@ -120,9 +119,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     ninja_with_jutsus = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja with jutsus result (post dissociation)")
-    pprint(ninja_with_jutsus)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja with jutsus result (post dissociation):", ninja_with_jutsus)
 
     # delete ninja
     response = await fetch(
@@ -131,9 +130,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     ninja = response["data"]
-    assert isinstance(ninja, dict)
-    print("Ninja delete result")
-    pprint(ninja)
+    if not isinstance(ninja, dict):
+        raise RuntimeError()
+    print("Ninja delete result:", ninja)
 
     # delete jutsu
     response = await fetch(
@@ -142,9 +141,9 @@ async def main():
         headers={"Content-Type": "application/json"},
     )
     jutsu = response["data"]
-    assert isinstance(jutsu, dict)
-    print("Jutsu delete result")
-    pprint(jutsu)
+    if not isinstance(jutsu, dict):
+        raise RuntimeError()
+    print("Jutsu delete result:", jutsu)
 
 
 asyncio.run(main())

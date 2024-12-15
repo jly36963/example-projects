@@ -31,7 +31,7 @@ pub fn ninja_insert_handler(req, db) {
       pg_ninjas.insert(db, ninja_new),
       "Error while inserting ninja",
     )
-    Ok(json.to_string_builder(types_ninja.ninja_json_encode(ninja)))
+    Ok(json.to_string_tree(types_ninja.ninja_json_encode(ninja)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -42,7 +42,7 @@ pub fn ninja_insert_handler(req, db) {
 pub fn ninja_get_handler(_req, db, id) {
   let result = {
     use ninja <- snag_try(pg_ninjas.get(db, id), "Error while getting ninja")
-    Ok(json.to_string_builder(types_ninja.ninja_json_encode(ninja)))
+    Ok(json.to_string_tree(types_ninja.ninja_json_encode(ninja)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -59,7 +59,7 @@ pub fn ninja_update_handler(req, db, id) {
       pg_ninjas.update(db, id, ninja_new),
       "Error while updating ninja",
     )
-    Ok(json.to_string_builder(types_ninja.ninja_json_encode(ninja)))
+    Ok(json.to_string_tree(types_ninja.ninja_json_encode(ninja)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -73,7 +73,7 @@ pub fn ninja_delete_handler(_req, db, id) {
       pg_ninjas.delete(db, id),
       "Error while deleting ninja",
     )
-    Ok(json.to_string_builder(types_ninja.ninja_json_encode(ninja)))
+    Ok(json.to_string_tree(types_ninja.ninja_json_encode(ninja)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -87,7 +87,7 @@ pub fn get_ninja_with_jutsus_handler(_req, db, id) {
       pg_ninjas_jutsus.ninja_get_with_jutsus(db, id),
       "Error while getting ninja",
     )
-    Ok(json.to_string_builder(types_ninja.ninja_json_encode(ninja)))
+    Ok(json.to_string_tree(types_ninja.ninja_json_encode(ninja)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)

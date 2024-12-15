@@ -30,7 +30,7 @@ class Ninja(TypedDict):
     age: int
     created_at: datetime.datetime
     updated_at: datetime.datetime | None
-    jutsus: list[dict] | None
+    jutsus: list["Jutsu"] | None
 
 
 class JutsuNew(TypedDict):

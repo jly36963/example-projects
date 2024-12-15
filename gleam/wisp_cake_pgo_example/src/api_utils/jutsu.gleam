@@ -24,7 +24,7 @@ pub fn jutsu_insert_handler(req, db) {
       pg_jutsus.insert(db, jutsu_new),
       "Error while inserting jutsu",
     )
-    Ok(json.to_string_builder(types_jutsu.jutsu_json_encode(jutsu)))
+    Ok(json.to_string_tree(types_jutsu.jutsu_json_encode(jutsu)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -35,7 +35,7 @@ pub fn jutsu_insert_handler(req, db) {
 pub fn jutsu_get_handler(_req, db, id) {
   let result = {
     use jutsu <- snag_try(pg_jutsus.get(db, id), "Error while getting jutsu")
-    Ok(json.to_string_builder(types_jutsu.jutsu_json_encode(jutsu)))
+    Ok(json.to_string_tree(types_jutsu.jutsu_json_encode(jutsu)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -52,7 +52,7 @@ pub fn jutsu_update_handler(req, db, id) {
       pg_jutsus.update(db, id, jutsu_new),
       "Error while updating jutsu",
     )
-    Ok(json.to_string_builder(types_jutsu.jutsu_json_encode(jutsu)))
+    Ok(json.to_string_tree(types_jutsu.jutsu_json_encode(jutsu)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
@@ -66,7 +66,7 @@ pub fn jutsu_delete_handler(_req, db, id) {
       pg_jutsus.delete(db, id),
       "Error while deleting jutsu",
     )
-    Ok(json.to_string_builder(types_jutsu.jutsu_json_encode(jutsu)))
+    Ok(json.to_string_tree(types_jutsu.jutsu_json_encode(jutsu)))
   }
   case result {
     Ok(data) -> wisp.json_response(data, 200)
