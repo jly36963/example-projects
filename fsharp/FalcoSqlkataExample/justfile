@@ -1,0 +1,16 @@
+dev:
+    dotnet run --project src/App
+
+watch:
+    dotnet watch
+
+clean:
+    dotnet clean
+
+build:
+    dotnet format
+    dotnet restore
+    dotnet build
+
+run-examples:
+    dotnet fsi scripts/RunExamples.fsx
