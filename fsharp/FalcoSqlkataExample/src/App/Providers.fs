@@ -7,10 +7,6 @@ open System
 open Types
 open Utils
 
-// ---
-// Providers
-// ---
-
 let ninjaCreate (db: QueryFactory) (input: NinjaCreateInput) : Result<Guid, Exception> =
     try
         let id = Guid.NewGuid()

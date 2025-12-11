@@ -2,10 +2,6 @@ module Types
 
 open System
 
-// ---
-// Types
-// ---
-
 [<CLIMutable>]
 type Ninja =
     {
